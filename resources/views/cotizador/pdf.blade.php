@@ -6,9 +6,9 @@
         <th colspan="6" style="background-color: #023761;text-align: right;border-left-color:white;border-right-color:white;color:white">2020-09-25<br>ID Cotización 9<br>Calzada San Pedro # 108<br>San Pedro Garza García, N,L, México, 66220<br>+52 (81) 8378 0601, info@hardwarecollection.mx</th>
        </tr>
        <tr style="width: 100%;font-size: 10px;background-color: gray;" >
-        <th colspan="3" style="text-align: left;border-left-color:gray;border-right-color:gray;color:white">Proyecto:<br> Participante:<br>Empresa:</th>
-        <th colspan="2" style="text-align: left;border-left-color:gray;border-right-color:gray;color:white">Correo:<br>Teléfono:<br></th>
-        <th colspan="2" style="text-align: right;border-left-color:gray;border-right-color:gray;color:white">Cotización valida<br> hasta (2020-09-25 + 30 dias)</th>
+        <th colspan="3" style="text-align: left;border-left-color:gray;border-right-color:gray;color:white">Proyecto: {{ $cot->proyecto }}<br> Participante: {{ $cot->contacto }}<br>Empresa: {{ $cot->empresa }}</th>
+        <th colspan="2" style="text-align: left;border-left-color:gray;border-right-color:gray;color:white">Correo: {{ $cot->correo }}<br>Teléfono: {{ $cot->telefono }}<br></th>
+        <th colspan="2" style="text-align: right;border-left-color:gray;border-right-color:gray;color:white">Cotización valida {{ $cot->created_at }}<br> hasta (2020-09-25 + 30 dias)</th>
        </tr>
       
         <tr class="gris_barra" style="text-align: left;font-size: 14px;width: 100%"><br><br><br><br><br>
@@ -20,7 +20,7 @@
        </tr>
     </thead>
     <tbody>
-          @foreach($productos as $p)
+          @foreach($productos2 as $p)
             <tr>
                <td>HC-123</td>
                <td colspan="3">Descripción</td>

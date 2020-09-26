@@ -511,38 +511,22 @@ WHERE d.id = 264
 
 
         $filtro = new cotizador_detalle;
-        $num_cotizacion=$request->id_cotizacion;
+        $num_cotizacion = $request->session()->get('num_cotizacion');
         
-        $filtro->id_cotizacion = $num_cotizacion;
-        $productos = $filtro->detalle_cotizacion($filtro);
-        $cotizacion = cotizador::where('id',$num_cotizacion)->get();
-        $cotizacion = $cotizacion[0];
-
-        if($cotizacion->proyecto > 0 ){
-          $clientes = db::table('proyectos_clientes as pc')
-                        ->join('tbl_clientes as c','pc.id_cliente','c.id_cliente')
-                        ->where([['id_proyecto',$cotizacion->proyecto],['c.activo',1]])
-                        ->selectraw('c.*')
+             $cot = db::table('cotizacions as c')
+                        ->leftjoin('proyectos as p','p.id','c.proyecto')
+                        ->leftjoin('cliente_participantes as cp','cp.id','c.cliente')
+                        ->leftjoin('tbl_clientes as tc','tc.id_cliente','cp.id_cliente')
+                        ->where([['c.id',$num_cotizacion]])
+                        ->selectraw('p.nombre AS proyecto,cp.*,tc.empresa,c.id AS id_cot,c.created_at')
                         ->get();
-          $proyectos = proyectos::where('estatus',1)->get();
-          
-        }elseif($cotizacion->cliente > 0){
-          $proyectos = db::table('proyectos_clientes as pc')
-                      ->join('proyectos as p','p.id','pc.id_proyecto')
-                      ->where('id_cliente',$cotizacion->cliente)
-                      ->selectraw('p.*')
-                      ->get();
+              $cot=$cot[0];
 
-          $clientes = Clientes::where('activo',1)->get();
-        }else{
-          $proyectos = proyectos::where('estatus',1)->get();
-          $clientes = Clientes::where('activo',1)->get();
-        }
-        
-
-        $tipo=0;
-   
-        $fabricantes  = fabricantes::orderby('fabricante')->get();
+              $productos2= db::table('cotizacion_detalle as cd')
+                       ->join('productos as p','p.id','cd.item')
+                       ->where([['cd.id_cotizacion',145]])
+                       ->selectraw('cd.item,cd.pvc,cd.cantidad,p.id AS id_hc,p.descripcion')
+                       ->get();
 
 
 
@@ -551,7 +535,7 @@ WHERE d.id = 264
 
 
               $pdf  =  \App::make('dompdf.wrapper');
-                    $view = View::make('cotizador.pdf',compact('fabricantes','num_cotizacion','productos','cotizacion','proyectos','clientes','tipo'))->render();
+                    $view = View::make('cotizador.pdf',compact('cot','productos2'))->render();
                     $pdf->loadHTML($view);
                     $pdf->stream();
                     return $pdf->download('Cotizacion.pdf');
