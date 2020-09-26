@@ -7,7 +7,7 @@
 <div class="col-md-12" id="cotiza_table">
 	  @include('cotizador.table')		
 </div>
-
+PUMAS CAMPEON DE LA LIGA
 	<div class="col-md-12">
 		<fieldset class="checkboxsas">
           <label><input type="checkbox" value="1"  name=""> Enviar cotización producto.  </label>
