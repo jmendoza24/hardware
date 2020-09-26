@@ -1,0 +1,18 @@
+<!-- Tipo Cliente Field -->
+<div class="form-group">
+    {!! Form::label('tipo_cliente', 'Tipo Cliente:') !!}
+    <p>{!! $tipoCliente->tipo_cliente !!}</p>
+</div>
+
+<!-- Created At Field -->
+<div class="form-group">
+    {!! Form::label('created_at', 'Created At:') !!}
+    <p>{!! $tipoCliente->created_at !!}</p>
+</div>
+
+<!-- Updated At Field -->
+<div class="form-group">
+    {!! Form::label('updated_at', 'Updated At:') !!}
+    <p>{!! $tipoCliente->updated_at !!}</p>
+</div>
+
