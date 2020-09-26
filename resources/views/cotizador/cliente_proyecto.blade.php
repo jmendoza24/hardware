@@ -28,7 +28,7 @@
         <select class="col-md-8 form-control select2 select2-size-xs" id="clientes" onchange="@if($tipo==2 || $tipo==0) buscar_cliente_proyecto(2) @else actualiza_cliente_proyecto(1) @endif">
             <option value="">Seleccione...</option>
             @foreach($clientes as $c)
-            <option value="{{$c->id_cliente}}" {{$cotizacion->cliente==$c->id_cliente?'selected':''}}>{{$c->contacto}}</option>
+            <option value="{{$c->id}}" {{$cotizacion->cliente==$c->id?'selected':''}}>{{$c->contacto}}</option>
             @endforeach
         </select>
     </div>

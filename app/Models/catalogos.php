@@ -78,27 +78,33 @@ class catalogos extends Model
         if($filtro->tipo==1){
             $catalogo = catalogos::where('fabricante',$filtro->fabricante)
                         ->selectraw('id as campo1, catalogo as campo2')
+                        ->orderby('catalogo','asc')
                         ->get();
         }else if($filtro->tipo==2){
             $catalogo = familia::where('catalogo',$filtro->catalogo)
                         ->selectraw('id as campo1, familia as campo2')
+                        ->orderby('familia')
                         ->get();
             $arr = array('catalogo'=>$catalogo);
         }else if($filtro->tipo==3){
             $catalogo = categoria::where('familia',$filtro->familia)
                         ->selectraw('id as campo1, categoria as campo2')
+                        ->orderby('categoria')
                         ->get();
         }else if($filtro->tipo==4){
             $catalogo = subcategorias::where('categoria',$filtro->categoria)
                         ->selectraw('id as campo1, subcategoria as campo2')
+                        ->orderby('subcategoria')
                         ->get();
         }else if($filtro->tipo==5){
             $catalogo = disenio::where('subcategoria',$filtro->subcategoria)
                         ->selectraw('id as campo1, disenio as campo2')
+                        ->orderby('disenio')
                         ->get();
         }else if($filtro->tipo==6){
             $catalogo = item::where('disenio',$filtro->disenio)
                         ->selectraw('id as campo1, item as campo2')
+                        ->orderby('item')
                         ->get();
         }
 
@@ -118,6 +124,7 @@ class catalogos extends Model
         if($filtro->fabricante==77){
             $grupo_suf = Sub_baldwin::where([['fabricante',$filtro->fabricante],['variable',2]])
                             ->selectraw('subcatalogo as campo1, subcatalogo as campo2')
+                            ->orderby('subcatalogo')
                             ->get();
         }else{
             $grupo_suf = array('campo1'=>'',
@@ -136,27 +143,33 @@ class catalogos extends Model
         if($filtro->tipo==1){
             $catalogo = catalogos::where('fabricante',$filtro->id)
                         ->selectraw('id as campo1, catalogo as campo2')
+                        ->orderby('catalogo')
                         ->get();
         }else if($filtro->tipo==2){
             $catalogo = familia::where('catalogo',$filtro->id)
                         ->selectraw('id as campo1, familia as campo2')
+                        ->orderby('familia')
                         ->get();
             $arr = array('catalogo'=>$catalogo);
         }else if($filtro->tipo==3){
             $catalogo = categoria::where('familia',$filtro->id)
                         ->selectraw('id as campo1, categoria as campo2')
+                        ->orderby('categoria')
                         ->get();
         }else if($filtro->tipo==4){
             $catalogo = subcategorias::where('categoria',$filtro->id)
                         ->selectraw('id as campo1, subcategoria as campo2')
+                        ->orderby('subcategoria')
                         ->get();
         }else if($filtro->tipo==5){
             $catalogo = disenio::where('subcategoria',$filtro->id)
                         ->selectraw('id as campo1, disenio as campo2')
+                        ->orderby('disenio') 
                         ->get();
         }else if($filtro->tipo==6){
             $catalogo = item::where('disenio',$filtro->id)
                         ->selectraw('id as campo1, item as campo2')
+                        ->orderby('item') 
                         ->get();
         }
 

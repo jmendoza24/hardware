@@ -15,7 +15,9 @@ use App\Models\listado_vistas_elementos;
 use App\Models\productos_temporal;
 use App\Models\tipo_cliente;
 use App\Models\tipo_proyecto;
+use App\Models\cotizador;
 use App\Models\cliente_participantes;
+use App\Models\cotizador_detalle;
 use App\Models\Clientes;
 use App\Http\Requests\CreatecatalogosRequest;
 use App\Http\Requests\UpdatecatalogosRequest;
@@ -343,6 +345,14 @@ class catalogosController extends AppBaseController
             }
 
             $options =  view('clientes.participantes_fields',compact('participantes'))->render();
+        }else if($request->catalogo ==16){
+          $filtro = new cotizador_detalle;
+          
+          $filtro->id_cotizacion = $request->id;
+          $cotizacion = cotizador::where('id',$request->id)->get();
+          $cotizacion = $cotizacion[0];
+          $productos = $filtro->detalle_cotizacion($filtro);
+          $options =  view('cotizador.cotizacion_detalle',compact('productos','cotizacion'))->render();
         }
 
 

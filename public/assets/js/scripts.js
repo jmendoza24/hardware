@@ -171,7 +171,9 @@ function ver_catalogo(catalogo,id,tipo,fabricante,catalogos,familia,categoria,su
             type:  'get',
             success:  function (response) { 
                $("#contenido").html(response);
-               $("#modal_primary").removeClass("modal-xl");
+               if(catalogo!=16){
+                  $("#modal_primary").removeClass("modal-xl");
+               }
                //$("#modal_primary").addClass("modal-lg");
                $('.modal-dialog').draggable({handle: ".modal-header"});
                $("#footer_primary").hide();

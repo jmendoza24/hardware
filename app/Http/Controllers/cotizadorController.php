@@ -45,10 +45,7 @@ class cotizadorController extends AppBaseController
     }
 
     public function lista(){
-      $cotizaciones = db::select('SELECT c.*, p.nombre, cl.contacto, cl.correo, cl.telefono
-                                  FROM cotizacions c
-                                  LEFT JOIN proyectos p ON p.id = c.proyecto
-                                  LEFT JOIN cliente_participantes cl ON cl.id = c.cliente');
+      $cotizaciones = db::select("CALL listado_cotizacion()");
 
       return view('cotizador.lista',compact('cotizaciones'));
     }
