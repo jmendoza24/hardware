@@ -9,7 +9,7 @@
 		<tr>
 			<td></td>
 			<td>Item</td>
-			<td>Color</td>
+			<td>Color</td> 
 			<td>Sufijo</td>
 			<td>IdFab</td>
 			<td>Descripción</td>
@@ -19,6 +19,7 @@
 			<td>PVC</td>
 		</tr>
 		@foreach($dependencias as $d)
+		
 		<?php 
 			$elementos = array(1,2,3,5,6,7,9,11,13,14);
 			$elementos2 = array(4,8,10,12);

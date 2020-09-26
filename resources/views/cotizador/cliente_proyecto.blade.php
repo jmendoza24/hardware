@@ -33,7 +33,7 @@
         </select>
     </div>
     <div class="col-md-2 form-row">
-        <label class="col-md-3">Tipo:</label>
+        <label class="col-md-3" style="padding-top: 4px;">Tipo:</label>
         <select class="form-control form-control-sm col-md-8" id="id_tipo" style="margin-top: 4px;">
             <option value="">Seleccione...</option>
             <option value="1">Sencilla</option>

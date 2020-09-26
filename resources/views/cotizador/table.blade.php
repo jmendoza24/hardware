@@ -64,13 +64,13 @@
 					<span class="btn btn-sm btn-outline-success" onclick="agrega_producto({{ $p->idproducto}})"><i class="fa fa-plus"></i></span>
 				</span>
 			</td>
-			<td>{{ number_format($p->lp,2)}}</td>
-			<td>{{ number_format($p->phc,2)}}</td>
-			<td>{{ number_format($p->pvc,2)}}</td>
+			<td>{{ number_format($p->lp + $p->sum_lp,2)}}</td>
+			<td>{{ number_format($p->phc + $p->sum_phc,2)}}</td>
+			<td>{{ number_format($p->pvc + $p->sum_pvc,2)}}</td>
 			<td>
 				<input type="text" id="pro_cant_{{$p->id}}" value="{{$p->cantidad}}" class="form-control form-control-sm cantidad-mask text-right"  onchange="guarda_info_cotizacion({{$p->id}})" style="width: 50px;">
 			</td>
-			<td class="text-right"> <label > ${{ number_format($p->pvc*$p->cantidad,2)}}</label></td>
+			<td class="text-right"> <label > ${{ number_format(($p->pvc * $p->cantidad) + $p->sum_pvc,2)}}</label></td>
 			<td><input type="text" id="mod_pre_unit_{{$p->id}}" value="{{$p->mod_precio_unit}}" class="form-control form-control-sm p_unit-mask text-right" onchange="guarda_info_cotizacion({{$p->id}})" style="width: 90px;"></td>
 			<td><input type="text" id="mod_cant_{{$p->id}}" class="form-control form-control-sm cantidad-mask text-right" value="{{$p->mod_cantidad}}" onchange="guarda_info_cotizacion({{$p->id}})" style="width: 50px;"></td>
 			<td class="text-right"><label>${{ number_format($p->mod_precio_unit*$p->mod_cantidad,2)}}</label></td>
@@ -78,7 +78,7 @@
 			<td><input type="text" id="inst_cant_{{$p->id}}" class="form-control form-control-sm cantidad-mask text-right" value="{{$p->inst_cantidad}}" onchange="guarda_info_cotizacion({{$p->id}})" style="width: 50px;"></td>
 			<td class="text-right"><label>${{ number_format($p->inst_precio_unit*$p->inst_cantidad,2)}}</label></td>
 		</tr>
-		@php($subtotal_dl   += $p->costo_1 * $p->cantidad)
+		@php($subtotal_dl   += ($p->pvc * $p->cantidad) + $p->sum_pvc)
 		@php($subtotal_dl_1 += $p->mod_precio_unit * $p->mod_cantidad)
 		@php($subtotal_ps   += $p->inst_precio_unit * $p->inst_cantidad)
 		@endforeach
@@ -120,7 +120,7 @@
 				</select>
 			</td>
 			<td class="text-right">
-				<span style="color: #67A957;">+ ${{number_format(($desc_usa * $cotizacion->iva_usa)/100,2)}}</span>
+				<span style="color: #67A957;">+${{number_format(($desc_usa * $cotizacion->iva_usa)/100,2)}}</span>
 			</td>
 			<td colspan="2">
 				<select class="form-control form-control-sm pull-right" id="iva_mx" style="width: 55px;" onchange="guardar_descuentos()">
@@ -130,7 +130,7 @@
 				</select>
 			</td>
 			<td class="text-right">
-				<span style="color: #67A957;">+ ${{number_format(($desc_mx * $cotizacion->iva_mx)/100,2)}}</span>
+				<span style="color: #67A957;">+${{number_format(($desc_mx * $cotizacion->iva_mx)/100,2)}}</span>
 			</td>
 		</tr>
 		<tr>

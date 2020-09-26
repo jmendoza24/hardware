@@ -72,7 +72,9 @@ class cotizadorController extends AppBaseController
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0];
 
-        if($cotizacion->proyecto > 0 ){
+      
+
+          if($cotizacion->proyecto > 0 ){
           $clientes = db::table('proyectos_clientes as pc')
                         ->join('cliente_participantes as c','pc.id_cliente','c.id_cliente')
                         ->where([['id_proyecto',$cotizacion->proyecto],['c.activo',1]])
@@ -165,7 +167,7 @@ class cotizadorController extends AppBaseController
         $dependencias = items_productos::where('id_detalle',$request->id)->orderby('id_catalogo')->get();
 
         $suma_dependencias = items_productos::where([['id_detalle',$request->id],['accion',1]])
-                            ->selectraw('id_detalle,sum(lp) as sum_lp, sum(phc) as sum_phc, sum(pvc) as sum_pvc')
+                            ->selectraw('id_detalle,sum(lp * ctd ) as sum_lp, sum(phc * ctd ) as sum_phc, sum(pvc * ctd) as sum_pvc')
                             ->groupby('id_detalle')
                             ->get();
         if(sizeof($suma_dependencias)>0){
@@ -330,9 +332,10 @@ class cotizadorController extends AppBaseController
             $dependencias = items_productos::where('id_detalle',$datos->id_detalle)->orderby('id_catalogo')->get();
             
             $suma_dependencias = items_productos::where([['id_detalle',$datos->id_detalle],['accion',1]])
-                            ->selectraw('id_detalle,sum(lp) as sum_lp, sum(phc) as sum_phc, sum(pvc) as sum_pvc')
+                            ->selectraw('id_detalle,sum(lp * ctd) as sum_lp, sum(phc * ctd) as sum_phc, sum(pvc * ctd) as sum_pvc')
                             ->groupby('id_detalle')
                             ->get();
+
             if(sizeof($suma_dependencias)>0){
               $suma_dependencias = $suma_dependencias[0];
             }else{
