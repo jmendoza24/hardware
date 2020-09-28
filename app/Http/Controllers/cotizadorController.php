@@ -521,18 +521,19 @@ WHERE d.id = 264
 
               $productos2= db::table('cotizacion_detalle as cd')
                        ->join('productos as p','p.id','cd.item')
-                       ->where([['cd.id_cotizacion',145]])
+                       ->where([['cd.id_cotizacion',$num_cotizacion]])
                        ->selectraw('cd.item,cd.pvc,cd.cantidad,p.id AS id_hc,p.descripcion')
                        ->get();
-
-
+      $data= DB::select("SELECT * FROM tbl_datos_generales");
+      $data=$data[0];
+      
 
         if($request->id_tipo==1){
 
 
 
               $pdf  =  \App::make('dompdf.wrapper');
-                    $view = View::make('cotizador.pdf',compact('cot','productos2'))->render();
+                    $view = View::make('cotizador.pdf',compact('cot','productos2','data'))->render();
                     $pdf->loadHTML($view);
                     $pdf->stream();
                     return $pdf->download('Cotizacion.pdf');
