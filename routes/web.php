@@ -49,6 +49,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('selectores', 'Sub_baldwinController@selectores')->name('selectores.index');
 	Route::get('dependencia', 'CatalogosController@dependencia')->name('dependencia.index');
 	Route::get('costos', 'FabricantesController@costos')->name('costos.index');
+
+	Route::get('catalogos_generales', 'CatalogosController@catalogos_generales')->name('catalogos_generales');
+
 	
 });
 
@@ -86,6 +89,10 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('guarda_detalle', 'cotizadorController@guarda_detalle');
 	Route::get('guarda_comentarios', 'proyectosController@guarda_comentarios');
 	Route::get('baja_cotiza_pdf', 'cotizadorController@baja_cotiza_pdf');
+	Route::get('guarda_generales', 'CatalogosController@guarda_generales');
+
+
+
 });
 
 

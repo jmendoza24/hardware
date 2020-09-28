@@ -68,6 +68,32 @@ class catalogosController extends AppBaseController
       
       return view('productos.dependencias',compact('listado_vistas'));
     }
+
+
+    function catalogos_generales(Request $request){
+
+
+      $data= DB::select("SELECT * FROM tbl_datos_generales");
+      $data=$data[0];
+     
+      return view('productos.generales',compact('data'));
+    }
+
+
+    function guarda_generales(Request $request){
+
+      
+            DB::table('tbl_datos_generales') 
+                ->update(
+                            array('condiciones' => $request['condiciones'],
+                                  'notas' => $request['notas'],
+                                  'cuentas' => $request['cuentas']
+                              )
+                );
+    }
+
+
+    
     
     
     function opciones_catalogo(Request $request){

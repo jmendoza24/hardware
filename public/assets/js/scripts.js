@@ -891,3 +891,23 @@ function guarda_comentarios(id){
           }
       }); 
 }
+
+
+function guarda_generales(){
+  
+   var parameters =  {'condiciones':$("#condiciones").val(),
+                     'notas':$("#notas").val(),
+                     'cuentas':$("#cuentas").val()
+                   }
+  $.ajax({
+        data: parameters,
+        url: '/api/v1/guarda_generales',
+        dataType: 'json',
+        type:  'get',
+        success:  function (response){  
+            $.alert("Información actualizada");
+        }
+    }); 
+ 
+
+}

@@ -22,6 +22,8 @@
             <li class="{{ Request::is('costos*') ? 'active' : '' }}"><a href="{!! route('costos.index') !!}"><span>Costos</span></a></li>
             <li class="{{ Request::is('tipoClientes*') ? 'active' : '' }}"><a href="{!! route('tipoClientes.index') !!}"><span>Tipo Clientes</span></a></li>
             <li class="{{ Request::is('tipoProyectos*') ? 'active' : '' }}"><a href="{!! route('tipoProyectos.index') !!}"><span>Tipo Proyectos</span></a></li>
+            <li class="{{ Request::is('catalogos*') ? 'active' : '' }}"><a href="{!! route('catalogos_generales') !!}"><span>Datos Generales</span></a></li>
+
           </ul>
         </li>
         <li class="{{ Request::is('productos*') ? 'active' : '' }}"><a href="{!! route('productos.index') !!}"><i class="ft-align-justify"></i><span>Productos</span></a></li>
