@@ -59,6 +59,8 @@ class cotizadorController extends AppBaseController
          }else{
             $fecha = date('Y-m-d');
             $id = cotizador::insertGetId(['enviado' => 0,
+                                          'proyecto'=>0,
+                                          'cliente'=>0,
                                           'usuario_id'=>auth()->id()]);       
             $request->session()->put('num_cotizacion',$id);
             $num_cotizacion = $request->session()->get('num_cotizacion');

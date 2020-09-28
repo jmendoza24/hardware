@@ -17,7 +17,7 @@
       </div>
       <div class="navbar-container content">
         <div class="collapse navbar-collapse" id="navbar-mobile">
-          <ul class="nav navbar-nav mr-auto float-left">
+         <!-- <ul class="nav navbar-nav mr-auto float-left">
             <li class="dropdown nav-item mega-dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Mega</a>
               <ul class="mega-dropdown-menu dropdown-menu row">
                 <li class="col-md-2">
@@ -151,7 +151,7 @@
                 <input class="input" type="text" placeholder="Explore Stack...">
               </div>
             </li>
-          </ul>
+          </ul>--->
           <ul class="nav navbar-nav float-right">
             <li class="dropdown dropdown-user nav-item">
               <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
