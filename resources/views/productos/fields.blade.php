@@ -941,6 +941,75 @@
     </div>
 <!-- Submit Field -->
 </div>
+
+@if($editar==1)
+<hr>
+    <h3>Fotos del producto</h3>
+    <div class="form-group col-sm-12" style="text-align: right;">
+
+
+mmmmmmmmmm
+                    <a  href="#" data-toggle="modal" data-target="#myModal" class="btn_naranja badge badge-default">Subir</a>   
+
+     </div>
+    <table class="table" id="tblFotosProductos-table">
+        <thead>
+            <tr>
+                <th>Foto</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach($tblFotosProductos as $tblFotosProductos)
+            <tr>
+            <td>{{ $tblFotosProductos->foto }}</td>
+                <td>
+                    {!! Form::open(['route' => ['tblFotosProductos.destroy', $tblFotosProductos->id], 'method' => 'delete']) !!}
+                    <div class='btn-group'>
+                        <a href="{{ route('tblFotosProductos.show', [$tblFotosProductos->id]) }}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>
+                        <a href="{{ route('tblFotosProductos.edit', [$tblFotosProductos->id]) }}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>
+                        {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                    </div>
+                    {!! Form::close() !!}
+                </td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
+</div>
+
+
+@endif
+   
+
+ <div class="modal fade " id="myModal"  role="dialog" aria-labelledby="myModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title texto_azul"><h3><strong class="texto_azul">Hardwarecollection</strong></h3></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <i class="material-icons">clear</i>
+          </button>
+        </div>
+        <div class="modal-body" id="contenido">
+            <form method="POST" action="#" enctype="multipart/form-data" id="formUpload">
+                    <input type="hidden" name="_token" value="{{ csrf_token()}}">
+
+                   <input type="text" id="id_producto" name="id_producto" value="{{$productos->id}}">
+                    <input type="file" name="foto" id="foto" class="form-control"  />
+
+                    <a href="#" onclick="nuevo_dibujo()">guardar</a>
+
+            </form>
+
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
 <div class="form-group col-sm-12" style="text-align: right;">
         {!! Form::submit('Guardar', ['class' => 'btn btn-primary']) !!}
         <a href="{!! route('productos.index') !!}" class="btn btn-secondary">Cancelar</a>

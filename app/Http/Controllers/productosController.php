@@ -10,6 +10,7 @@ use App\Models\subcategorias;
 use App\Models\disenio;
 use App\Models\Sub_baldwin;
 use App\Models\sufijos;
+use App\Models\tbl_fotos_productos;
 use App\Models\item;
 use App\Models\formulas;
 use App\Models\productos;
@@ -24,6 +25,8 @@ use Illuminate\Support\Facades\Storage;
 use Flash;
 use Response;
 use DB;
+
+
 
 class productosController extends AppBaseController
 {
@@ -236,7 +239,10 @@ class productosController extends AppBaseController
             return redirect(route('productos.index'));
         }
 
-        return view('productos.edit',compact('productos','listado_vistas','catalogos','familia','categoria','subcategorias','disenio','items','fabricantes','sub_baldwins','formulas','sufijo'));
+
+        $tblFotosProductos=tbl_fotos_productos::where('id_producto',$id)->get();
+
+        return view('productos.edit',compact('tblFotosProductos','productos','listado_vistas','catalogos','familia','categoria','subcategorias','disenio','items','fabricantes','sub_baldwins','formulas','sufijo'));
     }
 
     /**
@@ -247,6 +253,24 @@ class productosController extends AppBaseController
      *
      * @return Response
      */
+
+
+
+
+    function nuevo_dibujo(Request $request){
+        $opcion = 'nuevo';
+        $productos = DB::table('productos')->where('id',$request->id)->get();
+        $producto_dibujos = array('id_producto'=>'',
+                                    'foto'=>''
+                                    );
+
+         $producto_dibujos = (object)$producto_dibujos;
+         $productos = $productos[0];
+         $options = view('tbl_fotos_productos.sube',compact('productos','producto_dibujos','opcion'))->render();   
+         return json_encode($options); 
+    }
+
+
     public function update($id, UpdateproductosRequest $request)
     {
         $productos = $this->productosRepository->find($id);

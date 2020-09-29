@@ -32,6 +32,35 @@ function busca_estado(campo){
   }
 }
 
+
+function nuevo_dibujo(id_producto){
+ 
+
+   var formData = new FormData($("#formUpload")[0]);
+  
+    $.blockUI({ message: 'Proccesing, please wait.' }); 
+    $.ajax({
+            url:"/api/v1/ajaxupload",
+            type: 'POST',
+            method: "POST",        
+            data:  formData,
+            //async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(respuesta){ 
+                    //$.alert("loaded document");
+              setTimeout($.unblockUI, 2000);
+
+            },  
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+              // alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+            }   
+
+        });
+    
+}
+
 function get_municipios(estado,municipio){
   var id_estado = $("#"+estado).val();
   var parameters = {"id_estado":id_estado}
