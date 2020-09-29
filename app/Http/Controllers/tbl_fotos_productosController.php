@@ -56,7 +56,7 @@ class tbl_fotos_productosController extends AppBaseController
     {
 
 
-        $arreglo = $request->all;
+        $arreglo = $request->all();
         
         if(empty($arreglo['foto'])){
             

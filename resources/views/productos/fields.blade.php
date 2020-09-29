@@ -946,11 +946,7 @@
 <hr>
     <h3>Fotos del producto</h3>
     <div class="form-group col-sm-12" style="text-align: right;">
-
-
-mmmmmmmmmm
-                    <a  href="#" data-toggle="modal" data-target="#myModal" class="btn_naranja badge badge-default">Subir</a>   
-
+        <a  href="#" data-toggle="modal" data-target="#myModal" class="btn btn-primary">+ Foto</a>   
      </div>
     <table class="table" id="tblFotosProductos-table">
         <thead>
@@ -963,14 +959,13 @@ mmmmmmmmmm
         @foreach($tblFotosProductos as $tblFotosProductos)
             <tr>
             <td>{{ $tblFotosProductos->foto }}</td>
-                <td>
+                <td style="text-align: right">
                     {!! Form::open(['route' => ['tblFotosProductos.destroy', $tblFotosProductos->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
-                        <a href="{{ route('tblFotosProductos.show', [$tblFotosProductos->id]) }}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>
-                        <a href="{{ route('tblFotosProductos.edit', [$tblFotosProductos->id]) }}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>
-                        {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                        <a href="{{ route('tblFotosProductos.show', [$tblFotosProductos->id]) }}" class='btn btn-primary btn-xs'><i class="fa fa-eye"></i></a>
+                        {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                     </div>
-                    {!! Form::close() !!}
+                    {!! Form::close() !!}    
                 </td>
             </tr>
         @endforeach
@@ -992,13 +987,17 @@ mmmmmmmmmm
           </button>
         </div>
         <div class="modal-body" id="contenido">
+            </form>
+
+            </form>
+
+            </form>
+
             <form method="POST" action="#" enctype="multipart/form-data" id="formUpload">
                     <input type="hidden" name="_token" value="{{ csrf_token()}}">
-
-                   <input type="text" id="id_producto" name="id_producto" value="{{$productos->id}}">
+                    <input type="hidden" id="id_producto" name="id_producto" value="{{$productos->id}}">
                     <input type="file" name="foto" id="foto" class="form-control"  />
-
-                    <a href="#" onclick="nuevo_dibujo()">guardar</a>
+                    <a href="#" class="btn btn-primary" onclick="nuevo_dibujo()">Subir imágen</a>
 
             </form>
 

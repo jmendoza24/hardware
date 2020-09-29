@@ -50,7 +50,12 @@ function nuevo_dibujo(id_producto){
             processData: false,
             success: function(respuesta){ 
                     //$.alert("loaded document");
+
+
               setTimeout($.unblockUI, 2000);
+
+               $('#myModal').modal('hide');
+
 
             },  
             error: function(XMLHttpRequest, textStatus, errorThrown) { 
