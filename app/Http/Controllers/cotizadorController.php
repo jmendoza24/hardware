@@ -129,8 +129,13 @@ class cotizadorController extends AppBaseController
         $produc = productos::where('id',$request->producto)->get();
         $produc = $produc[0];
 
-        $params =  array($produc->info,$num_cotizacion,$request->producto,$id);
-        db::update('call procesos_inserta_elementos(?,?,?,?)',$params);
+        if($produc->fabricante == 76 || $produc->fabricante == 77  ){
+          $params =  array($produc->info,$num_cotizacion,$request->producto,$id);
+          db::update('call procesos_inserta_elementos(?,?,?,?)',$params);  
+        }else{
+          cotizador_detalle::where('id',$id)
+                            ->update(['pvc'=>$produc->costo_1]);
+        }
 
         $productos = $filtro->detalle_cotizacion($filtro);   
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
