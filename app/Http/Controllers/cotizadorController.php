@@ -75,7 +75,7 @@ class cotizadorController extends AppBaseController
 
           if($cotizacion->proyecto > 0 ){
           $clientes = db::table('proyectos_clientes as pc')
-                        ->join('cliente_participantes as c','pc.id_cliente','c.id_cliente')
+                        ->join('cliente_participantes as c','pc.id_cliente','c.id')
                         ->where([['id_proyecto',$cotizacion->proyecto],['c.activo',1]])
                         ->selectraw('c.*')
                         ->get();
@@ -366,12 +366,11 @@ class cotizadorController extends AppBaseController
         $num_cotizacion = $request->session()->get('num_cotizacion');
         if($tipo==1){
 
-          $clientes = db::table('proyectos_clientes as pc')
-                        ->join('cliente_participantes as c','pc.id_cliente','c.id_cliente')
+          $clientes = db::table('proyectos_clientes  as pc')
+                        ->join('cliente_participantes as c','pc.id_cliente','c.id')
                         ->where([['id_proyecto',$request->proyectos],['c.activo',1]])
                         ->selectraw('c.*')
                         ->get();
-
           $proyectos = proyectos::where('estatus',1)->get();
 
           cotizador::where('id',$num_cotizacion)
@@ -438,7 +437,7 @@ WHERE d.id = 264
         $cotizacion = $cotizacion[0];
 
         $clientes = db::table('proyectos_clientes as pc')
-                        ->join('cliente_participantes as c','pc.id_cliente','c.id_cliente')
+                        ->join('cliente_participantes as c','pc.id_cliente','c.id')
                         ->where([['id_proyecto',$request->proyectos],['c.activo',1]])
                         ->selectraw('c.*')
                         ->get();
@@ -531,24 +530,18 @@ WHERE d.id = 264
                        ->where([['cd.id_cotizacion',$num_cotizacion]])
                        ->selectraw('cd.item,cd.pvc,cd.cantidad,p.id AS id_hc,p.descripcion')
                        ->get();
+
       $data= DB::select("SELECT * FROM tbl_datos_generales");
       $data=$data[0];
       
 
         if($request->id_tipo==1){
-
-
-
-              $pdf  =  \App::make('dompdf.wrapper');
-                    $view = View::make('cotizador.pdf',compact('cot','productos2','data'))->render();
-                    $pdf->loadHTML($view);
-                    $pdf->stream();
-                    return $pdf->download('Cotizacion.pdf');
-
+            $pdf = \PDF::loadView('cotizador.pdf',compact('cot','productos2','data'))->setPaper('A4','landscape');
+            return  $pdf->download('Cotizacion_'.$num_cotizacion.'.pdf');
 
         }else{
 
-
+ 
 
         }
     
