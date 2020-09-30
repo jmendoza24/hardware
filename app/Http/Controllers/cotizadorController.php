@@ -32,6 +32,7 @@ use View;
 use DB;
 use PDF;
 use Mail;
+use App\Models\tbl_fotos_productos;
 
 
 class cotizadorController extends AppBaseController
@@ -113,7 +114,19 @@ class cotizadorController extends AppBaseController
                     ->selectraw('p.*,i.item as item_nom')
                     ->get();
 
-        $options = view('cotizador.detalle',compact('producto','items'))->render();
+        $c=tbl_fotos_productos::where('id_producto',$items[0]->id)->count();
+        
+        if($c>=1){
+            $fotos=tbl_fotos_productos::where('id_producto',$items[0]->id)->get();
+            $existe=1;
+            $options = view('cotizador.detalle',compact('fotos','producto','items','existe'))->render();
+
+        }else{
+          $existe=0;
+           $options = view('cotizador.detalle',compact('producto','items','existe'))->render();
+
+        }
+
 
         return json_encode($options);
     }

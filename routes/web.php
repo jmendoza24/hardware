@@ -92,6 +92,9 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('guarda_generales', 'CatalogosController@guarda_generales');
 	Route::get('/nuevo_dibujo', 'productosController@nuevo_dibujo');	
 	Route::POST('/ajaxupload', 'tbl_fotos_productosController@store')->name('ajaxupload');
+	Route::get('actualiza_fotos', 'tbl_fotos_productosController@actualiza_fotos');
+	Route::get('borra_foto', 'tbl_fotos_productosController@destroy');
+
 
 
 

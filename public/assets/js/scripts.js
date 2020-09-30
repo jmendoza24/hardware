@@ -33,7 +33,7 @@ function busca_estado(campo){
 }
 
 
-function nuevo_dibujo(id_producto){
+function nuevo_dibujo(id_proyecto){
  
 
    var formData = new FormData($("#formUpload")[0]);
@@ -56,6 +56,8 @@ function nuevo_dibujo(id_producto){
 
                $('#myModal').modal('hide');
 
+               actualiza_fotos(id_proyecto)
+
 
             },  
             error: function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -64,6 +66,49 @@ function nuevo_dibujo(id_producto){
 
         });
     
+}
+
+function borra_foto(id){
+
+   $.confirm({
+            title: 'Hardware collection',
+            content: 'Estas seguro deseas elimniar esta foto?',
+            type:'orange',
+            buttons: {
+                confirmar: function () {
+                  
+                    $.ajax({
+                          data: {'id':id},
+                          url: '/api/v1/borra_foto',
+                          dataType: 'json',
+                          type:  'get',
+                          success:  function (response){  
+
+                             actualiza_fotos(response)
+                          }
+                      });
+
+
+                },
+                cancelar: function () {}
+              } 
+          });
+
+}
+
+function actualiza_fotos(id_proyecto){
+
+
+  $.ajax({
+        data: {'id_proyecto':id_proyecto},
+        url: '/api/v1/actualiza_fotos',
+        dataType: 'json',
+        type:  'get',
+        success:  function (response){  
+
+          $("#tblFotosProductos-table").html(response);
+        }
+    }); 
 }
 
 function get_municipios(estado,municipio){
@@ -510,7 +555,7 @@ function limpiar_temporal(numero){
 function detalle_producto (producto){
   $.ajax({
           data: {'producto':producto},
-          url: '/api/v1/detalle_producto',
+          url: '/api/v1/detalle_producto', 
           dataType: 'json',
           type:  'get',
           success:  function (response) {  

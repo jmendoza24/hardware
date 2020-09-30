@@ -948,29 +948,8 @@
     <div class="form-group col-sm-12" style="text-align: right;">
         <a  href="#" data-toggle="modal" data-target="#myModal" class="btn btn-primary">+ Foto</a>   
      </div>
-    <table class="table" id="tblFotosProductos-table">
-        <thead>
-            <tr>
-                <th>Foto</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach($tblFotosProductos as $tblFotosProductos)
-            <tr>
-            <td>{{ $tblFotosProductos->foto }}</td>
-                <td style="text-align: right">
-                    {!! Form::open(['route' => ['tblFotosProductos.destroy', $tblFotosProductos->id], 'method' => 'delete']) !!}
-                    <div class='btn-group'>
-                        <a href="{{ route('tblFotosProductos.show', [$tblFotosProductos->id]) }}" class='btn btn-primary btn-xs'><i class="fa fa-eye"></i></a>
-                        {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
-                    </div>
-                    {!! Form::close() !!}    
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
+    @include('tbl_fotos_productos.table')
+
 </div>
 
 
@@ -982,9 +961,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title texto_azul"><h3><strong class="texto_azul">Hardwarecollection</strong></h3></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <i class="material-icons">clear</i>
-          </button>
+        
         </div>
         <div class="modal-body" id="contenido">
             </form>
@@ -993,11 +970,11 @@
 
             </form>
 
-            <form method="POST" action="#" enctype="multipart/form-data" id="formUpload">
+            <form  style="text-align: right" method="POST" action="#" enctype="multipart/form-data" id="formUpload">
                     <input type="hidden" name="_token" value="{{ csrf_token()}}">
                     <input type="hidden" id="id_producto" name="id_producto" value="{{$productos->id}}">
-                    <input type="file" name="foto" id="foto" class="form-control"  />
-                    <a href="#" class="btn btn-primary" onclick="nuevo_dibujo()">Subir imágen</a>
+                    <input type="file" name="foto" id="foto" class="form-control"  /><br>
+                    <a  href="#" class="btn btn-primary" onclick="nuevo_dibujo({{$productos->id}})">Subir imágen</a>
 
             </form>
 

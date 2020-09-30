@@ -9,6 +9,8 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
+use App\Models\tbl_fotos_productos;
+use DB;
 
 class tbl_fotos_productosController extends AppBaseController
 {
@@ -80,6 +82,22 @@ class tbl_fotos_productosController extends AppBaseController
 
         //return redirect()->back();
   
+    }
+
+    public function actualiza_fotos(Request $request){
+
+        $id_p=$request['id_proyecto'];
+
+        $tblFotosProductos=tbl_fotos_productos::where('id_producto',$id_p)->get();
+
+        $options = view('tbl_fotos_productos.table',compact('tblFotosProductos'))->render();
+
+        return json_encode($options);
+
+
+   
+
+
     }
 
     /**
@@ -154,22 +172,22 @@ class tbl_fotos_productosController extends AppBaseController
      *
      * @throws \Exception
      *
-     * @return Response
-     */
-    public function destroy($id)
+     * @return Response        
+     */      
+    public function destroy(Request $request)   
     {
-        $tblFotosProductos = $this->tblFotosProductosRepository->find($id);
 
-        if (empty($tblFotosProductos)) {
-            Flash::error('Tbl Fotos Productos not found');
 
-            return redirect(route('tblFotosProductos.index'));
-        }
+         $input = $request->all();
+         $id=$input['id']; 
 
-        $this->tblFotosProductosRepository->delete($id);
+        $dato=tbl_fotos_productos::where('id',$id)->get();
+        $dato=$dato[0];
+        $id_producto=$dato->id_producto;
+        DB::table('tbl_fotos_productos')->delete($id);
 
-        Flash::success('Tbl Fotos Productos deleted successfully.');
+        return $id_producto;
 
-        return redirect(route('tblFotosProductos.index'));
+
     }
 }
