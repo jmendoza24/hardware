@@ -236,6 +236,57 @@ function guarda_catalogo(catalogo,id,tipo,nom_table){
     }
 }
 
+
+
+function eliminar_cotizacion(id){
+
+var parameters = {
+                    'id':id
+                    }
+ 
+
+  $.confirm({
+            title: 'Hardware collection',
+            content: 'Estas seguro deseas elimniar esta cotización?',
+            type:'orange',
+            buttons: {
+                confirmar: function () {
+                  $.ajax({
+                          data: parameters,
+                          url: '/api/v1/elimina_cot',
+                          dataType: 'json',
+                          type:  'get',
+                          success:  function (response) {  
+                        
+                                                          window.location.href = '/cotizaciones_lista';
+
+
+                          }
+                      }); 
+
+                },
+                cancelar: function () {}
+              }  
+          });
+
+}
+
+function actualiza_cots(){
+
+ $.ajax({
+          data: parameters,
+          url: '/api/v1/actualiza_cots',
+          dataType: 'json',
+          type:  'get',
+          success:  function (response) {  
+             
+             $("#tablac").html(response);
+          }
+      });
+
+
+}
+
 function elimina_catalogo(catalogo,id,nom_table,fabricante,catalogos,familia,categoria,subcategoria,disenio){
   var parameters = {'catalogo':catalogo,
                     'id':id,

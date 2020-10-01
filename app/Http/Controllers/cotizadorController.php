@@ -623,4 +623,37 @@ WHERE d.id = 264
       return redirect()->route('cotizador.index');      
     }
 
+
+    public function  elimina_cot(Request $request){
+
+       DB::table('cotizacions')->delete($request['id']);
+
+
+      $cotizaciones = db::select("CALL listado_cotizacion()");
+
+
+        $options = view('cotizador.lista',compact('cotizaciones'))->render();
+
+        return json_encode($options);
+
+    }
+
+    public function  actualiza_cots(Request $request){
+
+
+      $cotizaciones = db::select("CALL listado_cotizacion()");
+
+
+
+        $options = view('cotizador.lista',compact('cotizaciones'))->render();
+
+        return json_encode($options);
+
+
+
+    }
+
+
+    
+
 }

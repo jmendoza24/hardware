@@ -5,7 +5,7 @@
     .td-2px{padding: 2px;}
 </style>
 <div class="col-md-12" id="cotiza_table">
-	  <table class="table table-striped table-bordered zero-configuration responsive">
+	  <table class="table table-striped table-bordered zero-configuration responsive" id="tablac">
         <thead>
             <tr>
                 <th>Cotización</th>
@@ -24,7 +24,7 @@
                     <td>{{$c->nombre}}</td>
                     <td>{{$c->contacto}}</td>
                     <td>{{$c->telefono}}</td>
-                    <td>{{ number_format($c->total,2)}}</td>
+                    <td style="text-align: right">${{ number_format($c->total,2)}}</td>
                     <td>
                         <div class="btn-group">
                             <a class="btn btn-sm btn-outline-primary" href="{{ route('cotizador.revive',['id_cotizacion'=>$c->id])}}"><i class="fa fa-window-maximize"></i></a> &nbsp;
