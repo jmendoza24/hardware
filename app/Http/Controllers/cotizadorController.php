@@ -13,6 +13,7 @@ use App\Models\Sub_baldwin;
 use App\Models\sufijos; 
 use App\Models\item;
 use App\Models\productos_temporal;
+use App\Mail\EnvioFlux;
 use App\Models\cotizador_detalle;
 use App\Models\cotizador;
 use App\Models\productos;
@@ -26,6 +27,7 @@ use App\Http\Requests\UpdatecatalogosRequest;
 use App\Repositories\catalogosRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Flash;
 use Response;
 use View;
@@ -62,7 +64,8 @@ class cotizadorController extends AppBaseController
             $id = cotizador::insertGetId(['enviado' => 0,
                                           'proyecto'=>0,
                                           'cliente'=>0,
-                                          'usuario_id'=>auth()->id()]);       
+                                          'usuario_id'=>auth()->id(),
+                                          'created_at'=>$fecha]);       
             $request->session()->put('num_cotizacion',$id);
             $num_cotizacion = $request->session()->get('num_cotizacion');
 
@@ -114,19 +117,19 @@ class cotizadorController extends AppBaseController
                     ->selectraw('p.*,i.item as item_nom')
                     ->get();
 
-        $c=tbl_fotos_productos::where('id_producto',$items[0]->id)->count();
-        
-        if($c>=1){
-            $fotos=tbl_fotos_productos::where('id_producto',$items[0]->id)->get();
-            $existe=1;
-            $options = view('cotizador.detalle',compact('fotos','producto','items','existe'))->render();
+         if(sizeof($items) >0){
+            $fotos = tbl_fotos_productos::where('id_producto',$items[0]->id)->get();   
+            if(sizeof($fotos) ==0 ){
+              $fotos = array('foto'=>'imagen-no-disponible.png');
+              $fotos = (object)$fotos;  
+            }
 
-        }else{
-          $existe=0;
-           $options = view('cotizador.detalle',compact('producto','items','existe'))->render();
+         }else{
+            $fotos = array('foto'=>'imagen-no-disponible.png');
+            $fotos = (object)$fotos;
+         }         
 
-        }
-
+        $options = view('cotizador.detalle',compact('fotos','producto','items','existe'))->render();
 
         return json_encode($options);
     }
@@ -529,37 +532,95 @@ WHERE d.id = 264
         $filtro = new cotizador_detalle;
         $num_cotizacion = $request->session()->get('num_cotizacion');
         
-             $cot = db::table('cotizacions as c')
-                        ->leftjoin('proyectos as p','p.id','c.proyecto')
-                        ->leftjoin('cliente_participantes as cp','cp.id','c.cliente')
-                        ->leftjoin('tbl_clientes as tc','tc.id_cliente','cp.id_cliente')
-                        ->where([['c.id',$num_cotizacion]])
-                        ->selectraw('p.nombre AS proyecto,cp.*,tc.empresa,c.id AS id_cot,c.created_at')
-                        ->get();
-              $cot=$cot[0];
+       $cot = db::table('cotizacions as c')
+                  ->leftjoin('proyectos as p','p.id','c.proyecto')
+                  ->leftjoin('cliente_participantes as cp','cp.id','c.cliente')
+                  ->leftjoin('tbl_clientes as tc','tc.id_cliente','cp.id_cliente')
+                  ->where('c.id',$num_cotizacion)
+                  ->selectraw('p.nombre AS proyecto,cp.*,tc.empresa,c.id AS id_cot,c.created_at, c.iva_usa , c.descuento_usa')
+                  ->get();
+        $cot=$cot[0];
 
-              $productos2= db::table('cotizacion_detalle as cd')
-                       ->join('productos as p','p.id','cd.item')
-                       ->where([['cd.id_cotizacion',$num_cotizacion]])
-                       ->selectraw('cd.item,cd.pvc,cd.cantidad,p.id AS id_hc,p.descripcion')
-                       ->get();
+        $productos2= db::table('cotizacion_detalle as cd')
+                 ->join('productos as p','p.id','cd.item')
+                 ->where('cd.id_cotizacion',$num_cotizacion)
+                 ->selectraw('cd.item,cd.pvc,cd.cantidad,p.id AS id_hc,p.descripcion')
+                 ->get();
 
       $data= DB::select("SELECT * FROM tbl_datos_generales");
       $data=$data[0];
-      
+      $tipo = $request->id_tipo;
 
-        if($request->id_tipo==1){
-            $pdf = \PDF::loadView('cotizador.pdf',compact('cot','productos2','data'))->setPaper('A4','landscape');
-            return  $pdf->download('Cotizacion_'.$num_cotizacion.'.pdf');
+      //return view('cotizador.pdf',compact('cot','productos2','data','tipo'));
+      $pdf = \PDF::loadView('cotizador.pdf',compact('cot','productos2','data','tipo'))->setPaper('A4','portrait');
+      return  $pdf->download('Cotizacion_'.$num_cotizacion.'.pdf');
+    }
 
-        }else{
+    function enviar_cotizacion(Request $request){
+      $num_cotizacion = $request->session()->get('num_cotizacion');
+      if($request->tipo == 1){
+         cotizador::where('id',$request->id_cotizacion)
+                  ->update(['enviado'=>1]);
+          $request->session()->forget('num_cotizacion');
+      }else if($request->tipo ==2){
+          $filtro = new cotizador_detalle;
+          $num_cotizacion = $request->session()->get('num_cotizacion');
+          
+          $cot = db::table('cotizacions as c')
+                    ->leftjoin('proyectos as p','p.id','c.proyecto')
+                    ->leftjoin('cliente_participantes as cp','cp.id','c.cliente')
+                    ->leftjoin('tbl_clientes as tc','tc.id_cliente','cp.id_cliente')
+                    ->where('c.id',$num_cotizacion)
+                    ->selectraw('p.nombre AS proyecto,cp.*,tc.empresa,c.id AS id_cot,c.created_at, c.iva_usa , c.descuento_usa')
+                    ->get();
+          $cot=$cot[0];
 
- 
+          $productos2= db::table('cotizacion_detalle as cd')
+                   ->join('productos as p','p.id','cd.item')
+                   ->where('cd.id_cotizacion',$num_cotizacion)
+                   ->selectraw('cd.item,cd.pvc,cd.cantidad,p.id AS id_hc,p.descripcion')
+                   ->get();
 
-        }
-    
+          $data= DB::select("SELECT * FROM tbl_datos_generales");
+          $data=$data[0];
+          if(!isset($request->id_tipo)){
+            $tipo = $request->id_tipo;
+          }else{
+            $tipo = 1;
+          }
+            
 
 
+          $pdf = \PDF::loadView('cotizador.pdf',compact('cot','productos2','data','tipo'))->setPaper('A4','portrait');
+          Storage::put('Cotizacion_'.$num_cotizacion.'.pdf', $pdf->output());
+          
+          $content = "Hola esto es una prueba";
+
+          $subjects = "Ventas Hardaware Collection";
+          $to = "jacob.mendozaha@gmail.com";
+
+          #$to = $cotizacion->correo_compra;
+          $copia = 'salvador@altermedia.mx';
+          // here we add attachment, attachment must be an array
+          $attachment = [ 
+           Storage::url('Cotizacion_'.$num_cotizacion.'.pdf'),
+           ];
+
+
+          Mail::to($to)->cc($copia)->send(new EnvioFlux($subjects, $content,$attachment));
+          Storage::delete('Cotizacion_'.$num_cotizacion.'.pdf');
+
+          cotizador::where('id',$request->id_cotizacion)
+                  ->update(['enviado'=>2]);
+          $request->session()->forget('num_cotizacion');
+      }
+
+      return 1;
+    }
+
+    function revive_cotizacion($id_cotizacion, Request $request){
+      $request->session()->put('num_cotizacion',$id_cotizacion);
+      return redirect()->route('cotizador.index');      
     }
 
 }

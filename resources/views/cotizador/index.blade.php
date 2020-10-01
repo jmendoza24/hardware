@@ -4,7 +4,6 @@
 <style type="text/css">
     .td-2px{padding: 2px;}
 </style>
-Cot: {{$num_cotizacion}}
 <div class="col-md-12" id="cotiza_table">
 	  @include('cotizador.table')		
 </div>

@@ -13,6 +13,7 @@
                 <th>Cliente</th>
                 <th>Teléfono</th>
                 <th>Total</th>
+                <th></th>
                 <th>Correo</th>
             </tr>
         </thead>
@@ -24,6 +25,12 @@
                     <td>{{$c->contacto}}</td>
                     <td>{{$c->telefono}}</td>
                     <td>{{ number_format($c->total,2)}}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-outline-primary" href="{{ route('cotizador.revive',['id_cotizacion'=>$c->id])}}"><i class="fa fa-window-maximize"></i></a> &nbsp;
+                            <span class="btn btn-sm btn-outline-danger" onclick="eliminar_cotizacion({{ $c->id}})"><i class="fa fa-trash"></i></span>
+                        </div>
+                    </td>
                     <td>{{$c->correo}}</td>
                 </tr>
             @endforeach

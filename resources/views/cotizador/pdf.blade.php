@@ -1,44 +1,74 @@
 
-<table   style="width: 100%;">
-    <thead>
-       <tr style="width: 100%;" >
-        <th colspan="1" style="font-size: 14px;background-color: #212121;border-left-color:white;border-right-color:white;color:white">Hardware<br> collection</th>
-        <th colspan="6" style="font-size: 10px;background-color: #023761;text-align: right;border-left-color:white;border-right-color:white;color:white">2020-09-25<br>ID Cotización 9<br>Calzada San Pedro # 108<br>San Pedro Garza García, N,L, México, 66220<br>+52 (81) 8378 0601, info@hardwarecollection.mx</th>
-       </tr>
-       <tr style="width: 100%;font-size: 14px;background-color: gray;" >
-        <th colspan="3" style="text-align: left;border-left-color:gray;border-right-color:gray;color:white">Proyecto: {{ $cot->proyecto }}<br> Participante: {{ $cot->contacto }}<br>Empresa: {{ $cot->empresa }}</th>
-        <th colspan="2" style="text-align: left;border-left-color:gray;border-right-color:gray;color:white">Correo: {{ $cot->correo }}<br>Teléfono: {{ $cot->telefono }}<br></th>
-        <th colspan="2" style="text-align: right;border-left-color:gray;border-right-color:gray;color:white">Cotización valida {{ $cot->created_at }}<br> hasta ({{ date("d-m-Y",strtotime($cot->created_at."+ 30 days")) }})</th>
-       </tr>
-         
+<table   style="width: 100%; font-family: sans-serif; color:white; border-collapse: collapse;">
+     <tr style="width: 100%;" >
+        <td style="background-color: #000000; text-align: center; "><label style="font-size: 26px;"><b>Hardware<br> Collection</b></label></td>
+        <td style="background-color: #5C8293; "><label style="font-family:sans-serif; font-size: 11px; ">Calzada San Pedro # 108<br>San Pedro Garza García, N,L, México, 66220<br>+52 (81) 8378 0601, info@hardwarecollection.mx</label></td>
+        <td style="background-color: #5C8293;">{{ $cot->created_at}}<br>Cotización {{$cot->id_cot}}<br></td>
+     </tr>
+     <tr style="background: #D2D2D2; color:#5C8293; font-size: 11px;">
+        <td>Proyecto: {{ $cot->proyecto }}<br> Participante: {{ $cot->contacto }}<br>Empresa: {{ $cot->empresa }}</td>
+        <td>Correo: {{ $cot->correo }}<br>Teléfono: {{ $cot->telefono }}<br></td>
+        <td>Cotización válida  hasta {{ date("d-m-Y",strtotime($cot->created_at."+ 30 days")) }}</td>
+     </tr> 
+</table>
+@if($tipo==1)
+<br><br>
 
-        <tr class="gris_barra" style="text-align: left;font-size: 14px;width: 100%"><br><br><br><br><br>
-        <th colspan="1" style="text-align: left;">ID HC</th>
-        <th colspan="3" style="text-align: left;">Descripción</th>
-        <th colspan="1" style="text-align: right;">Piezas</th>
-        <th colspan="1" style="text-align: right;">P.U (P)</th>
-        <th colspan="1" style="text-align: right;">Subtotal</th>
-       </tr>
-    </thead>
-    <tbody>
-          @foreach($productos2 as $productos2)
-            <tr>
-               <td>{{ $productos2->id_hc }}</td>
-               <td colspan="3">{{ $productos2->descripcion }}</td>
-               <td colspan="1" style="text-align: right">{{ $productos2->cantidad }}</td>
-               <td style="text-align: right">$ @if(empty($productos2->pvc ))  {{ number_format(0,2) }} @else {{ number_format($productos2->pvc ,2)}} @endif</td>
-               <td style="text-align: right">$ @if(empty($productos2->pvc ))  {{ number_format(0,2) }} @else {{ number_format($productos2->cantidad*$productos2->pvc ,2)}} @endif</td>
-            </tr>
-          @endforeach
-    </tbody>
+<table style="width: 100%; font-size: 11px; font-family: sans-serif; border-collapse: collapse; color:#5C8293;" border="0">
+    <tr style="background: #D2D2D2;  text-align: center;">
+        <td>ID HC</th>
+        <td>Descripción</th>
+        <td>Piezas</th>
+        <td>P.U (P)</th>
+        <td>Subtotal</th>
+      </tr>
+      @php($subtotal = 0)
+        @foreach($productos2 as $productos2)
+          <tr>
+             <td>{{ $productos2->id_hc }}</td>
+             <td>{{ $productos2->descripcion }}</td>
+             <td style="text-align: center;">{{ $productos2->cantidad }}</td>
+             <td style="text-align: right">$  {{ number_format($productos2->pvc ,2)}}</td>
+             <td style="text-align: right">$ {{ number_format($productos2->cantidad*$productos2->pvc ,2)}} </td>
+          </tr>
+          @php($subtotal += $productos2->cantidad*$productos2->pvc)
+        @endforeach
+        @php($desc = ($subtotal * $cot->descuento_usa)/100)
+        @php($iva = (($subtotal -$desc) * $cot->iva_usa)/100)
+        <tr>
+          <td colspan="3"></td>
+          <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Subtotal (USD)</td>
+          <td style="text-align: right;">$ {{ number_format($subtotal,2)}}</td>
+        </tr>
+        @if($cot->descuento_usa > 0)
+        <tr>
+          <td colspan="3"></td>
+          <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Descuento ({{ $cot->descuento_usa}}%)</td>
+          <td style="text-align: right;">$ {{ number_format($desc,2) }}</td>
+        </tr>
+        @endif
+        @if($cot->iva_usa > 0)
+        <tr>
+          <td colspan="3"></td>
+          <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Iva ({{ number_format($cot->iva_usa)}}%)</td>
+          <td style="text-align: right;">$ {{number_format($iva,2)}}</td>
+        </tr>
+        @endif
+        <tr>
+          <td colspan="3"></td>
+          <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Total</td>
+          <td style="text-align: right;">$ {{ number_format(($subtotal - $desc) + $iva,2)}}</td>
+        </tr>
   </table>
-<table   style="width: 100%;">
-    <thead>
-       <tr style="width: 100%;font-size: 14px;background-color: white;" >
-        <th colspan="3" style="text-align: left;border-left-color:gray;border-right-color:gray;color:#212121">{{ $data->condiciones }}</th>
-        <th colspan="2" style="text-align: left;border-left-color:gray;border-right-color:gray;color:red">{{ $data->notas }}</th>
-        <th colspan="2" style="text-align: right;border-left-color:gray;border-right-color:gray;color:#212121">{{ $data->cuentas }}</th>
-       </tr>
-    </thead>
-  </table>
+  @else
+    Tipo 2
+  @endif
+  <br><br>
+<table   style="width: 100%; font-family: sans-serif; text-align: justify; font-size: 11px; color:#5C8293;">
+   <tr style="" >
+      <td valign="top"> <?php echo nl2br($data->condiciones); ?></td>
+      <td valign="top"> <?php echo nl2br($data->notas); ?></td>
+      <td valign="top"> <?php echo nl2br($data->cuentas); ?></td>
+   </tr>
+</table>
 

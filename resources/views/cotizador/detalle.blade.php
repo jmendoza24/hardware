@@ -5,20 +5,7 @@
 	@endforeach
 	</div>
 	<div class="col-md-12">
-		<br>
-		{{ $existe }}
-		@if($existe==1)
-			@foreach($fotos as $fotos)
-			https://desarrollos.hardwarecollection.mx/storage/{{ $fotos->foto }}
-					<img src="{{ url('https://desarrollos.hardwarecollection.mx/storage/$fotos->foto')}}" style="width: 100%;">		
-			@endforeach
-		@else
-				<img src="{{ url('app-assets/images/carousel/01.jpg')}}" style="width: 100%;">		
-
-		@endif
-
-		
-
+		<img src="/storage/{{ $fotos->foto}}" style="width: 100%;">		
 	</div>	
 	
 	<div class="col-md-12">

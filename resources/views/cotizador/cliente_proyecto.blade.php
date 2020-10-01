@@ -30,7 +30,7 @@
             @foreach($clientes as $c)
             <option value="{{$c->id}}" {{$cotizacion->cliente==$c->id?'selected':''}}>{{$c->contacto}}</option>
             @endforeach
-        </select>
+        </select> 
     </div>
     <div class="col-md-2 form-row">
         <label class="col-md-3" style="padding-top: 4px;">Tipo:</label>
@@ -42,8 +42,8 @@
     </div>
     <div class="col text-right" style="margin-top: 10px;">
         <span class="btn btn-outline-primary btn-sm" onclick="baja_cotiza_pdf({{ $cotizacion->id }})">PDF</span>
-        <span class="btn btn-outline-primary btn-sm">XLS</span>
-        <span class="btn btn-outline-primary btn-sm">Save</span>
-        <span class="btn btn-outline-primary btn-sm">Send</span>
+        <!--<span class="btn btn-outline-primary btn-sm">XLS</span>--->
+        <span class="btn btn-outline-primary btn-sm" onclick="enviar_cotizacion(1)">Save</span>
+        <span class="btn btn-outline-primary btn-sm" onclick="enviar_cotizacion(2)">Send</span>
     </div>
 </div>

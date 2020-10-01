@@ -10,7 +10,7 @@
 </style>
 	<table class="table table-striped small row-border" style="font-size: 13px;" id="" border="0">
 		<tr style="border-top: 2px solid white; background:white;">
-			<td colspan="9"></td>
+			<td colspan="11"></td>
 			<td colspan="3">Modificación</td>
 			<td colspan="3">Instalación</td>
 		</tr>

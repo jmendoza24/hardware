@@ -94,10 +94,8 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::POST('/ajaxupload', 'tbl_fotos_productosController@store')->name('ajaxupload');
 	Route::get('actualiza_fotos', 'tbl_fotos_productosController@actualiza_fotos');
 	Route::get('borra_foto', 'tbl_fotos_productosController@destroy');
-
-
-
-
+	Route::get('enviar_cotizacion', 'cotizadorController@enviar_cotizacion');
+	Route::get('revive_cotizacion/{id_cotizacion}', 'cotizadorController@revive_cotizacion')->name('cotizador.revive');
 
 });
 
