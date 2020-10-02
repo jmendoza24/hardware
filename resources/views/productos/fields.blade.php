@@ -939,54 +939,18 @@
             @endforeach --}}
         </select>
     </div>
-<!-- Submit Field -->
-</div>
-
-@if($editar==1)
-<hr>
-    <h3>Fotos del producto</h3>
-    <div class="form-group col-sm-12" style="text-align: right;">
-        <a  href="#" data-toggle="modal" data-target="#myModal" class="btn btn-primary">+ Foto</a>   
-     </div>
-    @include('tbl_fotos_productos.table')
-
-</div>
-
-
-@endif
-   
-
- <div class="modal fade " id="myModal"  role="dialog" aria-labelledby="myModal" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title texto_azul"><h3><strong class="texto_azul">Hardwarecollection</strong></h3></h5>
-        
-        </div>
-        <div class="modal-body" id="contenido">
-            </form>
-
-            </form>
-
-            </form>
-
-            <form  style="text-align: right" method="POST" action="#" enctype="multipart/form-data" id="formUpload">
-                    <input type="hidden" name="_token" value="{{ csrf_token()}}">
-                    <input type="hidden" id="id_producto" name="id_producto" value="{{$productos->id}}">
-                    <input type="file" name="foto" id="foto" class="form-control"  /><br>
-                    <a  href="#" class="btn btn-primary" onclick="nuevo_dibujo({{$productos->id}})">Subir imágen</a>
-
-            </form>
-
-          </p>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-
+</div>   
 <div class="form-group col-sm-12" style="text-align: right;">
-        {!! Form::submit('Guardar', ['class' => 'btn btn-primary']) !!}
-        <a href="{!! route('productos.index') !!}" class="btn btn-secondary">Cancelar</a>
+    {!! Form::submit('Guardar', ['class' => 'btn btn-primary']) !!}
+    <a href="{!! route('productos.index') !!}" class="btn btn-secondary">Cancelar</a>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-12">
+        <span class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" onclick="ver_catalogo(17,0,1,{{$productos->id}})" data-toggle="modal" data-backdrop="false" data-target="#primary">+ Foto</span> 
+     </div>
+     <br><br>
+    <div class="col-md-12" id="tabla_catalogos">
+        @include('productos.imagenes')
     </div>
+</div>

@@ -34,7 +34,7 @@ class EnvioFlux extends Mailable
     public function build()
     {
          $email = $this->markdown('cotizador.mailEnvio')
-                ->from('ventas@snappath.mx')
+                ->from('ventas@cotiza.tech')
                 ->subject($this->subject)
                 ->with('content', $this->content);
          foreach ($this->attachment as $item) {

@@ -19,6 +19,7 @@ use App\Models\cotizador;
 use App\Models\cliente_participantes;
 use App\Models\cotizador_detalle;
 use App\Models\Clientes;
+use App\Models\tbl_fotos_productos;
 use App\Http\Requests\CreatecatalogosRequest;
 use App\Http\Requests\UpdatecatalogosRequest;
 use App\Repositories\catalogosRepository;
@@ -379,6 +380,20 @@ class catalogosController extends AppBaseController
           $cotizacion = $cotizacion[0];
           $productos = $filtro->detalle_cotizacion($filtro);
           $options =  view('cotizador.cotizacion_detalle',compact('productos','cotizacion'))->render();
+        }else if($request->catalogo ==17){
+          
+          if($request->tipo==1){
+            $imagenes = array('id'=>0,
+                              'id_producto' => $request->fabricante,
+                              'foto'=>'');
+            $imagenes = (object)$imagenes;
+
+          }else if($request->tipo==2){
+            $imagenes = tbl_fotos_productos::where('id',$request->id)->get();
+            $imagenes = $imagenes[0];
+          }
+
+          $options =  view('productos.alta_imagen',compact('imagenes'))->render();
         }
 
 
@@ -678,6 +693,17 @@ class catalogosController extends AppBaseController
             $clientes = $clientes[0];
             $participantes  = cliente_participantes::where('id_cliente',$request->id_cliente)->get();
             $options = view('clientes.asignacion',compact('participantes','clientes'))->render();
+        }else if($request->id_catalogo==17){
+           $file = $request->file('foto');
+
+           $nombre = $file->getClientOriginalName();
+           \Storage::disk('local')->put($nombre,\File::get($file));
+           
+           tbl_fotos_productos::insert(['id_producto'=>$request->id_producto,
+                                        'foto'=>$nombre]);
+
+           $imagenes = tbl_fotos_productos::where('id_producto',$request->id_producto)->get();
+           $options = view('productos.imagenes',compact('imagenes'))->render();
         }
 
         return $options;
@@ -775,6 +801,12 @@ class catalogosController extends AppBaseController
             $clientes = $clientes[0];
             $participantes  = cliente_participantes::where('id_cliente',$request->fabricante)->get();
             $options = view('clientes.asignacion',compact('participantes','clientes'))->render();
+        }else if($request->catalogo==17){
+           
+           tbl_fotos_productos::where('id',$request->id)->delete();
+           
+           $imagenes = tbl_fotos_productos::where('id_producto',$request->fabricante)->get();
+           $options = view('productos.imagenes',compact('imagenes'))->render();
         }
 
 

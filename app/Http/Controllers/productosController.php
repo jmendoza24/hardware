@@ -133,8 +133,9 @@ class productosController extends AppBaseController
 
         $productos = (object)$productos;
         $sufijo = array();
+        $imagenes = array();
 
-        return view('productos.create',compact('fabricantes','productos','listado_vistas','catalogos','familia','categoria','subcategorias','disenio','items','sub_baldwins','formulas','sufijo'));
+        return view('productos.create',compact('fabricantes','productos','listado_vistas','catalogos','familia','categoria','subcategorias','disenio','items','sub_baldwins','formulas','sufijo','imagenes'));
     }
 
     /**
@@ -209,7 +210,7 @@ class productosController extends AppBaseController
         $disenio        = disenio::where('subcategoria',$productos->subcategoria)->get();
         $items          = item::where('disenio',$productos->disenio)->get();
         $listado_vistas = listado_vistas::get();
-       
+        $imagenes = tbl_fotos_productos::where('id_producto',$id)->get();
         /** 
         if($productos->fabricante==77 && $productos->categoria >0 && $productos->subcategoria > 0){
             $sufijo = db::select('call proceso_obtiene_sufijos('.$productos->categoria.','.$productos->subcategoria.')');
@@ -239,10 +240,7 @@ class productosController extends AppBaseController
             return redirect(route('productos.index'));
         }
 
-
-        $tblFotosProductos=tbl_fotos_productos::where('id_producto',$id)->get();
-
-        return view('productos.edit',compact('tblFotosProductos','productos','listado_vistas','catalogos','familia','categoria','subcategorias','disenio','items','fabricantes','sub_baldwins','formulas','sufijo'));
+        return view('productos.edit',compact('productos','listado_vistas','catalogos','familia','categoria','subcategorias','disenio','items','fabricantes','sub_baldwins','formulas','sufijo','imagenes'));
     }
 
     /**

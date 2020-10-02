@@ -118,7 +118,13 @@ class cotizadorController extends AppBaseController
                     ->get();
 
          if(sizeof($items) >0){
-            $fotos = tbl_fotos_productos::where('id_producto',$items[0]->id)->get();   
+            $fotos = db::table('tbl_fotos_productos as p')
+                        ->join('productos as t','t.id','p.id')
+                        ->where('t.id_item',$producto)
+                        ->selectraw('p.*')
+                        ->get();
+
+            //$fotos = tbl_fotos_productos::where('id_producto',$items[0]->id)->get();   
             if(sizeof($fotos) ==0 ){
               $fotos = array('foto'=>'imagen-no-disponible.png');
               $fotos = (object)$fotos;  
@@ -589,7 +595,7 @@ WHERE d.id = 264
             $tipo = 1;
           }
             
-
+/**
 
           $pdf = \PDF::loadView('cotizador.pdf',compact('cot','productos2','data','tipo'))->setPaper('A4','portrait');
           Storage::put('Cotizacion_'.$num_cotizacion.'.pdf', $pdf->output());
@@ -599,15 +605,31 @@ WHERE d.id = 264
           $subjects = "Ventas Hardaware Collection";
           $to = "jacob.mendozaha@gmail.com";
 
-          #$to = $cotizacion->correo_compra;
-          $copia = 'salvador@altermedia.mx';
-          // here we add attachment, attachment must be an array
-          $attachment = [ 
-           Storage::url('Cotizacion_'.$num_cotizacion.'.pdf'),
-           ];
+  
+          $copia = 'diego05vidales@gmail.com';
+          
 
+          $attachment = [ 'storage/'.'Cotizacion_'.$num_cotizacion.'.pdf',];
 
           Mail::to($to)->cc($copia)->send(new EnvioFlux($subjects, $content,$attachment));
+*/
+           $data = array();
+
+           $vista_t = 'cotizador.mailEnvio';
+           Mail::send($vista_t, $data, function($msj) use($num_cotizacion,$vista_t,$cot, $productos2,$data, $tipo){
+                
+            $pdf = \PDF::loadView($vista_t,compact('cot','productos2','data','tipo'))->setPaper('A4','portrait');
+            $msj->from('ventas@cotiza.tech');
+            $msj->sender('ventas@cotiza.tech');
+            $msj->subject('Cotizacion');
+            $msj->to('jacob.mendozaha@gmail.com');  
+                                
+            $msj->attachData($pdf->output(), 'cotizacion'.$num_cotizacion.'.pdf');
+
+         }); 
+
+
+
           Storage::delete('Cotizacion_'.$num_cotizacion.'.pdf');
 
           cotizador::where('id',$request->id_cotizacion)
