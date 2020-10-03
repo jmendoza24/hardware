@@ -5,13 +5,9 @@
 	@endforeach
 	</div>
 	<div class="col-md-12">
+		<br>
 		<img src="/storage/{{ $fotos->foto}}" style="width: 100%;">		
 	</div>	
-	
-	<div class="col-md-12">
-		<br>
-		<button class="btn btn-primary pull-right" >Agregar</button>		
-	</div>
 </div>
 
 

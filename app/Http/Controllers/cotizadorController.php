@@ -119,7 +119,7 @@ class cotizadorController extends AppBaseController
 
          if(sizeof($items) >0){
             $fotos = db::table('tbl_fotos_productos as p')
-                        ->join('productos as t','t.id','p.id')
+                        ->join('productos as t','t.id','p.id_producto')
                         ->where('t.id_item',$producto)
                         ->selectraw('p.*')
                         ->get();
@@ -210,8 +210,17 @@ class cotizadorController extends AppBaseController
         $info_adic = db::select('call proceso_informacion_producto('.$item.','.$request->id.')');
         
         $info_adic = $info_adic[0];
+        $fotos = db::table('tbl_fotos_productos as p')
+                        ->join('productos as t','t.id','p.id_producto')
+                        ->where('t.id',$producto->id)
+                        ->selectraw('p.*')
+                        ->get();
+        if(sizeof($fotos)==0){
+          $fotos = array();
+        }
 
-        $options = view('cotizador.info_producto',compact('item','informacion','info_adic','producto','dependencias','suma_dependencias'))->render();
+
+        $options = view('cotizador.info_producto',compact('item','informacion','info_adic','producto','dependencias','suma_dependencias','fotos'))->render();
         return json_encode($options);
     }
 
@@ -533,7 +542,6 @@ WHERE d.id = 264
     }
 
     public function baja_cotiza_pdf(Request $request){
-
 
         $filtro = new cotizador_detalle;
         $num_cotizacion = $request->session()->get('num_cotizacion');
