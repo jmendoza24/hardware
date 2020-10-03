@@ -92,7 +92,11 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('confirmar_eliminar', 'productosController@confirmar_eliminar');
 	Route::get('guarda_detalle', 'cotizadorController@guarda_detalle');
 	Route::get('guarda_comentarios', 'proyectosController@guarda_comentarios');
+<<<<<<< HEAD
 	#Route::get('baja_cotiza_pdf', 'cotizadorController@baja_cotiza_pdf');
+=======
+	Route::get('/baja_cotiza_pdf', 'cotizadorController@baja_cotiza_pdf');
+>>>>>>> fdfd0c29e59b38d31232480346fc0d26b939bbbd
 	Route::get('guarda_generales', 'CatalogosController@guarda_generales');
 	Route::get('/nuevo_dibujo', 'productosController@nuevo_dibujo');	
 	Route::POST('/ajaxupload', 'tbl_fotos_productosController@store')->name('ajaxupload');
