@@ -1049,7 +1049,21 @@ function enviar_cotizacion(tipo){
         dataType: 'json',
         type:  'get',
         success:  function (response){  
-            window.location.href = '/cotizaciones_lista';
         }
     });  
+}
+
+function guarda_cot_not(id_cot){
+
+var nota= $("#nota").val();
+
+$.ajax({
+        data: {'id_cot':id_cot,'nota':nota},
+        url: '/api/v1/guarda_cot_not',
+        dataType: 'json',
+        type:  'get',
+        success:  function (response){  
+            window.location.href = '/cotizaciones_lista';
+        }
+    }); 
 }

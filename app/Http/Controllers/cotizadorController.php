@@ -34,6 +34,9 @@ use View;
 use DB;
 use PDF;
 use Mail;
+
+
+
 use App\Models\tbl_fotos_productos;
 
 
@@ -104,8 +107,12 @@ class cotizadorController extends AppBaseController
         
         $tipo=0;
 
+
+        $generales = db::select("SELECT * from tbl_datos_generales");
+
+
         $fabricantes  = fabricantes::orderby('fabricante')->get();
-        return view('cotizador.index',compact('fabricantes','num_cotizacion','productos','cotizacion','proyectos','clientes','tipo'));
+        return view('cotizador.index',compact('generales','fabricantes','num_cotizacion','productos','cotizacion','proyectos','clientes','tipo'));
     }
 
     function detalle_producto(Request $request){
@@ -564,6 +571,9 @@ WHERE d.id = 264
 
     function enviar_cotizacion(Request $request){
       $num_cotizacion = $request->session()->get('num_cotizacion');
+
+
+
       if($request->tipo == 1){
          cotizador::where('id',$request->id_cotizacion)
                   ->update(['enviado'=>1]);
@@ -571,7 +581,7 @@ WHERE d.id = 264
       }else if($request->tipo ==2){
           $filtro = new cotizador_detalle;
           $num_cotizacion = $request->session()->get('num_cotizacion');
-          
+
           $cot = db::table('cotizacions as c')
                     ->leftjoin('proyectos as p','p.id','c.proyecto')
                     ->leftjoin('cliente_participantes as cp','cp.id','c.cliente')
@@ -594,6 +604,9 @@ WHERE d.id = 264
           }else{
             $tipo = 1;
           }
+
+
+
             
 /**
 
@@ -613,20 +626,31 @@ WHERE d.id = 264
 
           Mail::to($to)->cc($copia)->send(new EnvioFlux($subjects, $content,$attachment));
 */
-           $data = array();
 
-           $vista_t = 'cotizador.mailEnvio';
-           Mail::send($vista_t, $data, function($msj) use($num_cotizacion,$vista_t,$cot, $productos2,$data, $tipo){
+
+                 $data = array(
+                   'ids'==1                  
+                 );
+                    
+
+                    Mail::send('cotizador.mailEnvio',$data, function($msj) use($data){                       
+                    $pdf = \PDF::loadView('cotizador.mailEnvio')->setPaper('A4','portrait');
+                   
+
+                    $msj->from('ventas@fluxmetals.info');
+                    $msj->sender('ventas@fluxmetals.info');
+                    $msj->subject('Cotizacion');
+                    $msj->to('diego05vidales@gmail.com');  
+
+                   // $msj->to($actual->correo);     
+                                        
+                    $msj->attachData($pdf->output(),'cotizacion.pdf');
+
+
+                }); 
                 
-            $pdf = \PDF::loadView($vista_t,compact('cot','productos2','data','tipo'))->setPaper('A4','portrait');
-            $msj->from('ventas@cotiza.tech');
-            $msj->sender('ventas@cotiza.tech');
-            $msj->subject('Cotizacion');
-            $msj->to('jacob.mendozaha@gmail.com');  
-                                
-            $msj->attachData($pdf->output(), 'cotizacion'.$num_cotizacion.'.pdf');
 
-         }); 
+
 
 
 
@@ -634,10 +658,14 @@ WHERE d.id = 264
 
           cotizador::where('id',$request->id_cotizacion)
                   ->update(['enviado'=>2]);
-          $request->session()->forget('num_cotizacion');
+     //     $request->session()->forget('num_cotizacion');
+
+     //   return redirect()->back();
+
+
       }
 
-      return 1;
+     //return 1;
     }
 
     function revive_cotizacion($id_cotizacion, Request $request){
@@ -672,6 +700,13 @@ WHERE d.id = 264
         return json_encode($options);
 
 
+
+    }
+
+    public function guarda_cot_not(Request $request){
+
+        cotizador::where('id',$request->id_cot)
+                          ->update(['notas'=>$request->nota]);
 
     }
 

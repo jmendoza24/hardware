@@ -45,5 +45,9 @@
         <!--<span class="btn btn-outline-primary btn-sm">XLS</span>--->
         <span class="btn btn-outline-primary btn-sm" onclick="enviar_cotizacion(1)">Save</span>
         <span class="btn btn-outline-primary btn-sm" onclick="enviar_cotizacion(2)">Send</span>
+        @php($tipo=2)
+
+                <a class="btn btn-outline-primary btn-sm"  href="{{ route('envia.cotiza',['tipo'=>$tipo],['num_cotizacion2'=>$cotizacion->id])}}"> Send2</a>
+
     </div>
 </div>

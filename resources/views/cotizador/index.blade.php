@@ -7,6 +7,11 @@
 <div class="col-md-12" id="cotiza_table">
 	  @include('cotizador.table')		
 </div>
+<div class="col-md-12">
+    <h4>Notas de cotización:</h4>
+    <textarea class="form-control" id="nota" onchange="guarda_cot_not({{ $cotizacion->id }})" name="nota">@if(empty($cotizacion->notas)) {{ $generales[0]->notas}} @else {{ $cotizacion->notas}} @endif </textarea>
+</div>
+<br>
 	<div class="col-md-12">
 		<fieldset class="checkboxsas">
           <label><input type="checkbox" value="1"  name=""> Enviar cotización producto.  </label>
@@ -18,6 +23,7 @@
           <label><input type="checkbox" value="1"  name=""> Generar OCC proveedor.  </label>
         </fieldset>
     </div>
+    
  <div class="col-md-12">
     <label>
     	<ul style="font-size: 10px; font-family: sans-serif;">
