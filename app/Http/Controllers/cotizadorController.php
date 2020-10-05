@@ -34,6 +34,9 @@ use View;
 use DB;
 use PDF;
 use Mail;
+
+
+
 use App\Models\tbl_fotos_productos;
 
 
@@ -64,6 +67,10 @@ class cotizadorController extends AppBaseController
             $id = cotizador::insertGetId(['enviado' => 0,
                                           'proyecto'=>0,
                                           'cliente'=>0,
+                                          'descuento_usa'=>0,
+                                          'descuento_mx'=>0,
+                                          'iva_usa'=>0,
+                                          'iva_mx'=>0,
                                           'usuario_id'=>auth()->id(),
                                           'created_at'=>$fecha]);       
             $request->session()->put('num_cotizacion',$id);
@@ -104,8 +111,12 @@ class cotizadorController extends AppBaseController
         
         $tipo=0;
 
+
+        $generales = db::select("SELECT * from tbl_datos_generales");
+
+
         $fabricantes  = fabricantes::orderby('fabricante')->get();
-        return view('cotizador.index',compact('fabricantes','num_cotizacion','productos','cotizacion','proyectos','clientes','tipo'));
+        return view('cotizador.index',compact('generales','fabricantes','num_cotizacion','productos','cotizacion','proyectos','clientes','tipo'));
     }
 
     function detalle_producto(Request $request){
@@ -118,14 +129,15 @@ class cotizadorController extends AppBaseController
                     ->get();
 
          if(sizeof($items) >0){
-            $fotos = db::table('tbl_fotos_productos as p')
-                        ->join('productos as t','t.id','p.id_producto')
-                        ->where('t.id_item',$producto)
-                        ->selectraw('p.*')
-                        ->get();
+            $fotos = db::select('SELECT f.*
+                                  FROM productos p
+                                  INNER JOIN tbl_fotos_productos f ON f.id_producto = p.id
+                                  WHERE p.id_item = '.$items[0]->id_item);
 
-            //$fotos = tbl_fotos_productos::where('id_producto',$items[0]->id)->get();   
-            if(sizeof($fotos) ==0 ){
+            if(sizeof($fotos)>0){
+              $fotos = array('foto'=>$fotos[0]->foto);
+              $fotos = (object)$fotos; 
+            }else if(sizeof($fotos) ==0 ){
               $fotos = array('foto'=>'imagen-no-disponible.png');
               $fotos = (object)$fotos;  
             }
@@ -134,7 +146,7 @@ class cotizadorController extends AppBaseController
             $fotos = array('foto'=>'imagen-no-disponible.png');
             $fotos = (object)$fotos;
          }         
-
+         
         $options = view('cotizador.detalle',compact('fotos','producto','items','existe'))->render();
 
         return json_encode($options);
@@ -162,7 +174,7 @@ class cotizadorController extends AppBaseController
         $productos = $filtro->detalle_cotizacion($filtro);   
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0]; 
-        $options = view('cotizador.table',compact('productos','cotizacion'))->render();
+        $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion'))->render();
 
         return json_encode($options);
     }
@@ -177,7 +189,7 @@ class cotizadorController extends AppBaseController
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0];  
 
-        $options = view('cotizador.table',compact('productos','cotizacion'))->render();
+        $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion'))->render();
 
         return json_encode($options); 
     }
@@ -187,6 +199,12 @@ class cotizadorController extends AppBaseController
         $item = $request->item;
         $producto = productos::where('id',$item)->get();
         $producto = $producto[0];
+        
+        $fotos = db::select('SELECT f.*
+                                  FROM productos p
+                                  INNER JOIN tbl_fotos_productos f ON f.id_producto = p.id
+                                  WHERE p.id_item = '.$producto->id_item);
+
         $informacion = informacion_productos::where('id_item',$producto->id_item)->get();
 
         $informacion = $informacion[0];
@@ -210,17 +228,8 @@ class cotizadorController extends AppBaseController
         $info_adic = db::select('call proceso_informacion_producto('.$item.','.$request->id.')');
         
         $info_adic = $info_adic[0];
-        $fotos = db::table('tbl_fotos_productos as p')
-                        ->join('productos as t','t.id','p.id_producto')
-                        ->where('t.id',$producto->id)
-                        ->selectraw('p.*')
-                        ->get();
-        if(sizeof($fotos)==0){
-          $fotos = array();
-        }
 
-
-        $options = view('cotizador.info_producto',compact('item','informacion','info_adic','producto','dependencias','suma_dependencias','fotos'))->render();
+        $options = view('cotizador.info_producto',compact('fotos','item','informacion','info_adic','producto','dependencias','suma_dependencias'))->render();
         return json_encode($options);
     }
 
@@ -244,7 +253,7 @@ class cotizadorController extends AppBaseController
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0];
 
-        $options = view('cotizador.table',compact('productos','cotizacion'))->render();
+        $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion'))->render();
 
         return json_encode($options);
     }
@@ -264,7 +273,7 @@ class cotizadorController extends AppBaseController
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0];
 
-        $options = view('cotizador.table',compact('productos','cotizacion'))->render();
+        $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion'))->render();
 
         return json_encode($options); 
     }
@@ -382,7 +391,7 @@ class cotizadorController extends AppBaseController
             }
 
 
-            $options = view('cotizador.tabla_dependencia',compact('producto','dependencias','suma_dependencias'))->render();
+            $options = view('cotizador.tabla_dependencia',compact('producto','dependencias','suma_dependencias','num_cotizacion'))->render();
             $arr = array('options'=>$options,
                          'alerta'=>$alerta);
 
@@ -543,6 +552,7 @@ WHERE d.id = 264
 
     public function baja_cotiza_pdf(Request $request){
 
+
         $filtro = new cotizador_detalle;
         $num_cotizacion = $request->session()->get('num_cotizacion');
         
@@ -572,14 +582,18 @@ WHERE d.id = 264
 
     function enviar_cotizacion(Request $request){
       $num_cotizacion = $request->session()->get('num_cotizacion');
+
+
+
       if($request->tipo == 1){
          cotizador::where('id',$request->id_cotizacion)
                   ->update(['enviado'=>1]);
           $request->session()->forget('num_cotizacion');
+          return 1;
       }else if($request->tipo ==2){
           $filtro = new cotizador_detalle;
           $num_cotizacion = $request->session()->get('num_cotizacion');
-          
+
           $cot = db::table('cotizacions as c')
                     ->leftjoin('proyectos as p','p.id','c.proyecto')
                     ->leftjoin('cliente_participantes as cp','cp.id','c.cliente')
@@ -602,6 +616,9 @@ WHERE d.id = 264
           }else{
             $tipo = 1;
           }
+
+
+
             
 /**
 
@@ -621,20 +638,31 @@ WHERE d.id = 264
 
           Mail::to($to)->cc($copia)->send(new EnvioFlux($subjects, $content,$attachment));
 */
-           $data = array();
 
-           $vista_t = 'cotizador.mailEnvio';
-           Mail::send($vista_t, $data, function($msj) use($num_cotizacion,$vista_t,$cot, $productos2,$data, $tipo){
+
+                 $data = array(
+                   'ids'==1                  
+                 );
+                    
+
+                    Mail::send('cotizador.mailEnvio',$data, function($msj) use($data){                       
+                    $pdf = \PDF::loadView('cotizador.mailEnvio')->setPaper('A4','portrait');
+                   
+
+                    $msj->from('ventas@fluxmetals.info');
+                    $msj->sender('ventas@fluxmetals.info');
+                    $msj->subject('Cotizacion');
+                    $msj->to('diego05vidales@gmail.com');  
+
+                   // $msj->to($actual->correo);     
+                                        
+                    $msj->attachData($pdf->output(),'cotizacion.pdf');
+
+
+                }); 
                 
-            $pdf = \PDF::loadView($vista_t,compact('cot','productos2','data','tipo'))->setPaper('A4','portrait');
-            $msj->from('ventas@cotiza.tech');
-            $msj->sender('ventas@cotiza.tech');
-            $msj->subject('Cotizacion');
-            $msj->to('jacob.mendozaha@gmail.com');  
-                                
-            $msj->attachData($pdf->output(), 'cotizacion'.$num_cotizacion.'.pdf');
 
-         }); 
+
 
 
 
@@ -642,10 +670,14 @@ WHERE d.id = 264
 
           cotizador::where('id',$request->id_cotizacion)
                   ->update(['enviado'=>2]);
-          $request->session()->forget('num_cotizacion');
+     //     $request->session()->forget('num_cotizacion');
+
+     //   return redirect()->back();
+
+
       }
 
-      return 1;
+     //return 1;
     }
 
     function revive_cotizacion($id_cotizacion, Request $request){
@@ -680,6 +712,13 @@ WHERE d.id = 264
         return json_encode($options);
 
 
+
+    }
+
+    public function guarda_cot_not(Request $request){
+
+        cotizador::where('id',$request->id_cot)
+                          ->update(['notas'=>$request->nota]);
 
     }
 

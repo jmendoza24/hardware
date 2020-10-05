@@ -6,7 +6,7 @@
 	</div>
 	<div class="col-md-12">
 		<br>
-		<img src="/storage/{{ $fotos->foto}}" style="width: 100%;">		
+		<img src="/storage/{{ $fotos->foto}}" style="width: 100%;">	
 	</div>	
 </div>
 

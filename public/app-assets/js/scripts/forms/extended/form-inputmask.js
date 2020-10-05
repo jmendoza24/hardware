@@ -60,6 +60,19 @@
 						            clearMaskOnLostFocus: !1,
 						            max:99999999
 						        });
+
+	$('.desc-mask').inputmask({
+						            prefix: "",
+						            groupSeparator: ".",
+						            alias: "numeric",
+						            placeholder: "0",
+						            autoGroup: !0,
+						            digits: 1,
+						            digitsOptional: !1,
+						            clearMaskOnLostFocus: !1,
+						            max:99999999
+						        });
+
 	$('.cantidad-mask').inputmask({
 						            prefix: "",
 						            groupSeparator: ".",

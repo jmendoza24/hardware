@@ -54,7 +54,7 @@
           <td style="text-align: right;">$ {{number_format($iva,2)}}</td>
         </tr>
         @endif
-        <tr style="font-size: 18px; font-weight: bold;">
+        <tr style="font-size: 14px; font-weight: bold;">
           <td colspan="3"></td>
           <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Total</td>
           <td style="text-align: right;">$ {{ number_format(($subtotal - $desc) + $iva,2)}}</td>

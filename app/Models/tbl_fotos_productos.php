@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class tbl_fotos_productos extends Model
 {
-    use SoftDeletes;
+   # use SoftDeletes;
 
     public $table = 'tbl_fotos_productos';
     

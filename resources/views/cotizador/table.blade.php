@@ -10,7 +10,7 @@
 </style>
 	<table class="table table-striped small row-border" style="font-size: 13px;" id="" border="0">
 		<tr style="border-top: 2px solid white; background:white;">
-			<td colspan="11"></td>
+			<td colspan="11"><span class="badge badge-primary">Cotización {{ $num_cotizacion}}</span></td>
 			<td colspan="3">Modificación</td>
 			<td colspan="3">Instalación</td>
 		</tr>
@@ -99,24 +99,24 @@
 		</tr>
 		<tr>
 			<td style="background:#67A957; color: white; ">Descuento:</td>
-			<td ><input type="text" id="descuento_usa" class="form-control form-control-sm perc-inputmask" style="width: 55px;" value="{{$cotizacion->descuento_usa}}" onchange="guardar_descuentos()"></td>
+			<td ><input type="text" id="descuento_usa" class="form-control form-control-sm desc-mask" style="width: 55px;" value="{{$cotizacion->descuento_usa}}" onchange="guardar_descuentos()"></td>
 			<td class="text-right" >
 				<span style="color: red;">-${{number_format(($subtotal_dolares * $cotizacion->descuento_usa)/100,2)}}</span><br>
 				@php($desc_usa = $subtotal_dolares - ($subtotal_dolares * $cotizacion->descuento_usa)/100)
 				${{number_format($desc_usa,2)}}</td>
-			<td colspan="2"><input type="text" id="descuento_mx" class="form-control form-control-sm perc-inputmask pull-right" value="{{$cotizacion->descuento_mx}}" style="width: 55px;" onchange="guardar_descuentos()"></td>
+			<td colspan="2"><input type="text" id="descuento_mx" class="form-control form-control-sm desc-mask pull-right" value="{{$cotizacion->descuento_mx}}" style="width: 55px;" onchange="guardar_descuentos()"></td>
 			<td class="text-right" >
 				<span style="color: red;">-${{number_format(($subtotal_ps * $cotizacion->descuento_mx)/100,2)}}</span><br>
 				@php($desc_mx = $subtotal_ps - ($subtotal_ps * $cotizacion->descuento_mx)/100)
 				${{number_format($desc_mx,2)}}</td>
 		</tr>
 		<tr>
-			<td style="background:#67A957; color: white; ">Iva:</td>
+			<td style="background:#67A957; color: white; ">IVA:</td>
 			<td >
 				<select class="form-control form-control-sm" id="iva_usa" style="width: 55px;" onchange="guardar_descuentos()">
 					<option value="0" {{$cotizacion->iva_usa==0?'selected':''}}>0</option>
 					<option value="8" {{$cotizacion->iva_usa==8?'selected':''}}>8</option>
-					<option value="16" {{$cotizacion->iva_usa==16?'selected':''}}>16</option>
+					<option value="16" {{$cotizacion->iva_usa==16?'selected':''}} {{$cotizacion->iva_usa==0?'selected':''}} >16</option>
 				</select>
 			</td>
 			<td class="text-right">
@@ -126,7 +126,7 @@
 				<select class="form-control form-control-sm pull-right" id="iva_mx" style="width: 55px;" onchange="guardar_descuentos()">
 					<option value="0" {{$cotizacion->iva_mx==0?'selected':''}}>0</option>
 					<option value="8" {{$cotizacion->iva_mx==8?'selected':''}}>8</option>
-					<option value="16"{{$cotizacion->iva_mx==16?'selected':''}}>16</option>
+					<option value="16"{{$cotizacion->iva_mx==16?'selected':''}} {{$cotizacion->iva_mx==0?'selected':''}}>16</option>
 				</select>
 			</td>
 			<td class="text-right">
