@@ -138,6 +138,16 @@ class cotizadorController extends AppBaseController
               $fotos = array('foto'=>$fotos[0]->foto);
               $fotos = (object)$fotos; 
             }else if(sizeof($fotos) ==0 ){
+
+            $fotos = db::table('tbl_fotos_productos as p')
+                        ->join('productos as t','t.id','p.id')
+                        ->where('t.id_item',$producto)
+                        ->selectraw('p.*')
+                        ->get();
+
+            //$fotos = tbl_fotos_productos::where('id_producto',$items[0]->id)->get();   
+            if(sizeof($fotos) ==0 ){
+
               $fotos = array('foto'=>'imagen-no-disponible.png');
               $fotos = (object)$fotos;  
             }
@@ -230,6 +240,7 @@ class cotizadorController extends AppBaseController
         $info_adic = $info_adic[0];
 
         $options = view('cotizador.info_producto',compact('fotos','item','informacion','info_adic','producto','dependencias','suma_dependencias'))->render();
+
         return json_encode($options);
     }
 
@@ -721,8 +732,6 @@ WHERE d.id = 264
                           ->update(['notas'=>$request->nota]);
 
     }
-
-
     
 
 }

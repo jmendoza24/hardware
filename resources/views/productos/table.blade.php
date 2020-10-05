@@ -5,10 +5,10 @@
                 <th>Página</th>
                 <th>Descripción</th>
                 <th>Fabricante</th>
-                <th>Catalogo</th>
+                <th>Catálogo</th>
                 <th>Familia</th>
-                <th>Categoria</th>
-                <th>Subcategoria</th>
+                <th>Categoría</th>
+                <th>Subcategoría</th>
                 <th>Item</th>
                 <th>Sufijo</th>
             </tr>

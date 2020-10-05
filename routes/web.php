@@ -96,7 +96,6 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('borra_foto', 'tbl_fotos_productosController@destroy');
 	Route::get('/enviar_cotizacion', 'cotizadorController@enviar_cotizacion');
 	Route::get('revive_cotizacion/{id_cotizacion}', 'cotizadorController@revive_cotizacion')->name('cotizador.revive');
-
 	Route::get('elimina_cot', 'cotizadorController@elimina_cot');
 	Route::get('actualiza_cots', 'cotizadorController@actualiza_cots');
 
