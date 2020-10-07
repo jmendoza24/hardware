@@ -1,11 +1,11 @@
- <nav class="header-navbar navbar-expand-md navbar navbar-with-menu fixed-top navbar-semi-dark navbar-shadow">
-    <div class="navbar-wrapper">
-      <div class="navbar-header">
+ <nav style="color: white; background-color: #349622  !important;" class="header-navbar navbar-expand-md navbar navbar-with-menu fixed-top navbar-semi-dark navbar-shadow">
+    <div class="navbar-wrapper"style="color: white; background-color: #349622  !important;">
+      <div class="navbar-header" style="color: white; background-color: #349622  !important;">
         <ul class="nav navbar-nav flex-row position-relative">
           <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
-          <li class="nav-item mr-auto">
+          <li class="nav-item mr-auto" >
             <a class="navbar-brand" href="{{ route('home')}}">
-              <h2 class="brand-text">Hardware</h2>
+              <h2 class="brand-text" >Hardware</h2>
             </a>
           </li>
           <li class="nav-item d-none d-md-block nav-toggle"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i class="toggle-icon ft-toggle-right font-medium-3 white" data-ticon="ft-toggle-right"></i></a></li>

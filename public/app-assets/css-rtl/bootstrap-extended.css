@@ -770,7 +770,7 @@ button, html [type='button'], [type='reset'], [type='submit'] {
 }
 
 .btn-info ~ .dropdown-menu .dropdown-item.active {
-  background-color : #2DCEE3;
+  background-color : #349622;
 }
 
 .btn-warning ~ .dropdown-menu .dropdown-item.active {
@@ -1771,11 +1771,11 @@ button, html [type='button'], [type='reset'], [type='submit'] {
 }
 
 .badge-info {
-  background-color : #2DCEE3;
+  background-color : #349622;
 }
 .badge-info.badge-glow {
-  -webkit-box-shadow : 0 0 10px #2DCEE3;
-          box-shadow : 0 0 10px #2DCEE3;
+  -webkit-box-shadow : 0 0 10px #349622;
+          box-shadow : 0 0 10px #349622;
 }
 .badge-info[href]:hover, .badge-info[href]:focus {
   background-color : #1AB0C3;
@@ -2113,7 +2113,7 @@ button, html [type='button'], [type='reset'], [type='submit'] {
 .nav.nav-tabs.nav-underline {
   background : #FFFFFF;
   position : relative;
-  border-bottom : 1px solid #2DCEE3;
+  border-bottom : 1px solid #349622;
 }
 .nav.nav-tabs.nav-underline .nav-item {
   position : relative;
@@ -2133,7 +2133,7 @@ button, html [type='button'], [type='reset'], [type='submit'] {
 }
 .nav.nav-tabs.nav-underline .nav-item.open a .nav-link:focus, .nav.nav-tabs.nav-underline .nav-item.open a .nav-link:hover {
   background-color : transparent;
-  color : #2DCEE3;
+  color : #349622;
 }
 .nav.nav-tabs.nav-underline .nav-item a.nav-link {
   position : relative;
@@ -2147,7 +2147,7 @@ button, html [type='button'], [type='reset'], [type='submit'] {
      -moz-transition : color 0.2s;
        -o-transition : color 0.2s;
           transition : color 0.2s;
-  color : #2DCEE3;
+  color : #349622;
   border : none;
 }
 .nav.nav-tabs.nav-underline .nav-item a.nav-link.dropdown-toggle::after {
@@ -2167,7 +2167,7 @@ button, html [type='button'], [type='reset'], [type='submit'] {
           transform : translate3d(0, 0, 0);
 }
 .nav.nav-tabs.nav-underline .nav-item a.nav-link:hover, .nav.nav-tabs.nav-underline .nav-item a.nav-link:focus {
-  color : #2DCEE3;
+  color : #349622;
 }
 .nav.nav-tabs.nav-underline .nav-item a.nav-link:before {
   position : absolute;
@@ -2175,7 +2175,7 @@ button, html [type='button'], [type='reset'], [type='submit'] {
   right : 0;
   width : 100%;
   height : 4px;
-  background : #2DCEE3;
+  background : #349622;
   content : '';
   -webkit-transition : -webkit-transform 0.3s;
      -moz-transition :    -moz-transform 0.3s;

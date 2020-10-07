@@ -1,8 +1,8 @@
-<div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
-    <div class="main-menu-content">
-      <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-        <li class=" nav-item"><a href="/"><i class="ft-home"></i><span class="menu-title" data-i18n="">Administración</span></a>
-          <ul class="menu-content">
+<div style="color: white; background-color: #5C8293  !important;"class="btn_azul main-menu menu-fixed menu-dark menu-accordion menu-shadow" >
+    <div class="main-menu-content btn_azul" style="color: white; background-color: #5C8293  !important;">
+      <ul style="color: white; background-color: #5C8293  !important;" class="btn_azul navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+        <li style="color: white; background-color: #5C8293  !important;" class="btn_azul nav-item"><a href="/"><i class="ft-home"></i><span class="menu-title" data-i18n="">Administración</span></a>
+          <ul style="color: white; background-color: #5C8293  !important;" class="btn_azul menu-content">
             <li class="{{ Request::is('clientes*') ? 'active nav-item' : '' }}"><a class="menu-item" href="{!! route('clientes.index') !!}">Participantes</a></li>
             <li class="{{ Request::is('proyectos*') ? 'active' : '' }}"><a href="{!! route('proyectos.index') !!}">Proyectos</a></li>
             <li class="{{ Request::is('fabricantes*') ? 'active nav-item' : '' }}"><a class="menu-item" href="{!! route('fabricantes.index') !!}">Fabricantes</a></li>

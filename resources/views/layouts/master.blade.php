@@ -34,6 +34,7 @@
   <!-- END Page Level CSS-->
   <!-- BEGIN Custom CSS-->
   <link rel="stylesheet" type="text/css" href="{{ url('assets/css/style.css')}}">
+
 </head>
 
 <body class="horizontal-layout horizontal-menu 2-columns   menu-expanded" data-open="hover"
@@ -46,7 +47,7 @@ data-menu="horizontal-menu" data-col="2-columns">
           <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
           <li class="nav-item">
             <a class="navbar-brand" href="{{ route('home')}}">
-              <h2 class="brand-text">Hardware Collection</h2>
+              <h2 class="brand-text ">Hardware Collection</h2>
             </a>
           </li>
           <li class="nav-item d-md-none">
