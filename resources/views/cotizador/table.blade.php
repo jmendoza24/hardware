@@ -116,7 +116,7 @@
 				<select class="form-control form-control-sm" id="iva_usa" style="width: 55px;" onchange="guardar_descuentos()">
 					<option value="0" {{$cotizacion->iva_usa==0?'selected':''}}>0</option>
 					<option value="8" {{$cotizacion->iva_usa==8?'selected':''}}>8</option>
-					<option value="16" {{$cotizacion->iva_usa==16?'selected':''}} {{$cotizacion->iva_usa==0?'selected':''}} >16</option>
+					<option value="16" {{$cotizacion->iva_usa==16?'selected':''}}  >16</option>
 				</select>
 			</td>
 			<td class="text-right">
@@ -126,7 +126,7 @@
 				<select class="form-control form-control-sm pull-right" id="iva_mx" style="width: 55px;" onchange="guardar_descuentos()">
 					<option value="0" {{$cotizacion->iva_mx==0?'selected':''}}>0</option>
 					<option value="8" {{$cotizacion->iva_mx==8?'selected':''}}>8</option>
-					<option value="16"{{$cotizacion->iva_mx==16?'selected':''}} {{$cotizacion->iva_mx==0?'selected':''}}>16</option>
+					<option value="16"{{$cotizacion->iva_mx==16?'selected':''}}>16</option>
 				</select>
 			</td>
 			<td class="text-right">

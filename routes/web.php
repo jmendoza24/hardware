@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 /*
 |--------------------------------------------------------------------------
@@ -98,8 +98,7 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('revive_cotizacion/{id_cotizacion}', 'cotizadorController@revive_cotizacion')->name('cotizador.revive');
 	Route::get('elimina_cot', 'cotizadorController@elimina_cot');
 	Route::get('actualiza_cots', 'cotizadorController@actualiza_cots');
-
-
+	Route::get('guarda_cot_not', 'cotizadorController@guarda_cot_not');
 
 });
 

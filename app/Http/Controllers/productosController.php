@@ -91,6 +91,7 @@ class productosController extends AppBaseController
                             'dep9'=>'',
                             'backset'=>'',
                             'handing'=>'',
+                            'finish'=>'',
                             'calculo_codigo'=>'',
                             'exterior_tim_dep_1'=>'',
                             'sufijo'=>'',

@@ -1049,6 +1049,7 @@ function enviar_cotizacion(tipo){
         dataType: 'json',
         type:  'get',
         success:  function (response){  
+            window.location.href = '/cotizaciones_lista';
         }
     });  
 }

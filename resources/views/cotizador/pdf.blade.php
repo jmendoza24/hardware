@@ -12,9 +12,8 @@
      </tr> 
 </table>
 @if($tipo==1)
-<br><br> 
-
-<table style="width: 100%; font-size: 11px; font-family: sans-serif; border-collapse: collapse; color:#5C8293;" border="0">
+  <br><br> 
+  <table style="width: 100%; font-size: 11px; font-family: sans-serif; border-collapse: collapse; color:#5C8293;" border="0">
     <tr style="background: #D2D2D2;  text-align: center;">
         <td>ID HC</th>
         <td>Descripción</th>
@@ -61,13 +60,73 @@
         </tr>
   </table>
   @else
-    Tipo 2
+    <table style="width: 100%; font-size: 11px; font-family: sans-serif; border-collapse: collapse; color:#5C8293;" border="1">
+      <tr style="background: #D2D2D2;  text-align: center;">
+          <td>ID HC</th>
+          <td>Descripción</th>
+          <td>Piezas</th>
+          <td>P.U (P)</th>
+          <td>Subtotal</th>
+          <td>Subtotal(M)</th>
+          <td>Subtotal(I)</th>
+        </tr>
+        @php($subtotal = 0)
+        @php($subtotal_m = 0)
+        @php($subtotal_i = 0)
+          @foreach($productos2 as $productos2)
+            <tr>
+               <td>{{ $productos2->id_hc }}</td>
+               <td>{{ $productos2->descripcion }}</td>
+               <td style="text-align: center;">{{ $productos2->cantidad }}</td>
+               <td style="text-align: right">$ {{ number_format($productos2->pvc ,2)}}</td>
+               <td style="text-align: right">$ {{ number_format($productos2->cantidad*$productos2->pvc ,2)}} </td>
+               <td style="text-align: right">$ {{ number_format($productos2->mod_precio_unit * $productos2->mod_cantidad,2)}}</td>
+               <td style="text-align: right">$ {{ number_format($productos2->inst_precio_unit * $productos2->inst_cantidad,2)}} </td>
+            </tr>
+            @php($subtotal += $productos2->cantidad*$productos2->pvc)
+            @php($subtotal_m += $productos2->mod_precio_unit * $productos2->mod_cantidad)
+            @php($subtotal_i += $productos2->inst_precio_unit * $productos2->inst_cantidad)
+          @endforeach
+          @php($desc = ($subtotal * $cot->descuento_usa)/100)
+          @php($iva = (($subtotal -$desc) * $cot->iva_usa)/100)
+          <tr>
+            <td colspan="4"></td>
+            <td style="text-align: right; ">(USD) $ {{ number_format($subtotal,2)}}</td>
+            <td style="text-align: right; ">(USD) $ {{ number_format($subtotal_m,2)}}</td>
+            <td style="text-align: right; ">(MX) $ {{ number_format($subtotal_i,2)}}</td>
+          </tr>
+          <tr>
+            <td colspan="4"></td>
+            <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">Subtotal</td>
+            <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">(USD) $ {{ number_format($subtotal_m + $subtotal,2)}}</td>
+            <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">(MX) $ {{ number_format($subtotal_i,2)}}</td>
+          </tr>
+          @if($cot->descuento_usa > 0)
+          <tr>
+            <td colspan="4"></td>
+            <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Descuento</td>
+            <td style="text-align: right;">$ {{ number_format($desc,2) }}</td>
+          </tr>
+          @endif
+          @if($cot->iva_usa > 0)
+          <tr>
+            <td colspan="4"></td>
+            <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Iva</td>
+            <td style="text-align: right;">$ {{number_format($iva,2)}}</td>
+          </tr>
+          @endif
+          <tr style="font-size: 14px; font-weight: bold;">
+            <td colspan="4"></td>
+            <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Total</td>
+            <td style="text-align: right;">$ {{ number_format(($subtotal - $desc) + $iva,2)}}</td>
+          </tr>
+    </table>
   @endif
   <br><br>
 <table   style="width: 100%; font-family: sans-serif; text-align: justify; font-size: 11px; color:#5C8293;">
    <tr style="" >
       <td valign="top"> <?php echo nl2br($data->condiciones); ?></td>
-      <td valign="top" style="color: red;"> <?php echo nl2br($data->notas); ?></td>
+      <td valign="top" style="color: red;"> <?php echo nl2br($cot->notas); ?></td>
       <td valign="top" style="display: none;"> <?php echo nl2br($data->cuentas); ?></td>
    </tr>
 </table>
