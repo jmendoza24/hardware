@@ -578,7 +578,7 @@ WHERE d.id = 264
                   ->leftjoin('cliente_participantes as cp','cp.id','c.cliente')
                   ->leftjoin('tbl_clientes as tc','tc.id_cliente','cp.id_cliente')
                   ->where('c.id',$num_cotizacion)
-                  ->selectraw('p.nombre AS proyecto,cp.*,tc.empresa,c.id AS id_cot,c.created_at, c.iva_usa , c.descuento_usa, c.notas')
+                  ->selectraw('p.nombre AS proyecto,cp.*,tc.empresa,c.id AS id_cot,c.created_at, c.iva_usa , c.descuento_usa, c.notas,descuento_mx,iva_mx')
                   ->get();
         $cot=$cot[0];
 

@@ -8,11 +8,13 @@
 	}
 	.color{border: 2px solid white; color: gray; text-align: right;}
 </style>
-	<table class="table table-striped small row-border" style="font-size: 13px;" id="" border="0">
+	<table class="table table-striped small row-border" style="font-size: 13px;" id="" border="1">
 		<tr style="border-top: 2px solid white; background:white;">
-			<td colspan="11"><span class="badge badge-primary">Cotización {{ $num_cotizacion}}</span></td>
-			<td colspan="3">Modificación</td>
-			<td colspan="3">Instalación</td>
+			<td colspan="6"><span class="badge badge-primary">Cotización {{ $num_cotizacion}}</span></td>
+			<td colspan="3" style="background: #67A957;" class="text-center white"><b>Producto</b></td>
+			<td colspan="3"></td>
+			<td colspan="3" style="background: #67A957;" class="text-center white"><b>Modificación</b></td>
+			<td colspan="3" style="background: #67A957;" class="text-center white"><b>Instalación</b></td>
 		</tr>
 		<tr style="border:2px solid #67A957; color: white; background:#67A957; ">
 			<td></td>
@@ -134,10 +136,10 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="background:#67A957; color: white; ">Total:</td>
-			<td ></td>
-			<td class="text-right">${{number_format($desc_usa + (($desc_usa * $cotizacion->iva_usa)/100),2)}}</td>
-			<td colspan="2" ></td>
-			<td class="text-right">${{number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)}}</td>
+			<td class="text-center white" style="background:#67A957;">Total:</td>
+			<td style="background:#67A957;" class="white">USD:</td>
+			<td class="text-right white" style="background:#67A957;">${{number_format($desc_usa + (($desc_usa * $cotizacion->iva_usa)/100),2)}}</td>
+			<td colspan="2" style="background:#67A957;" class="text-right  white"> + MXN:</td>
+			<td class="text-right white" style="background:#67A957;">${{number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)}}</td>
 		</tr>
 	</table>

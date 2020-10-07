@@ -47,7 +47,7 @@ class productosController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $productos = db::select('SELECT p.id,p.item, p.descripcion, p.sufijo, p.codigo_sistema, f.fabricante, c.catalogo, fa.familia, ca.categoria, s.subcategoria, p.pagina
+        $productos = db::select('SELECT p.id,p.item, p.descripcion, f.abrev, p.sufijo, p.codigo_sistema, f.fabricante, c.catalogo, fa.familia, ca.categoria, s.subcategoria, p.pagina
                                 FROM productos p
                                 LEFT JOIN tbl_fabricantes f ON f.id_fabricante = p.fabricante
                                 LEFT JOIN catalogos c ON c.id = p.catalogo

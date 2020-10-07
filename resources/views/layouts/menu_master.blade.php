@@ -17,7 +17,7 @@
         </li>
         <li class="dropdown nav-item" data-menu="dropdown">
           <a class="dropdown-toggle nav-link" href="{{ route('home')}}" data-toggle="dropdown"><i class="ft-box"></i>
-            <span>Catalogos</span>
+            <span>Catálogos</span>
           </a>
           <ul class="dropdown-menu">
             <li class="{{ Request::is('catalogos*') ? 'active' : '' }}" data-menu=""><a class="dropdown-item" data-toggle="dropdown" href="{!! route('catalogos.index') !!}">Catalogos<submenu class="name"></submenu></a></li>
@@ -28,6 +28,9 @@
             <li class="{{ Request::is('selectores*') ? 'active' : '' }}" data-menu=""><a class="dropdown-item" data-toggle="dropdown" href="{!! route('selectores.index') !!}">Selectores<submenu class="name"></submenu></a></li>
             <li class="{{ Request::is('dependencia*') ? 'active' : '' }}" data-menu=""><a class="dropdown-item" data-toggle="dropdown" href="{!! route('dependencia.index') !!}">Dependecia vistas<submenu class="name"></submenu></a></li>
             <li class="{{ Request::is('costos*') ? 'active' : '' }}" data-menu=""><a class="dropdown-item" data-toggle="dropdown" href="{!! route('costos.index') !!}">Costos<submenu class="name"></submenu></a></li>
+            <li class="{{ Request::is('tipoClientes*') ? 'active' : '' }}"  data-menu=""><a class="dropdown-item" data-toggle="dropdown" href="{!! route('tipoClientes.index') !!}"><span>Tipo Clientes<submenu class="name"></submenu></span></a></li>
+            <li class="{{ Request::is('tipoProyectos*') ? 'active' : '' }}" data-menu=""><a class="dropdown-item" data-toggle="dropdown" href="{!! route('tipoProyectos.index') !!}"><span>Tipo Proyectos<submenu class="name"></submenu></span></a></li>
+            <li class="{{ Request::is('catalogos*') ? 'active' : '' }}"  data-menu=""><a class="dropdown-item" data-toggle="dropdown" href="{!! route('catalogos_generales') !!}"><span>Datos Generales<submenu class="name"></submenu></span></a></li>
           </ul>
         </li>
         <li class="dropdown nav-item" data-menu="dropdown">

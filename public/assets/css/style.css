@@ -151,3 +151,8 @@ textarea{resize: none;
     .fileinput-upload{
       display: none;
     }
+
+
+.main-menu.menu-dark .navigation > li.open > a{
+  color: #5C8293  !important
+}

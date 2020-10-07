@@ -28,7 +28,7 @@
                 </td>
                 <td>{{ $productos->pagina}}</td>
                 <td>{{ $productos->descripcion}}</td>
-                <td>{!! $productos->fabricante !!}</td>
+                <td>{!! $productos->abrev !!}</td>
                 <td>{!! $productos->catalogo !!}</td>
                 <td>{!! $productos->familia !!}</td>
                 <td>{!! $productos->categoria !!}</td>

@@ -10,9 +10,9 @@
             <li class="{{ Request::is('catalogos_download*') ? 'active' : '' }}"><a href="{!! route('catalogos_download.index') !!}"><span>Descarga catalogos</span></a></li>
           </ul>
         </li>
-        <li class=" nav-item"><a href="/"><i class="ft-box"></i><span class="menu-title" data-i18n="">Catalogos</span></a>
+        <li class=" nav-item"><a href="/"><i class="ft-box"></i><span class="menu-title" data-i18n="">Catálogos</span></a>
           <ul class="menu-content">
-            <li class="{{ Request::is('catalogos*') ? 'active' : '' }}"><a href="{!! route('catalogos.index') !!}"><span>Catalogos</span></a></li>
+            <li class="{{ Request::is('catalogos*') ? 'active' : '' }}"><a href="{!! route('catalogos.index') !!}"><span>Catálogos</span></a></li>
             <li class="{{ Request::is('subBaldwins*') ? 'active' : '' }}"><a href="{!! route('subBaldwins.index') !!}"><span>Baldwin</span></a></li>
             <li class="{{ Request::is('SubEmktek*') ? 'active' : '' }}"><a href="{!! route('subEmtek.index') !!}"><span>Emtek</span></a></li>
             <li class="{{ Request::is('sufijos*') ? 'active' : '' }}"><a href="{!! route('sufijos.index') !!}"><span>Sufijos</span></a></li>

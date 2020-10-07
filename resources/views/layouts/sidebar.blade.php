@@ -1,6 +1,6 @@
- <nav style="color: white; background-color: #349622  !important;" class="header-navbar navbar-expand-md navbar navbar-with-menu fixed-top navbar-semi-dark navbar-shadow">
-    <div class="navbar-wrapper"style="color: white; background-color: #349622  !important;">
-      <div class="navbar-header" style="color: white; background-color: #349622  !important;">
+ <nav style="color: white; background-color: #38445a  !important;" class="header-navbar navbar-expand-md navbar navbar-with-menu fixed-top navbar-semi-dark navbar-shadow">
+    <div class="navbar-wrapper"style="color: white; background-color: #38445a  !important;">
+      <div class="navbar-header" style="color: white; background-color: #38445a  !important;">
         <ul class="nav navbar-nav flex-row position-relative">
           <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
           <li class="nav-item mr-auto" >
@@ -23,7 +23,7 @@
               <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                 <span class="avatar avatar-online">
                   <img src="../../../app-assets/images/portrait/small/avatar-s-1.png" alt="avatar"><i></i></span>
-                <span class="user-name">
+                <span class="user-name white">
                     {{ Auth::user()->name}}
             </span>
               </a>

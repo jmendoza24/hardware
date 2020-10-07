@@ -13,6 +13,7 @@
                 <th>Cliente</th>
                 <th>Teléfono</th>
                 <th>Total</th>
+                <th>Total Instalación</th>
                 <th></th>
                 <th>Correo</th>
             </tr>
@@ -24,7 +25,8 @@
                     <td>{{$c->nombre}}</td>
                     <td>{{$c->contacto}}</td>
                     <td>{{$c->telefono}}</td>
-                    <td style="text-align: right">${{ number_format($c->total,2)}}</td>
+                    <td style="text-align: right">${{ number_format($c->total_usa,2)}}</td>
+                    <td style="text-align: right">${{ number_format($c->total_mx,2)}}</td>
                     <td>
                         <div class="btn-group">
                             <a class="btn btn-sm btn-outline-primary" href="{{ route('cotizador.revive',['id_cotizacion'=>$c->id])}}"><i class="fa fa-window-maximize"></i></a> &nbsp;
