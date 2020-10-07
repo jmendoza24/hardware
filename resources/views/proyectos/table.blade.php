@@ -1,6 +1,6 @@
 <table class="table table-bordered table-striped zero-configuration" id="proyectos-table">
     <thead>
-        <tr>
+        <tr class="gris_tabla">
             <th>Proyecto</th>
             <th>Nombre Corto</th>
             <th>Dirección</th>
@@ -12,7 +12,7 @@
     </thead>
     <tbody>
     @foreach($proyectos as $proyectos)
-        <tr>
+        <tr class="">
             <td>{!! $proyectos->nombre !!}</td>
             <td>{!! $proyectos->nombre_corto !!}</td>
             <td>{!! $proyectos->direccion !!}</td>
