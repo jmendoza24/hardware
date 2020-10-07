@@ -945,6 +945,7 @@
     <a href="{!! route('productos.index') !!}" class="btn btn-secondary">Cancelar</a>
 </div>
 <hr>
+@if($editar ==1)
 <div class="row">
     <div class="col-md-12">
         <span class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" onclick="ver_catalogo(17,0,1,{{$productos->id}})" data-toggle="modal" data-backdrop="false" data-target="#primary">+ Foto</span> 
@@ -954,3 +955,4 @@
         @include('productos.imagenes')
     </div>
 </div>
+@endif
