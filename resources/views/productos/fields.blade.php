@@ -12,7 +12,7 @@
 
     <!-- Catalogo Field -->
     <div class="form-group col-sm-6">
-        {!! Form::label('catalogo', 'Catalogo:') !!}
+        {!! Form::label('catalogo', 'Catálogo:') !!}
         <select class="form-control" name="catalogo" id="catalogo" onchange="obtiene_catalogo(2,'familia')">
             <option value="">Seleccione una opcion</option>
             @foreach($catalogos  as $c)
@@ -23,7 +23,7 @@
 
     <!-- Pagina Field -->
     <div class="form-group col-sm-6">
-        {!! Form::label('pagina', 'Pagina:') !!}
+        {!! Form::label('pagina', 'Página:') !!}
         {!! Form::text('pagina', null, ['class' => 'form-control']) !!}
     </div>
 
@@ -40,7 +40,7 @@
 
     <!-- Categoria Field -->
     <div class="form-group col-sm-6">
-        {!! Form::label('categoria', 'Categoria:') !!}
+        {!! Form::label('categoria', 'Categoría:') !!}
         <select class="form-control" name="categoria" id="categoria" onchange="obtiene_catalogo(4,'subcategoria')">
             <option value="">Seleccione una opcion</option>
             @foreach($categoria  as $c)
@@ -51,7 +51,7 @@
 
     <!-- Subcategoria Field -->
     <div class="form-group col-sm-6">
-        {!! Form::label('subcategoria', 'Subcategoria:') !!}
+        {!! Form::label('subcategoria', 'Subcategoría:') !!}
         <select class="form-control" name="subcategoria" id="subcategoria" onchange="obtiene_catalogo(5,'disenio')">
             <option value="">Seleccione una opcion</option>
             @foreach($subcategorias  as $s)
@@ -122,19 +122,19 @@
 <div class="row">
     <!-- Descripcion Field -->
     <div class="form-group col-sm-6">
-        {!! Form::label('descripcion', 'Descripcion:') !!}
+        {!! Form::label('descripcion', 'Descripción:') !!}
         {!! Form::text('descripcion', null, ['class' => 'form-control']) !!}
     </div>
 
     <!-- Descripcion Mtk Field -->
     <div class="form-group col-sm-6">
-        {!! Form::label('descripcion_mtk', 'Descripcion Mtk:') !!}
+        {!! Form::label('descripcion_mtk', 'Descripción Mtk:') !!}
         {!! Form::text('descripcion_mtk', null, ['class' => 'form-control']) !!}
     </div>
 
     <!-- Especificacion Field -->
     <div class="form-group col-sm-6">
-        {!! Form::label('especificacion', 'Especificacion:') !!}
+        {!! Form::label('especificacion', 'Especificación:') !!}
         {!! Form::text('especificacion', null, ['class' => 'form-control']) !!}
     </div>
 </div>

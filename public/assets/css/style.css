@@ -21,7 +21,7 @@ textarea{resize: none;
 	}
 
     .verde{
-      background-color: #349622;
+      background-color: #404E67;
       color: white;
     }
     .azul{
@@ -65,7 +65,7 @@ textarea{resize: none;
       color: #D2D2D2;
     }
     .texto_verde{
-      color: #349622;
+      color: #404E67;
     }
     .texto_negro{
       color: #D2D2D2;
@@ -73,7 +73,7 @@ textarea{resize: none;
 
     
    .btn_verde{
-         background-color: #349622  !important;
+         background-color: #404E67  !important;
          color: white;
 
     }
@@ -115,7 +115,7 @@ textarea{resize: none;
     }
         
 
-    .btn_verde:hover { color: white; background-color: #349622}
+    .btn_verde:hover { color: white; background-color: #404E67}
     .btn_rojo:hover { color: white; }
     .btn_gris:hover { color: white; }
     .btn_azul:hover { color: white; background-color: #5C8293}
