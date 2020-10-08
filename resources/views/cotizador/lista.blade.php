@@ -12,8 +12,8 @@
                 <th>Proyecto</th>
                 <th>Cliente</th>
                 <th>Teléfono</th>
-                <th>Total</th>
-                <th>Total Instalación</th>
+                <th>Total USD</th>
+                <th>Total MXN</th>
                 <th></th>
                 <th>Correo</th>
             </tr>
