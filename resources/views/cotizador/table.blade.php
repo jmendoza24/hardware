@@ -8,11 +8,11 @@
 	}
 	.color{border: 2px solid white; color: gray; text-align: right;}
 </style>
-	<table class="table table-striped small row-border" style="font-size: 13px;" id="" border="1">
+	<table class="table table-striped small row-border" style="font-size: 13px;" id="" border="0">
 		<tr style="border-top: 2px solid white; background:white;">
 			<td colspan="6"><span class="badge badge-primary">Cotización {{ $num_cotizacion}}</span></td>
 			<td colspan="3" style="background: #67A957;" class="text-center white"><b>Producto</b></td>
-			<td colspan="3"></td>
+			<td colspan="2"></td>
 			<td colspan="3" style="background: #67A957;" class="text-center white"><b>Modificación</b></td>
 			<td colspan="3" style="background: #67A957;" class="text-center white"><b>Instalación</b></td>
 		</tr>

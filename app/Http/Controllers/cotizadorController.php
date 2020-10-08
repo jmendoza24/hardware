@@ -592,7 +592,7 @@ WHERE d.id = 264
       $data=$data[0];
       $tipo = $request->id_tipo;
 
-      //return view('cotizador.pdf',compact('cot','productos2','data','tipo'));
+      //return view('cotizador.pdf',compapulct('cot','productos2','data','tipo'));
       $pdf = \PDF::loadView('cotizador.pdf',compact('cot','productos2','data','tipo'))->setPaper('A4','portrait');
       return  $pdf->download('Cotizacion_'.$num_cotizacion.'.pdf');
     }
