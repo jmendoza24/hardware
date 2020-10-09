@@ -46,7 +46,7 @@
 		<td>
 			{{$info_adic->sufijo}}
 		</td>
-		<td>@if(sizeof($fotos))<a href="/storage/{{$fotos[0]->foto }}" target="_blank">Ver Foto</a>@else Sin fotos @endif</td>
+		<td>@if($fotos->foto != '')<a href="/storage/{{$fotos->foto }}" target="_blank">Ver Foto</a>@else Sin fotos @endif</td>
 	</tr>
 	<tr>
 		<td>Diseño:</td>

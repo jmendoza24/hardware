@@ -730,8 +730,10 @@ function guarda_info_cotizacion(id){
 function guardar_descuentos(){
   var parameters = {'descuento_mx':$("#descuento_mx").val(),
                     'descuento_usa':$("#descuento_usa").val(),
+                    'descuento_mod':$("#descuento_mod").val(),
                     'iva_mx':$("#iva_mx").val(),
-                    'iva_usa':$("#iva_usa").val()}
+                    'iva_usa':$("#iva_usa").val(),
+                    'iva_mod':$("#iva_mod").val()}
   $.ajax({
         data: parameters,
         url: '/api/v1/guardar_descuentos',

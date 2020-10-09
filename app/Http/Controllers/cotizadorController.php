@@ -280,8 +280,10 @@ class cotizadorController extends AppBaseController
         cotizador::where('id',$num_cotizacion)
                     ->update(['descuento_mx'=> $request->descuento_mx ==''? 0 : str_replace('%', '', $request->descuento_mx),
                               'descuento_usa'=>$request->descuento_usa ==''? 0 : str_replace('%', '', $request->descuento_usa),
+                              'descuento_mod'=>$request->descuento_mod ==''? 0 : str_replace('%', '', $request->descuento_mod),
                               'iva_mx'=> $request->iva_mx == '' ? 0 : $request->iva_mx,
-                              'iva_usa'=> $request->iva_usa == '' ? 0 : $request->iva_usa]);
+                              'iva_usa'=> $request->iva_usa == '' ? 0 : $request->iva_usa,
+                              'iva_mod'=> $request->iva_mod == '' ? 0 : $request->iva_mod]);
 
         $filtro->id_cotizacion = $num_cotizacion;
         $productos = $filtro->detalle_cotizacion($filtro);
@@ -549,15 +551,47 @@ WHERE d.id = 264
         //$item = $request->item;
         $informacion = informacion_productos::where('id_item',$producto->id_item)->get();
         $informacion = $informacion[0];
+
+        if($producto->id >0){
+            $fotos = db::select('SELECT f.*
+                                  FROM productos p
+                                  INNER JOIN tbl_fotos_productos f ON f.id_producto = p.id
+                                  WHERE p.id_item = '.$producto->id_item);
+
+            if(sizeof($fotos)>0){
+              $fotos = array('foto'=>$fotos[0]->foto);
+              $fotos = (object)$fotos; 
+              }else if(sizeof($fotos) ==0 ){
+
+                $fotos = db::table('tbl_fotos_productos as p')
+                            ->join('productos as t','t.id','p.id')
+                            ->where('t.id_item',$producto)
+                            ->selectraw('p.*')
+                            ->get();
+
+                //$fotos = tbl_fotos_productos::where('id_producto',$items[0]->id)->get();   
+                if(sizeof($fotos) ==0 ){
+
+                  $fotos = array('foto'=>'imagen-no-disponible.png');
+                  $fotos = (object)$fotos;  
+                }
+              }
+           }else{
+              $fotos = array('foto'=>'imagen-no-disponible.png');
+              $fotos = (object)$fotos;
+           }    
+
+
+
         /**
         $info_adic = db::select('call proceso_informacion_producto('.$producto->id.','.$request->id_detalle.')');
         $info_adic = $info_adic[0]; */
-        $options = view('cotizador.detalle_head',compact('informacion','info_adic','producto'))->render();
+        $options = view('cotizador.detalle_head',compact('informacion','info_adic','producto','fotos'))->render();
         
         $productos = $filtro->detalle_cotizacion($filtro);   
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0]; 
-        $options2 = view('cotizador.table',compact('productos','cotizacion'))->render();
+        $options2 = view('cotizador.table',compact('productos','cotizacion','num_cotizacion'))->render();
 
         $arr = array('options'=>$options,
                      'options2'=>$options2);
