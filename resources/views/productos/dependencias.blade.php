@@ -5,7 +5,7 @@
     <div class="col-md-12" style="">
      	<table class="table table-bordered table-striped">
      		<thead>
-	     		<tr>
+	     		<tr class="gris_tabla">
 	     			<th>Vistas</th>
 	     		</tr>
      		</thead>

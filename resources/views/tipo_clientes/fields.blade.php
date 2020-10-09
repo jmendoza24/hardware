@@ -7,6 +7,6 @@
 	    <input type="text" name="tipo_cliente" value="{{$tipo_cliente->tipo_cliente}}" class="form-control requerido">
 	</div>
     <div class="form-group col-sm-12">
-        <span class="btn btn-primary pull-right" onclick="guarda_catalogo(13,{{$tipo_cliente->id}},1,'tabla_catalogos')">Guardar</span>
+        <span class="btn btn_azul pull-right" onclick="guarda_catalogo(13,{{$tipo_cliente->id}},1,'tabla_catalogos')">Guardar</span>
     </div>
 </form>

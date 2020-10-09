@@ -1,6 +1,6 @@
 <table  class="table table-striped table-bordered file-export small" id="formulas-table">
     <thead>
-        <tr>
+        <tr class="gris_tabla">
             <th>Id</th>
             <th>Catálogo</th>
             <th>Formula</th>

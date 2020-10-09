@@ -1,6 +1,6 @@
 <table class="table table-striped  table-bordered">
     <thead>
-        <tr>
+        <tr class="gris_tabla">
             <th>Fabricante</th>
             <th>Factor HC</th>
             <th>L1 Walk <br> in/Showroom </th>

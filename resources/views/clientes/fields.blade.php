@@ -95,7 +95,7 @@
 <hr>
 <div class="row">
     <div class="col-md-12">
-        <span class="btn btn-outline-primary pull-right" onclick="ver_catalogo(15,0,1,{{$clientes->id_cliente}})" data-toggle="modal" data-backdrop="false" data-target="#primary">+ Contacto</span>
+        <span class="btn btn-outline-primary btn_azul pull-right" onclick="ver_catalogo(15,0,1,{{$clientes->id_cliente}})" data-toggle="modal" data-backdrop="false" data-target="#primary">+ Contacto</span>
     </div>
     <br><br><br>
     <div class="col-md-12" id="tabla_catalogos">
@@ -105,6 +105,6 @@
 @endif
 <div class="form-group col-sm-12" style="text-align: right;">
     <hr>
-    {!! Form::submit('Guardar', ['class' => 'btn btn-primary']) !!}
-    <a href="{!! route('clientes.index') !!}" class="btn btn-warning">Cancelar</a>
+    {!! Form::submit('Guardar', ['class' => 'btn btn_azul']) !!}
+    <a href="{!! route('clientes.index') !!}" class="btn btn_rojo">Cancelar</a>
 </div>

@@ -22,7 +22,7 @@
     <div class="col-md-12" >
         <table class="table table-bordered table-striped">
             <thead>
-                <tr>
+                <tr class="gris_tabla">
                     <td>Empresa</td>
                     <td>Nombre</td>
                     <td>Teléfono</td>

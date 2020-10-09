@@ -7,7 +7,7 @@
 <div class="col-md-12" id="cotiza_table">
 	  <table class="table table-striped table-bordered zero-configuration responsive" id="tablac">
         <thead>
-            <tr>
+            <tr class="gris_tabla">
                 <th>Cotización</th>
                 <th>Proyecto</th>
                 <th>Cliente</th>
@@ -29,8 +29,8 @@
                     <td style="text-align: right">${{ number_format($c->total_mx,2)}}</td>
                     <td>
                         <div class="btn-group">
-                            <a class="btn btn-sm btn-outline-primary" href="{{ route('cotizador.revive',['id_cotizacion'=>$c->id])}}"><i class="fa fa-window-maximize"></i></a> &nbsp;
-                            <span class="btn btn-sm btn-outline-danger" onclick="eliminar_cotizacion({{ $c->id}})"><i class="fa fa-trash"></i></span>
+                            <a class="btn btn-sm btn-outline-primary btn_azul" href="{{ route('cotizador.revive',['id_cotizacion'=>$c->id])}}"><i class="fa fa-window-maximize"></i></a> &nbsp;
+                            <span class="btn btn-sm btn-outline-danger btn_rojo" onclick="eliminar_cotizacion({{ $c->id}})"><i class="fa fa-trash"></i></span>
                         </div>
                     </td>
                     <td>{{$c->correo}}</td>

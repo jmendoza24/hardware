@@ -7,7 +7,7 @@
     		<label>Catalogos</label>
     		<table class="table table-striped table-bordered file-export2" id="items-table">
 			    <thead>
-			        <tr>
+			        <tr class="gris_tabla">
 			            <th>IdFabricante</th>
 			            <th>Fabricante</th>
 			            <th>IdCatalogos</th>
@@ -50,7 +50,7 @@
     		<label>Sufijos</label>
     		<table class="table table-striped table-bordered file-export2" id="items-table">
 			    <thead>
-			        <tr>
+			        <tr class="gris_tabla">
 			        	<th>IdCategoria</th>
 			        	<th>Categoria</th>
 			        	<th>IdSubcategoria</th>
@@ -61,7 +61,7 @@
 			    </thead>
 			    <tbody>
 			    @foreach($sufijos as $sufijo)
-		            <tr>
+		            <tr class="gris_tabla">
 		                <td>{{ $sufijo->id_categoria }}</td>
 		                <td>{{ $sufijo->categoria }}</td>
 		                <td>{{ $sufijo->id_subcategoria}}</td>
@@ -77,7 +77,7 @@
     		<label>Grupos</label>
     		<table class="table table-striped table-bordered file-export2" id="items-table">
 			    <thead>
-			        <tr>
+			        <tr class="gris_tabla">
 			            <th>IdFabricante</th>
 			            <th>Fabricantes</th>
 			            <th>Idgrupo</th>

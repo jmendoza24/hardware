@@ -1,6 +1,6 @@
 <table class="table table-striped  table-bordered setting-defaults" id="productos-table">
         <thead>
-            <tr>
+            <tr class="gris_tabla">
                 <th>Fabricante</th>
                 <th>Catalogo</th>
                 <th>Pagina</th>

@@ -19,6 +19,6 @@
 <!-- Submit Field -->
 </div>
 <div class="form-group col-sm-12" style="text-align: right;">
-    <button class="btn btn-primary" onclick="guarda_generales()">Guardar</button>
-        <a href="#" class="btn btn-secondary">Cancelar</a>
+    <button class="btn btn_azul" onclick="guarda_generales()">Guardar</button>
+        <a href="#" class="btn btn_rojo">Cancelar</a>
     </div>

@@ -120,6 +120,6 @@
 
 <div class="form-group col-sm-12" style="text-align: right;">
     <hr>
-    {!! Form::submit('Guardar', ['class' => 'btn btn-primary']) !!}
-    <a href="{!! route('fabricantes.index') !!}" class="btn btn-warning">Cancelar</a>
+    {!! Form::submit('Guardar', ['class' => 'btn btn_azul']) !!}
+    <a href="{!! route('fabricantes.index') !!}" class="btn btn_rojo">Cancelar</a>
 </div>

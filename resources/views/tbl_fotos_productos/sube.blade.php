@@ -17,7 +17,7 @@
       </div>
       <div class="col-md-12" style="text-align: right;">
         <hr>
-        <input type="submit" name="upload" id="upload" class="btn btn-primary" value="Guardar">
+        <input type="submit" name="upload" id="upload" class="btn btn_azul" value="Guardar">
       </div>
     </div>
 </form>

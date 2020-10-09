@@ -1,6 +1,6 @@
 <table class="table table-striped  table-bordered file-export">
     <thead>
-        <tr>
+        <tr class="gris_tabla">
             <th class="hide">Id</th>
             <th>Fabricante</th>
             <th>Contacto</th>
@@ -20,8 +20,8 @@
             <td>
                 {!! Form::open(['route' => ['fabricantes.destroy', $fabricantes->id_fabricante], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    <a href="{!! route('fabricantes.edit', [$fabricantes->id_fabricante]) !!}" class='btn btn-float btn-outline-success btn-round'><i class="fa fa-edit"></i></a>
-                    {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-float btn-outline-danger btn-round', 'onclick' => "return confirm('Estas seguro deseas eliminar este fabricante?')"]) !!}
+                    <a href="{!! route('fabricantes.edit', [$fabricantes->id_fabricante]) !!}" class='btn btn-float btn-outline-success btn_azul btn-round'><i class="fa fa-edit"></i></a>
+                    {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-float btn_rojo btn-outline-danger btn-round', 'onclick' => "return confirm('Estas seguro deseas eliminar este fabricante?')"]) !!}
                 </div>
                 {!! Form::close() !!}
             </td>

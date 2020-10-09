@@ -1,6 +1,6 @@
 <table class="table table-striped table-bordered file-export" id="disenios-table">
     <thead>
-        <tr>
+        <tr class="gris_tabla">
             <th>Id</th>
             <th>Subcategoria</th>
             <th>Diseño</th>
@@ -15,8 +15,8 @@
             <td><a href="{{ route('items.lista',['disenio'=>$disenio->id])}}"><b>{!! $disenio->disenio !!}</b></a></td>
             <td>
                 <div class='btn-group'>
-                    <span onclick="ver_catalogo(9,{{$disenio->id}},2)" class='btn btn-float btn-outline-success btn-round' data-toggle="modal" data-backdrop="false" data-target="#primary"><i class="fa fa-edit"></i></span>
-                    <span onclick="elimina_catalogo(9,{{$disenio->id}},'disenios',{{ $disenio->id_fabricante}},{{$disenio->catalogo}},{{ $disenio->id_familia}},{{$disenio->categoria}},{{$disenio->idsubcategoria}})" class='btn btn-float btn-outline-danger btn-round'><i class="fa fa-trash"></i></span>    
+                    <span onclick="ver_catalogo(9,{{$disenio->id}},2)" class='btn btn-float btn_azul btn-outline-success btn-round' data-toggle="modal" data-backdrop="false" data-target="#primary"><i class="fa fa-edit"></i></span>
+                    <span onclick="elimina_catalogo(9,{{$disenio->id}},'disenios',{{ $disenio->id_fabricante}},{{$disenio->catalogo}},{{ $disenio->id_familia}},{{$disenio->categoria}},{{$disenio->idsubcategoria}})" class='btn btn-float btn-outline-danger btn_rojo btn-round'><i class="fa fa-trash"></i></span>    
                 </div>
             </td>
         </tr>

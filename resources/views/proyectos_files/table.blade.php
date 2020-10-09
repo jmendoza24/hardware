@@ -1,7 +1,7 @@
 <div class="table-responsive">
     <table class="table" id="proyectosFiles-table">
         <thead>
-            <tr>
+            <tr class="gris_tabla">
                 <th>Id Proyecto</th>
         <th>Tipo File</th>
         <th>File</th>
