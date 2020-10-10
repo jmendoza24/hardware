@@ -4,7 +4,7 @@
 @section('content')
     <div class="col-md-12">    
     <h1 class="pull-right">
-       <span class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" onclick="ver_catalogo(9,0,1,{{ $catalogo->id_fabricante}},{{ $catalogo->catalogo}},{{$catalogo->familia}},{{$catalogo->categoria}},{{$catalogo->id}})" data-toggle="modal" data-backdrop="false" data-target="#primary">+ Diseño</span>
+       <span class="btn btn-primary btn_azul pull-right" style="margin-top: -10px;margin-bottom: 5px" onclick="ver_catalogo(9,0,1,{{ $catalogo->id_fabricante}},{{ $catalogo->catalogo}},{{$catalogo->familia}},{{$catalogo->categoria}},{{$catalogo->id}})" data-toggle="modal" data-backdrop="false" data-target="#primary">+ Diseño</span>
     </h1>
     </div>
     <br><br><br>

@@ -1,6 +1,6 @@
 <table class="table table-striped  table-bordered file-export"> 
     <thead>
-        <tr>
+        <tr class="gris_tabla">
             
             <th>ID</th>
             <th>Empresa</th>
@@ -27,8 +27,8 @@
                 {!! Form::open(['route' => ['clientes.destroy', $clientes->id_cliente], 'method' => 'delete']) !!}
                 <div class='btn-group text-center'>
                     <!--<a href="{!! route('clientes.show', [$clientes->id_cliente]) !!}" class='btn btn-float btn-outline-secondary btn-round'><i class="fa fa-eye"></i></a>--->
-                    <a href="{!! route('clientes.edit', [$clientes->id_cliente]) !!}" class='btn btn-float btn-outline-success btn-round'><i class="fa fa-edit"></i></a>
-                    {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-float btn-outline-danger btn-round', 'onclick' => "return confirm('Estas seguro deseas eliminar este cliente?')"]) !!}
+                    <a href="{!! route('clientes.edit', [$clientes->id_cliente]) !!}" class='btn btn-float btn-outline-success btn_azul btn-round'><i class="fa fa-edit"></i></a>
+                    {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-float btn-outline-danger btn_rojo btn-round', 'onclick' => "return confirm('Estas seguro deseas eliminar este cliente?')"]) !!}
                 </div>
                 {!! Form::close() !!}
             </td>

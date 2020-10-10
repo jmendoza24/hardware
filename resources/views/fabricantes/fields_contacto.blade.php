@@ -20,6 +20,6 @@
 </div>
 <hr>
 <div class="form-group col-sm-12" style="text-align: right;">
-	<button class="btn btn-primary" onclick="guarda_contacto({{ $contacto->id_fabricante}},{{$contacto->id_contacto}})">Guardar</button>
+	<button class="btn btn_azul" onclick="guarda_contacto({{ $contacto->id_fabricante}},{{$contacto->id_contacto}})">Guardar</button>
     <!--<a href="{!! route('fabricantes.index') !!}" class="btn btn-warning">Cancelar</a>-->
 </div>

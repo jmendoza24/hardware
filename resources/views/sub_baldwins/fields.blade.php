@@ -24,6 +24,6 @@
 
 	<hr>
 	<div class="form-group col-sm-12">
-		<span class="btn btn-primary pull-right" onclick="guarda_catalogo(6,{{$selectores->id}},1,'baldwins')">Guardar</span>
+		<span class="btn btn_azul pull-right" onclick="guarda_catalogo(6,{{$selectores->id}},1,'baldwins')">Guardar</span>
 	</div>
 </form> 

@@ -1,6 +1,6 @@
 <table class="table table-striped responsive  table-bordered scroll-vertical" id="productos-table">
         <thead>
-            <tr>
+            <tr class="gris_tabla">
                 <th></th>
                 <th>Página</th>
                 <th>Descripción</th>

@@ -41,10 +41,10 @@
         </select>
     </div>
     <div class="col text-right" style="margin-top: 10px;">
-        <span style="color: white" class=" btn btn-outline-primary btn-primary btn-sm" onclick="baja_cotiza_pdf({{ $cotizacion->id }})">PDF</span>
+        <span style="color: white" class=" btn btn-outline-primary btn_azul btn-sm" onclick="baja_cotiza_pdf({{ $cotizacion->id }})">PDF</span>
         <!--<span class="btn btn-outline-primary btn-sm">XLS</span>--->
-        <span style="color: white"  class="btn btn-outline-primary btn-primary btn-sm" onclick="enviar_cotizacion(1)">Guardar</span>
-        <span style="color: white" class="btn btn-outline-primary btn-primary btn-sm" onclick="enviar_cotizacion(2)">Enviar</span>
+        <span style="color: white"  class="btn btn-outline-primary btn_azul btn-sm" onclick="enviar_cotizacion(1)">Guardar</span>
+        <span style="color: white" class="btn btn-outline-primary btn_azul btn-sm" onclick="enviar_cotizacion(2)">Enviar</span>
 
     </div>
 </div>

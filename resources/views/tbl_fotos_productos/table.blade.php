@@ -1,6 +1,6 @@
 <table class="table" id="tblFotosProductos-table">
         <thead>
-            <tr>
+            <tr class="gris_tabla">
                 <th>Foto</th>
                 <th></th>
             </tr>
@@ -12,8 +12,8 @@
                 <td style="text-align: right">
                     {!! Form::open(['route' => ['tblFotosProductos.destroy', $tblFotosProductos->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
-                        <a href="{{ route('tblFotosProductos.show', [$tblFotosProductos->id]) }}" class='btn btn-primary btn-xs'><i class="fa fa-eye"></i></a>
-                        <a href="#" onclick="borra_foto({{ $tblFotosProductos->id }})" class='btn btn-danger btn-xs'><i class="fa fa-trash"></i></a>
+                        <a href="{{ route('tblFotosProductos.show', [$tblFotosProductos->id]) }}" class='btn btn_azul btn-xs'><i class="fa fa-eye"></i></a>
+                        <a href="#" onclick="borra_foto({{ $tblFotosProductos->id }})" class='btn btn-danger btn_rojo btn-xs'><i class="fa fa-trash"></i></a>
 
                     </div>
                     {!! Form::close() !!}    

@@ -22,8 +22,8 @@
             <td>
                 {!! Form::open(['route' => ['proyectos.destroy', $proyectos->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    <a href="{!! route('proyectos.edit', [$proyectos->id]) !!}" class='btn btn-float btn-outline-success btn-round'><i class="fa fa-edit"></i></a>
-                    {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-float btn-outline-danger btn-round', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                    <a href="{!! route('proyectos.edit', [$proyectos->id]) !!}" class='btn btn-float btn-outline-success btn_azul btn-round'><i class="fa fa-edit"></i></a>
+                    {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-float btn-outline-danger btn_rojo btn-round', 'onclick' => "return confirm('Are you sure?')"]) !!}
                 </div>
                 {!! Form::close() !!}
             </td>

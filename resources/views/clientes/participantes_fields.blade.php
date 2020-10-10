@@ -33,6 +33,6 @@
     </div>
     <hr>
     <div class="form-group col-sm-12">
-        <span class="btn btn-primary pull-right" onclick="guarda_catalogo(15,{{$participantes->id}},1,'tabla_catalogos')">Guardar</span>
+        <span class="btn btn_azul pull-right" onclick="guarda_catalogo(15,{{$participantes->id}},1,'tabla_catalogos')">Guardar</span>
     </div>
 </form>
