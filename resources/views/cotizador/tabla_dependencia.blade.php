@@ -27,7 +27,7 @@
 		?>
 		<tr>
 			<td>
-				{{$d->catagolo}}
+				{{$d->catagolo}} 
 			</td>
 			<td>
 				<?php
@@ -35,7 +35,7 @@
 				 	/**if(count($items)==1){
 					  	$items1 = $items[0] !='' ? explode('.',($items[0])) : array();
 					} */
-				?>
+				?> 
 				@if($d->id_catalogo == 12 || $d->id_catalogo == 18)
 				<input type="text" id="item_{{$d->id_catalogo}}" style="width: 100px;" class="form-control form-control-sm" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}})">
 				@else
@@ -49,7 +49,6 @@
 						@endforeach
 					</select>		
 				@endif
-			 	
 			</td>
 			<td>
 				<?php 
@@ -84,7 +83,7 @@
 					<?php $sufijos = $d->sufijos_gral !='' ? explode(',',($d->sufijos_gral)) : array(); ?>
 					
 					@if(in_array($d->id_catalogo, $elementos) && strtolower($d->sufijo) != 'xxx')
-					<label id="sufijo_{{$d->id_catalogo}}">{{$d->sufijo}}</label>
+					<label id="sufijo_{{$d->id_catalogo}}">{{ $d->sufijo != 0? $d->sufijo :''}}</label>
 					@else 
 					<label id="sufijo_{{$d->id_catalogo}}">-</label>
 					@endif

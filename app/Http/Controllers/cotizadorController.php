@@ -218,6 +218,13 @@ class cotizadorController extends AppBaseController
                                   FROM productos p
                                   INNER JOIN tbl_fotos_productos f ON f.id_producto = p.id
                                   WHERE p.id_item = '.$producto->id_item);
+        
+        if(sizeof($fotos) ==0){
+          $fotos = array('foto'=>'imagen-no-disponible.png');
+          $fotos = (object)$fotos;
+        }else{
+          $fotos = $fotos[0];
+        }
 
         $informacion = informacion_productos::where('id_item',$producto->id_item)->get();
 
@@ -228,6 +235,7 @@ class cotizadorController extends AppBaseController
                             ->selectraw('id_detalle,sum(lp * ctd ) as sum_lp, sum(phc * ctd ) as sum_phc, sum(pvc * ctd) as sum_pvc')
                             ->groupby('id_detalle')
                             ->get();
+
         if(sizeof($suma_dependencias)>0){
           $suma_dependencias = $suma_dependencias[0];
         }else{
@@ -297,12 +305,15 @@ class cotizadorController extends AppBaseController
     
     function guarda_datos(Request $request){
         $num_cotizacion = $request->session()->get('num_cotizacion');
+    
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
+        
         $cotizacion = $cotizacion[0];
+
         $lista  = $cotizacion->lista_precio ==''?1:$cotizacion->lista_precio;
 
         $item = explode('.', $request->item);
-        $sufijo = isset($item[2]) ? $item[2] :'';
+        $sufijo = isset($item[2]) ? $item[2] :null;
 
         items_productos::where('id',$request->id)
                         ->update(['item'=>$item[0],
@@ -314,10 +325,12 @@ class cotizadorController extends AppBaseController
         $datos = items_productos::where('id',$request->id)->get();
         $datos = $datos[0];
         $producto = productos::where('item',$item[0]);
-        
         if(isset($item[2])){
             $producto = $producto->where('sufijo',$item[2]);
+        }else{
+          $producto = $producto->where('sufijo',null);
         }
+        
 
         $producto = $producto->get();
         
@@ -367,7 +380,7 @@ class cotizadorController extends AppBaseController
             // }else if($request->id_catalogo==10){
             //     $accion = $producto->dep10_libre_accion;
             // }
-
+            
             items_productos::where('id',$request->id)
                             ->update(['idfab'=> str_replace('xxx', $request->color, $producto->codigo_sistema),
                                       'descripcion'=>$producto->descripcion,
@@ -396,7 +409,6 @@ class cotizadorController extends AppBaseController
                             ->selectraw('id_detalle,sum(lp * ctd) as sum_lp, sum(phc * ctd) as sum_phc, sum(pvc * ctd) as sum_pvc')
                             ->groupby('id_detalle')
                             ->get();
-
             if(sizeof($suma_dependencias)>0){
               $suma_dependencias = $suma_dependencias[0];
             }else{
@@ -406,7 +418,6 @@ class cotizadorController extends AppBaseController
                                           'sum_pvc'=>0);
               $suma_dependencias = (object)$suma_dependencias;
             }
-
 
             $options = view('cotizador.tabla_dependencia',compact('producto','dependencias','suma_dependencias','num_cotizacion'))->render();
             $arr = array('options'=>$options,

@@ -38,17 +38,3 @@
   </div>
 
 
-
-
-
-
-
-
-
-
-
-
-<li class="{{ Request::is('tblFotosProductos*') ? 'active' : '' }}">
-    <a href="{{ route('tblFotosProductos.index') }}"><i class="fa fa-edit"></i><span>Tbl Fotos Productos</span></a>
-</li>
-

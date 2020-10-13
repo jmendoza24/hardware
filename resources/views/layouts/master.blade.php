@@ -40,7 +40,7 @@
 <body class="horizontal-layout horizontal-menu 2-columns   menu-expanded" data-open="hover"
 data-menu="horizontal-menu" data-col="2-columns">
 @if (!Auth::guest())
-<nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-static-top navbar-dark bg-gradient-x-grey-blue navbar-border navbar-brand-left">
+<nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-static-top navbar-dark bg-gradient-x-grey-blue navbar-border navbar-brand-center">
     <div class="navbar-wrapper">
       <div class="navbar-header">
         <ul class="nav navbar-nav flex-row">
