@@ -370,6 +370,16 @@ class cotizadorController extends AppBaseController
                 $accion = $producto->blocking_dep7_accion;
             }else if($request->id_catalogo==8){
                 $accion = $producto->turn_knob8_accion;
+            }else if($request->id_catalogo==13){
+                $accion = $producto->dep_rossetes_accion;
+            }else if($request->id_catalogo==14){
+                $accion = $producto->dep_latches_accion;
+            }else if($request->id_catalogo==15){
+                $accion = $producto->dep_adaptor_accion;
+            }else if($request->id_catalogo==16){
+                $accion = $producto->dep_spindle_accion;
+            }else if($request->id_catalogo==17){
+                $accion = $producto->dep_extension_accion;
             }else if(in_array($request->id_catalogo,$arr)){
               $accion = 1;
             }else{
@@ -771,7 +781,6 @@ WHERE d.id = 264
         cotizador::where('id',$request->id_cot)
                   ->update(['notas'=>$request->nota]);
 
-        return 1;
 
     }
     

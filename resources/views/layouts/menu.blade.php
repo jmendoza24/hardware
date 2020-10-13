@@ -26,7 +26,7 @@
 
           </ul>
         </li>
-        <li class="{{ Request::is('productos*') ? 'active' : '' }}"><a href="{!! route('productos.index') !!}"><i class="ft-align-justify"></i><span>Productos</span></a></li>
+        <li class=" nav-item {{ Request::is('productos*') ? 'active' : '' }}"><a href="{!! route('productos.index') !!}"><i class="ft-align-justify"></i><span class="menu-title" data-i18n="">Productos</span></a></li>
         <li class=" nav-item"><a href="/"><i class="ft-server"></i><span class="menu-title" data-i18n="">Cotizaciones</span></a>
           <ul class="menu-content">
             <li class="{{ Request::is('cotizador*') ? 'active' : '' }}"><a href="{!! route('cotizador.index') !!}"><span>Cotizador</span></a></li>

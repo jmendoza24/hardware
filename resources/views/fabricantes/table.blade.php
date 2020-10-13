@@ -5,7 +5,7 @@
             <th>Fabricante</th>
             <th>Contacto</th>
             <th>Correo</th>
-            <th>Telefono</th>
+            <th>Teléfono</th>
             <th></th>
         </tr>
     </thead>
