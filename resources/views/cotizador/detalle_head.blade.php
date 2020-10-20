@@ -1,19 +1,28 @@
+<style type="text/css">
+	.gris_tabla{color: #5C8293; }
+</style>
 <table class="table small table-striped table-bordered">
 	<tr>
 		<td colspan="4" style="text-align: right;"></td>
-		<td> IdFab: {{ str_replace('xxx', $info_adic->finish,  $producto->codigo_sistema)}}</td>
+		<td class="gris_tabla"> IdFab: </td>
+		<td>{{ str_replace('xxx', $info_adic->finish,  $producto->codigo_sistema)}}</td>
+		<td style="text-align:right">${{ number_format($detalle->lp,2)}}</td>
+		<td style="text-align:right">${{ number_format($detalle->phc,2)}}</td>
+		<td style="text-align:right">${{ number_format($detalle->pvc,2)}}</td>
 	</tr>
 	<tr>
-		<td>Fabricante:</td>
+		<td class="gris_tabla">Fabricante:</td>
 		<td>{{ $informacion->fabricante}}</td>
-		<td>Item:</td>
+		<td class="gris_tabla">Item:</td>
 		<td>{{$informacion->item}}</td>
-		<td>Página:{{$producto->pagina}}</td>
+		<td class="gris_tabla">Página:</td>
+		<td>{{$producto->pagina}}</td>
+		<td colspan="3" rowspan="4"></td>
 	</tr>
 	<tr>
-		<td>Categoria:</td>
+		<td class="gris_tabla">Categoria:</td>
 		<td>{{ $informacion->categoria}}</td>
-		<td>Finish:</td>
+		<td class="gris_tabla">Finish:</td>
 		<td>
 			<?php $finish_1 = $info_adic->finish_1 !='' ? explode(',',($info_adic->finish_1)) : array();
 				  $finish_2 = $info_adic->finish_2 !='' ? explode(',',($info_adic->finish_2)) : array();
@@ -36,32 +45,32 @@
 					@endforeach
 			</select>
 		</td>
-		<td>Nota: {{$producto->nota}}</td>
+		<td class="gris_tabla">Nota: </td>
+		<td>{{$producto->nota}}</td>
 	</tr>
 	<tr>
-		<td>Sub. Categoria:</td>
+		<td class="gris_tabla">Sub. Categoria:</td>
 		<td>{{ $informacion->subcategoria}}</td>
 		<?php # $sufijo = $info_adic->sufijo !='' ? explode(',',($info_adic->sufijo)) : array();?>
-		<td>Sufijo:</td>
+		<td class="gris_tabla">Sufijo:</td>
 		<td>
 			{{$info_adic->sufijo}}
 		</td>
+		<td class="gris_tabla">Foto:</td>
 		<td>@if($fotos->foto != '')<a href="/storage/{{$fotos->foto }}" target="_blank">Ver Foto</a>@else Sin fotos @endif</td>
 	</tr>
 	<tr>
-		<td>Diseño:</td>
+		<td class="gris_tabla">Diseño:</td>
 		<td>{{ $informacion->disenio}}</td>
-		<td>Handing</td>
+		<td class="gris_tabla">Handing</td>
 		<td>{{ $info_adic->handing}}</td>
-		<td>
-			Descripción: <br/>
-			{{$producto->descripcion}}
-		</td>
+		<td class="gris_tabla">Descripción:</td>
+		<td>{{$producto->descripcion}}</td>
 	</tr>
 	<tr>
-		<td>Descripción:</td>
+		<td class="gris_tabla">Descripción:</td>
 		<td></td>
-		<td>Style</td>
+		<td class="gris_tabla">Style</td>
 		<td>
 			<?php 
 			  $style_1 = $info_adic->style_1 !='' ? explode(',',($info_adic->style_1)) : array();
@@ -103,6 +112,29 @@
 				@endforeach
 			</select>
 		</td>
-		<td></td>
+		<td colspan="2" style="background: #5C8293; border-left: 1px solid #5C8293; color: white; text-align: right; ">
+			<span class="pull-left"><?php 
+				switch ($cotizacion->lista_precio) {
+				  case 1:
+				    echo "L1 Walkin/Showroom";
+				    break;
+				  case 2:
+				    echo "L2 Carpinteros/Instaladores";
+				    break;
+				  case 3:
+				    echo "L3 Arq./Diseñadores";
+				    break;
+				  case 4:
+				    "L4 Proy.Grandes/Hoteles";
+				    break;
+				  default:
+				    echo "Sin lista de precio";
+				}
+			?>
+			</span>
+			<b class="pull-right">Total:</b></td>
+		<td style="background: #5C8293; border-left: 2px solid #5C8293; color: white; text-align: right;">${{ number_format($detalle->lp + $suma_dependencias->sum_lp,2)}}</td>
+		<td style="background: #5C8293; border-left: 2px solid #5C8293; color: white; text-align: right;">${{ number_format($detalle->phc + $suma_dependencias->sum_phc,2)}}</td>
+		<td style="background: #5C8293; border-left: 2px solid #5C8293; color: white; text-align: right;">${{ number_format($detalle->pvc + $suma_dependencias->sum_pvc,2)}}</td>
 	</tr>
 </table>

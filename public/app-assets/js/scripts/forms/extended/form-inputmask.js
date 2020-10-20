@@ -43,7 +43,7 @@
 						            alias: "numeric",
 						            placeholder: "0",
 						            autoGroup: !0,
-						            digits: 2,
+						            digits: 3,
 						            digitsOptional: !1,
 						            clearMaskOnLostFocus: !1,
 						            max:10

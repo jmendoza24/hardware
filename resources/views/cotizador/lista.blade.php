@@ -4,10 +4,14 @@
 <style type="text/css">
     .td-2px{padding: 2px;}
 </style>
+<div class="col-md-12">
+    <a class="btn btn-primary pull-right" href="{!! route('cotizador.index') !!}">+ Cotización</a>
+</div>
+<br><br>
 <div class="col-md-12" id="cotiza_table">
 	  <table class="table table-striped table-bordered zero-configuration responsive" id="tablac">
         <thead>
-            <tr class="gris_tabla">
+            <tr style="background: #5C8293; color: white;">
                 <th>Cotización</th>
                 <th>Proyecto</th>
                 <th>Cliente</th>

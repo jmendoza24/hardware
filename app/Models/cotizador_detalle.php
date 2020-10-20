@@ -13,7 +13,7 @@ class cotizador_detalle extends Model
 
     function detalle_cotizacion($cotizacion){
 
-        return db::select('SELECT d.*, p.id as idproducto, p.codigo_sistema, p.costo_1, i.item as item_nom, s.selector, sum_lp, sum_phc, sum_pvc
+        return db::select('SELECT d.*, p.id as idproducto, p.codigo_sistema, p.costo_1, i.item as item_nom, s.selector, sum_lp, sum_phc, sum_pvc, p.info
                             FROM cotizacion_detalle AS d
                             INNER JOIN productos as p on p.id = d.item
                             INNER JOIN items  AS i on i.id = p.id_item

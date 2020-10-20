@@ -375,8 +375,12 @@ class catalogosController extends AppBaseController
         }else if($request->catalogo ==16){
           $filtro = new cotizador_detalle;
           
-          $filtro->id_cotizacion = $request->id;
-          $cotizacion = cotizador::where('id',$request->id)->get();
+          $filtro->id_cotizacion = $request->id; 
+          $cotizacion = db::table('cotizacions as c')
+                        ->leftjoin('cliente_participantes as cl','cl.id','c.cliente')
+                        ->leftjoin('proyectos as p','p.id','c.proyecto')
+                        ->selectraw('c.*, cl.contacto as nombre_cliente, p.nombre_corto')
+                        ->where('c.id',$request->id)->get();
           $cotizacion = $cotizacion[0];
           $productos = $filtro->detalle_cotizacion($filtro);
           $options =  view('cotizador.cotizacion_detalle',compact('productos','cotizacion'))->render();

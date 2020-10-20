@@ -14,9 +14,9 @@
 			<td colspan="3" style="background: #67A957;" class="text-center white"><b>Producto USD:</b></td>
 			<td colspan="2"></td>
 			<td colspan="3" style="background: #67A957; border-left: 3px solid white;" class="text-center white"><b>Modificación USD:</b></td>
-			<td colspan="3" style="background: #67A957; border-left: 3px solid white;" class="text-center white"><b>Instalación MXN</b></td>
+			<td colspan="3" style="background: #67A957; border-left: 3px solid white;" class="text-center white"><b>Instalación MXN:</b></td>
 		</tr>
-		<tr style="border:2px solid #67A957; color: white; background:#67A957; ">
+		<tr style="border:2px solid #67A957; color: white; background:#67A957; text-align: center; ">
 			<td></td>
 			<td>Item</td>
 			<td>Posición</td>
@@ -26,7 +26,7 @@
 			<td>LP</td>
 			<td>PHC</td>
 			<td>PVC</td>
-			<td>Ctd</td>
+			<td>Ctd</td> 
 			<td>Total</td> 
 			<td style="border-left: 3px solid white;">PU</td>
 			<td>Ctd</td>
@@ -62,17 +62,21 @@
 			<td>
 				{{ str_replace('xxx', $p->finish, $p->codigo_sistema)}}
 				<span class="pull-right btn-group">
-					<span class="btn btn-sm btn-outline-primary" data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer; font-size: 12px;" onclick="agregar_dependencia({{$p->idproducto}},{{$p->id}})"><i class="fa fa-info"></i></span>
+					<span class="btn btn-sm btn-outline-primary" data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer; font-size: 12px; border-right: 1px solid white;" onclick="agregar_dependencia({{$p->idproducto}},{{$p->id}})"><i class="fa fa-info"></i> <b>{{$p->info}}</b></span>
 					<span class="btn btn-sm btn-outline-success" onclick="agrega_producto({{ $p->idproducto}})"><i class="fa fa-plus"></i></span>
 				</span>
 			</td>
-			<td>{{ number_format($p->lp + $p->sum_lp,2)}}</td>
+			<td class="text-right">${{ number_format($p->lp + $p->sum_lp,2)}}</td>
+			<td class="text-right">${{ number_format($p->phc + $p->sum_phc,2)}}</td>
+			@php($suma_pv = $p->pvc + $p->sum_pvc)
+			<td class="text-right">${{ number_format($suma_pv,2)}}</td>
+			{{-- <td>{{ number_format($p->lp + $p->sum_lp,2)}}</td>
 			<td>{{ number_format($p->phc + $p->sum_phc,2)}}</td>
-			<td>{{ number_format($p->pvc + $p->sum_pvc,2)}}</td>
+			<td>{{ number_format($p->pvc + $p->sum_pvc,2)}}</td> --}}
 			<td>
 				<input type="text" id="pro_cant_{{$p->id}}" value="{{$p->cantidad}}" class="form-control form-control-sm cantidad-mask text-right"  onchange="guarda_info_cotizacion({{$p->id}})" style="width: 50px;">
 			</td>
-			<td class="text-right"> <label > ${{ number_format(($p->pvc * $p->cantidad) + $p->sum_pvc,2)}}</label></td>
+			<td class="text-right"> <label > ${{ number_format($suma_pv* $p->cantidad,2)}}</label></td>
 			<td style="border-left: 3px solid white;"><input type="text" id="mod_pre_unit_{{$p->id}}" value="{{$p->mod_precio_unit}}" class="form-control form-control-sm p_unit-mask text-right" onchange="guarda_info_cotizacion({{$p->id}})" style="width: 90px;"></td>
 			<td><input type="text" id="mod_cant_{{$p->id}}" class="form-control form-control-sm cantidad-mask text-right" value="{{$p->mod_cantidad}}" onchange="guarda_info_cotizacion({{$p->id}})" style="width: 50px;"></td>
 			<td class="text-right"><label>${{ number_format($p->mod_precio_unit*$p->mod_cantidad,2)}}</label></td>
@@ -80,7 +84,7 @@
 			<td><input type="text" id="inst_cant_{{$p->id}}" class="form-control form-control-sm cantidad-mask text-right" value="{{$p->inst_cantidad}}" onchange="guarda_info_cotizacion({{$p->id}})" style="width: 50px;"></td>
 			<td class="text-right"><label>${{ number_format($p->inst_precio_unit*$p->inst_cantidad,2)}}</label></td>
 		</tr>
-		@php($subtotal_dl   += ($p->pvc * $p->cantidad) + $p->sum_pvc)
+		@php($subtotal_dl   += $suma_pv * $p->cantidad)
 		@php($subtotal_dl_1 += $p->mod_precio_unit * $p->mod_cantidad)
 		@php($subtotal_ps   += $p->inst_precio_unit * $p->inst_cantidad)
 		@endforeach
@@ -90,7 +94,7 @@
 			<td colspan="2" class="text-right">${{number_format($subtotal_dl,2)}}</td>
 			<td colspan="3" class="text-right" style="border-left: 3px solid white;">${{number_format($subtotal_dl_1,2)}}</td>
 			<td></td>
-			<td colspan="3" class="text-right"  style="border-left: 3px solid white;">${{number_format($subtotal_ps,2)}}</td>
+			<td colspan="3" class="text-right">${{number_format($subtotal_ps,2)}}</td>
 		</tr>
 		<tr>
 			<td style="background:#67A957; color: white;" colspan="2">Descuento:</td>
@@ -107,7 +111,7 @@
 				@php($desc_mod = $subtotal_dl_1 - ($subtotal_dl_1 * $cotizacion->descuento_mod)/100)
 				${{number_format($desc_mod,2)}}
 			</td>
-			<td colspan="2"  style="border-left: 3px solid white;"><input type="text" id="descuento_mx" class="form-control form-control-sm desc-mask pull-right" value="{{$cotizacion->descuento_mx}}" style="width: 55px;" onchange="guardar_descuentos()"></td>
+			<td colspan="2"  ><input type="text" id="descuento_mx" class="form-control form-control-sm desc-mask pull-right" value="{{$cotizacion->descuento_mx}}" style="width: 55px;" onchange="guardar_descuentos()"></td>
 			<td class="text-right" >
 				<span style="color: red;">-${{number_format(($subtotal_ps * $cotizacion->descuento_mx)/100,2)}}</span><br>
 				@php($desc_mx = $subtotal_ps - ($subtotal_ps * $cotizacion->descuento_mx)/100)
@@ -151,7 +155,7 @@
 			<td class="text-left white" style="background:#67A957;" colspan="2">Total:</td>
 			<td style="background:#67A957;" class="white text-right" colspan="2" > ${{number_format($desc_usa + (($desc_usa * $cotizacion->iva_usa)/100),2)}}</td>
 			<td style="background:#67A957; border-left: 3px solid white;"  class="white text-right" colspan="3"> ${{number_format($desc_mod + (($desc_mod * $cotizacion->iva_mod)/100),2)}}</td>
-			<td  style="background:#67A957;border-left: 3px solid white;" class="text-right  white" colspan="3"> + MXN: ${{number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)}}</td>
+			<td  style="background:#67A957;border-left: 3px solid white;" class="text-right  white" colspan="3"> ${{number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)}}</td>
 		</tr>
 		<tr style="background:#5C8293; color: white;" class="text-right">
 			<td colspan="4"  >Gran Total:</td>
