@@ -332,7 +332,8 @@ class productosController extends AppBaseController
     }
 
     function productos_masivo(Request $request){
-        $productos = productos_temporal::get();
+        $productos = db::select('call procesos_masivo()');
+
         return view('productos.masivo',compact('productos'));
     }
 
