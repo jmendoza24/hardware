@@ -13,7 +13,7 @@
 	<tr>
 		<td class="gris_tabla">Fabricante:</td>
 		<td>{{ $informacion->fabricante}}</td>
-		<td class="gris_tabla">Item:</td>
+		<td class="gris_tabla">Item:</td> 
 		<td>{{$informacion->item}}</td>
 		<td class="gris_tabla">Página:</td>
 		<td>{{$producto->pagina}}</td>

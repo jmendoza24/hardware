@@ -233,7 +233,12 @@ class cotizadorController extends AppBaseController
 
         $informacion = informacion_productos::where('id_item',$producto->id_item)->get();
 
-        $informacion = $informacion[0];
+        if(sizeof($informacion)>0){
+          $informacion = $informacion[0];  
+        }else{
+          $$informacion = array();
+        }
+        
         $dependencias = items_productos::where('id_detalle',$request->id)->orderby('id_catalogo')->get();
 
         $suma_dependencias = items_productos::where([['id_detalle',$request->id],['accion',1]])
@@ -245,7 +250,7 @@ class cotizadorController extends AppBaseController
         $detalle = $detalle[0];
 
         if(sizeof($suma_dependencias)>0){
-          $suma_dependencias = $suma_dependencias[0];
+          $suma_dependencias = $suma_dependencias[0]; 
         }else{
           $suma_dependencias =  array('id_detalle' => $request->id,
                                       'sum_lp'=>0,
@@ -256,8 +261,12 @@ class cotizadorController extends AppBaseController
 
 
         $info_adic = db::select('call proceso_informacion_producto('.$item.','.$request->id.')');
+        if(sizeof($info_adic)>0){
+          $info_adic = $info_adic[0];  
+        }else{
+          $info_adic = array();
+        }
         
-        $info_adic = $info_adic[0];
 
         $options = view('cotizador.info_producto',compact('fotos','item','informacion','info_adic','producto','dependencias','suma_dependencias','detalle','cotizacion'))->render();
 

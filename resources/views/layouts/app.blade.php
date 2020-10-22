@@ -7,6 +7,7 @@
   <meta name="description" content="Hardware">
   <meta name="keywords" content="Hardware">
   <meta name="author" content="Hardware">
+  <meta name="author" content="HardwareCollection">
   <title>HC</title>
   <link rel="apple-touch-icon" href="{{ url('app-assets/images/ico/apple-icon-120.png')}}">
   <link rel="shortcut icon" type="image/x-icon" href="{{ url('app-assets/images/ico/favicon.ico')}}">
