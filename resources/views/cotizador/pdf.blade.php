@@ -21,7 +21,7 @@ $a[12] = "Diciembre";
      <tr style="background: #D2D2D2; color:#5C8293; font-size: 11px; padding-top: 3px;">
         <td>Proyecto: {{ $cot->proyecto }}<br> Participante: {{ $cot->contacto }}<br>Empresa: {{ $cot->empresa }}</td>
         <td>Correo:  {{ str_replace(';', ' ',  $cot->correo) }}<br>Teléfono: {{ $cot->telefono }}<br></td>
-        <td>Cotización válida  hasta {{ date("d",strtotime($cot->created_at)). ' de ' .$a[date("m",strtotime($cot->created_at))+1] . ' de '.date("Y",strtotime($cot->created_at))  }}
+        <td style="text-align: right;">Cotización válida  hasta <br/> {{ date("d",strtotime($cot->created_at)). ' de ' .$a[date("m",strtotime($cot->created_at))+1] . ' de '.date("Y",strtotime($cot->created_at))  }}
         </td> 
      </tr> 
 </table>
@@ -30,6 +30,7 @@ $a[12] = "Diciembre";
   <table style="width: 100%; font-size: 11px; font-family: sans-serif; border-collapse: collapse; color:#5C8293;" border="0">
     <tr style="background: #D2D2D2;  text-align: center;">
         <td>ID HC</th>
+        <td>Posición</td>  
         <td>Descripción</th>
         <td>Piezas</th>
         <td>P.U (P)</th>
@@ -39,6 +40,7 @@ $a[12] = "Diciembre";
         @foreach($productos2 as $productos2)
           <tr>
              <td>{{ $productos2->id_hc }}</td>
+             <td>{{ $productos2->posicion }}</td>
              <td>{{ $productos2->descripcion }}</td>
              <td style="text-align: center;">{{ $productos2->cantidad }}</td>
              <td style="text-align: right">$  {{ number_format($productos2->total_det ,2)}}</td>
@@ -50,28 +52,28 @@ $a[12] = "Diciembre";
         @php($desc = ($subtotal * $cot->descuento_usa)/100)
         @php($iva = (($subtotal -$desc) * $cot->iva_usa)/100)
         <tr>
-          <td colspan="3"></td>
-          <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Subtotal (USD)</td>
-          <td style="text-align: right;">$ {{ number_format($subtotal,2)}}</td>
+          <td colspan="4"></td>
+          <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Subtotal</td>
+          <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">$ {{ number_format($subtotal,2)}}</td>
         </tr>
         @if($cot->descuento_usa > 0)
         <tr>
-          <td colspan="3"></td>
+          <td colspan="4"></td>
           <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Descuento</td>
           <td style="text-align: right;">$ {{ number_format($desc,2) }}</td>
         </tr>
         @endif
         @if($cot->iva_usa > 0)
         <tr>
-          <td colspan="3"></td>
-          <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Iva</td>
+          <td colspan="4"></td>
+          <td style="text-align: right; background: #D2D2D2; color:#5C8293;">IVA</td>
           <td style="text-align: right;">$ {{number_format($iva,2)}}</td>
         </tr>
         @endif
         <tr style="font-size: 14px; font-weight: bold;">
-          <td colspan="3"></td>
-          <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Total</td>
-          <td style="text-align: right;">$ {{ number_format(($subtotal - $desc) + $iva,2)}}</td>
+          <td colspan="4"></td>
+          <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Total (USD)</td>
+          <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">$ {{ number_format(($subtotal - $desc) + $iva,2)}}</td>
         </tr>
   </table>
   @else
@@ -79,6 +81,7 @@ $a[12] = "Diciembre";
     <table style="width: 100%; font-size: 11px; font-family: sans-serif; border-collapse: collapse; color:#5C8293;" border="0">
       <tr style="background: #D2D2D2;  text-align: center;">
           <td>ID HC</th>
+          <td>Posición</th>
           <td>Descripción</th>
           <td>Piezas</th>
           <td>P.U (P)</th>
@@ -94,6 +97,7 @@ $a[12] = "Diciembre";
           @foreach($productos2 as $productos2)
             <tr>
                <td>{{ $productos2->id_hc }}</td>
+               <td>{{ $productos2->posicion }}</td>
                <td>{{ $productos2->descripcion }}</td>
                <td style="text-align: center;">{{ $productos2->cantidad }}</td>
                <td style="text-align: right">$ {{ number_format($productos2->total_det ,2)}}</td>
@@ -116,16 +120,16 @@ $a[12] = "Diciembre";
           @php($iva_mod = ($subtotal_m - $desc_mod ) * $cot->iva_mod/100)
           @php($iva_mx = ($subtotal_i - $desc_mx) * $cot->iva_mx / 100)
           <tr>
-            <td colspan="3"></td>
-            <td >Subtotal</td>
+            <td colspan="4"></td>
+            <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Subtotal</td>
             <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">${{ number_format($subtotal,2)}}</td>
             <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">${{ number_format($subtotal_m,2)}}</td>
             <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">${{ number_format($subtotal_i,2)}}</td>
           </tr>
           @if($cot->descuento_mod > 0 || $cot->descuento_usa > 0)
           <tr>
-            <td colspan="3"></td>
-            <td style="text-align: right;">Descuento(%)</td>
+            <td colspan="4"></td>
+            <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Descuento</td>
             <td style="text-align: right;">$ {{ number_format($desc,2) }}</td>
             <td style="text-align: right;">$ {{ number_format($desc_mod,2) }}</td>
             <td style="text-align: right;">$ {{ number_format($desc_mx,2) }}</td>
@@ -133,22 +137,22 @@ $a[12] = "Diciembre";
           @endif
           @if($cot->iva_mod > 0 || $cot->iva_usa >0)
           <tr>
-            <td colspan="3"></td>
-            <td style="text-align: right;">Iva(%)</td>
+            <td colspan="4"></td>
+            <td style="text-align: right; background: #D2D2D2; color:#5C8293;">IVA</td>
             <td style="text-align: right;">$ {{number_format($iva,2)}}</td>
             <td style="text-align: right;">$ {{number_format($iva_mod,2)}}</td>
             <td style="text-align: right;">$ {{number_format($iva_mx,2)}}</td>
           </tr>
           @endif
           <tr style="font-size: 14px; font-weight: bold;">
-            <td colspan="3"></td>
+            <td colspan="4"></td>
             <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Total</td>
             <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">$ {{ number_format(($subtotal - $desc) + $iva,2)}}</td>
             <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">$ {{ number_format(($subtotal_m - $desc_mod) + $iva_mod,2)}}</td>
             <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">$ {{ number_format(($subtotal_i - $desc_mx) + $iva_mx,2)}}</td>
           </tr>
           <tr style="font-size: 14px; font-weight: bold;">
-            <td colspan="3"></td>
+            <td colspan="4"></td>
             <td colspan="2" style="text-align: right; background: #D2D2D2; color:#5C8293;">Gran Total</td>
             <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">USD $ {{ number_format( (($subtotal - $desc) + $iva) + (($subtotal_m - $desc_mod) + $iva_mod) ,2)}}</td>
             <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">+ MXN $ {{ number_format(($subtotal_i - $desc_mx) + $iva_mx,2)}}</td>

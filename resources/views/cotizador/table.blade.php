@@ -10,7 +10,7 @@
 </style>
 	<table class="table table-striped small row-border" style="font-size: 13px;" id="" border="0">
 		<tr style="border-top: 2px solid white; background:white;">
-			<td colspan="6"><span class="badge badge-primary">Cotización {{ $num_cotizacion}}</span></td>
+			<td colspan="7"><span class="badge badge-primary">Cotización {{ $num_cotizacion}}</span></td>
 			<td colspan="3" style="background: #67A957;" class="text-center white"><b>Producto USD:</b></td>
 			<td colspan="2"></td>
 			<td colspan="3" style="background: #67A957; border-left: 3px solid white;" class="text-center white"><b>Modificación USD:</b></td>
@@ -20,6 +20,7 @@
 			<td></td>
 			<td>Item</td>
 			<td>Posición</td>
+			<td>Descripción</td>
 			<td>BKS</td>
 			<td>Door T.</td>
 			<td>Fab</td>
@@ -46,6 +47,9 @@
 			</td>
 			<td>
 				<input type="text" name="posicion_{{$p->id}}" value="{{ $p->posicion}}" id="posicion_{{$p->id}}" class="form-control form-control-sm" onchange="guarda_info_cotizacion({{$p->id}})">
+			</td>
+			<td>
+				<input type="text" name="descripcion_{{$p->id}}" value="{{ $p->descripcion}}" id="descripcion_{{$p->id}}" class="form-control form-control-sm" onchange="guarda_info_cotizacion({{$p->id}})">
 			</td>
 			<td>
 				@php($selectores = explode(',',$p->selector))
@@ -89,7 +93,7 @@
 		@php($subtotal_ps   += $p->inst_precio_unit * $p->inst_cantidad)
 		@endforeach
 		<tr>
-			<td colspan="7" class="color" rowspan="5"></td>
+			<td colspan="8" class="color" rowspan="5"></td>
 			<td colspan="2" style="background:#67A957; color: white; ">Subtotal:</td>
 			<td colspan="2" class="text-right">${{number_format($subtotal_dl,2)}}</td>
 			<td colspan="3" class="text-right" style="border-left: 3px solid white;">${{number_format($subtotal_dl_1,2)}}</td>

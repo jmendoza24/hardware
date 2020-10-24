@@ -628,6 +628,7 @@ function eliminar_clientes(id_proyecto, id){
 function guarda_info_cotizacion(id){
   var parameters = {'id':id,
                     'posicion':$("#posicion_"+id).val(),
+                    'descripcion':$("#descripcion_"+id).val(),
                     'bks':$("#bks_"+id).val(),
                     'door_t':$("#doort_"+id).val(),
                     'cantidad':$("#pro_cant_"+id).val(),

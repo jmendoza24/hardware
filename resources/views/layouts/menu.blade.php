@@ -26,9 +26,13 @@
 
           </ul>
         </li>
-        <li class=" nav-item {{ Request::is('productos*') ? 'active' : '' }}"><a href="{!! route('productos.index') !!}"><i class="ft-align-justify"></i><span class="menu-title" data-i18n="">Productos</span></a></li>
-        <li class=" nav-item {{ Request::is('cotizaciones_lista*') ? 'active' : '' }}"><a href="{!! route('cotizador.lista') !!}"><i class="ft-server"></i><span class="menu-title" data-i18n="">Cotizaciones</span></a></li>
-        
+        <li class=" nav-item {{ Request::is('productos*') ? 'active' : '' }}"><a href="{!! route('productos.index') !!}"><i class="ft-align-justify"></i><span class="menu-title" data-i18n="">Productos</span></a></li>        
+        <li class=" nav-item"><a href="/"><i class="ft-server"></i><span class="menu-title" data-i18n="">Cotizaciones</span></a>
+          <ul class="menu-content">
+            <li class="{{ Request::is('cotizador*') ? 'active' : '' }}"><a href="{!! route('cotizador.index') !!}"><span class="menu-title" data-i18n="">Cotizaciones</span></a></li>
+            <li class="{{ Request::is('cotizaciones_lista*') ? 'active' : '' }}"><a href="{!! route('cotizador.lista') !!}"><span class="menu-title" data-i18n="">Historico</span></a></li>
+          </ul>
+        </li>        
       </ul>
     </div>
   </div>

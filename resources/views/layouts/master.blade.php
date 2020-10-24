@@ -155,7 +155,7 @@ data-menu="horizontal-menu" data-col="2-columns">
   <div class="modal-dialog modal-xl" role="document" id="modal_primary">
     <div class="modal-content">
       <div class="modal-header bg-primary white">
-        <h4 class="modal-title" id="myModalLabel8">Hardware collection</h4>
+        <h4 class="modal-title" id="myModalLabel8">Hardware Collection</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

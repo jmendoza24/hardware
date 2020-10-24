@@ -9,7 +9,7 @@
 </div>
 <div class="col-md-12">
     <h4>Notas de cotización:</h4>
-    <textarea class="form-control" id="nota" onchange="guarda_cot_not({{ $cotizacion->id }})" name="nota">{{ $cotizacion->notas}}</textarea>
+    <textarea class="form-control" style="height: 300px;" id="nota" onchange="guarda_cot_not({{ $cotizacion->id }})" name="nota">{{ $cotizacion->notas}}</textarea>
 </div>
 <br>
 {{-- <br>

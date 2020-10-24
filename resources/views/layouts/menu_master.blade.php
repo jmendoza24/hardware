@@ -39,10 +39,15 @@
           </a>
         </li>
         <li class="dropdown nav-item" data-menu="dropdown">
-          <a class="nav-link" href="{{ route('cotizador.lista')}}"><i class="ft-server"></i>
+          <a class="dropdown-toggle nav-link" href="{{ route('home')}}" data-toggle="dropdown"><i class="ft-box"></i>
             <span>Cotizaciones</span>
           </a>
+          <ul class="dropdown-menu">
+            <li class="{{ Request::is('cotizador*') ? 'active' : '' }}" data-menu=""><a class="dropdown-item" data-toggle="dropdown" href="{!! route('cotizador.index') !!}">Cotizador<submenu class="name"></submenu></a></li>
+            <li class="{{ Request::is('cotizador.lista*') ? 'active' : '' }}" data-menu=""><a class="dropdown-item" data-toggle="dropdown" href="{!! route('cotizador.lista') !!}">Historico<submenu class="name"></submenu></a></li>
+          </ul>
         </li>
+        
       </ul>
     </div>
   </div>

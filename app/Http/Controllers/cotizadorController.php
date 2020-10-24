@@ -279,6 +279,7 @@ class cotizadorController extends AppBaseController
 
         cotizador_detalle::where('id',$request->id)
                     ->update(['posicion'=>$request->posicion,
+                              'descripcion'=>$request->descripcion,
                               'bks'=>$request->bks,
                               'door_t'=>$request->door_t,
                               'fabricante'=>$request->fabricante,
@@ -332,9 +333,10 @@ class cotizadorController extends AppBaseController
         $item = explode('.', $request->item);
         $sufijo = isset($item[2]) ? $item[2] :0;
         
+
         items_productos::where('id',$request->id)
                         ->update(['item'=>$item[0],
-                                 'sufijo'=>$sufijo,
+                                 'sufijo'=>$sufijo == '-'?0: $sufijo,
                                  'color'=>$request->color,
                                  'item_seleccionado'=>$request->item]);
 
@@ -672,8 +674,9 @@ WHERE d.id = 264
         $cot=$cot[0];
         $productos2 = db::select('SELECT pr.id AS id_hc, ifnull(d.pvc,0) + IFNULL(sum_pvc,0)  AS total_det,
                                          IFNULL(mod_precio_unit,0) * IFNULL(mod_cantidad,0) AS total_mod,
-                                         IFNULL(inst_precio_unit,0) * IFNULL(inst_cantidad,0) AS total_inst, pr.descripcion,
-                                         d.item,d.pvc,d.cantidad, d.mod_precio_unit , d.mod_cantidad, d.inst_precio_unit , d.inst_cantidad
+                                         IFNULL(inst_precio_unit,0) * IFNULL(inst_cantidad,0) AS total_inst,
+                                         d.item,d.pvc,d.cantidad, d.mod_precio_unit , d.mod_cantidad, d.inst_precio_unit , d.inst_cantidad,
+                                         d.descripcion, d.posicion
                                 FROM cotizacions c
                                 INNER JOIN cotizacion_detalle d ON d.id_cotizacion = c.id
                                 inner join productos AS  pr ON  pr.id = d.item
@@ -692,7 +695,7 @@ WHERE d.id = 264
       $data=$data[0];
       $tipo = $request->id_tipo;
 
-      //return view('cotizador.pdf',compact('cot','productos2','data','tipo'));
+      return view('cotizador.pdf',compact('cot','productos2','data','tipo'));
       $pdf = \PDF::loadView('cotizador.pdf',compact('cot','productos2','data','tipo'))->setPaper('A4','portrait');
       return  $pdf->download('Cotizacion_'.$num_cotizacion.'.pdf');
     }
