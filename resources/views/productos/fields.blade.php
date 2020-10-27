@@ -528,7 +528,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('exterior_tim_dep_1', 'D1 EXTERIOR TRIM:') !!}
         <select class="form-control" name="exterior_tim_dep_1">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==15 and $s->fabricante==77)
                 <option value="{{$s->id}}" {{$productos->exterior_tim_dep_1==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
@@ -556,7 +556,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('int_escutcheon_dep_2', 'D2 INTERIOR ESCUTCHEON:') !!}
         <select class="form-control" name="int_escutcheon_dep_2">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==17 and $s->fabricante==77)
                 <option value="{{$s->id}}" {{$productos->int_escutcheon_dep_2==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
@@ -581,7 +581,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('knob_lever_dep3', 'D3 KNOB/LEVER:') !!}
         <select class="form-control" name="knob_lever_dep3">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==19 and $s->fabricante==77)
                 <option value="{{$s->id}}" {{$productos->knob_lever_dep3==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
@@ -605,7 +605,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('spindle_dep4', 'D4 SPINDLE:') !!}
         <select class="form-control" name="spindle_dep4">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==21 and $s->fabricante==77)
                 <option value="{{$s->id}}" {{$productos->spindle_dep4==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
@@ -629,7 +629,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('cylinder_dep5', 'D5 CYLINDER:') !!}
         <select class="form-control" name="cylinder_dep5">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==23 and $s->fabricante==77)
                 <option value="{{$s->id}}" {{$productos->cylinder_dep5==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
@@ -653,7 +653,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('mortise_lock_dep6', 'D6 MORTISE LOCK:') !!}
         <select class="form-control" name="mortise_lock_dep6">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==25 and $s->fabricante==77)
                 <option value="{{$s->id}}" {{$productos->mortise_lock_dep6==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
@@ -677,7 +677,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('blocking_dep7', 'D7 BLOCKING RING:') !!}
         <select class="form-control" name="blocking_dep7">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==27 and $s->fabricante==77)
                 <option value="{{$s->id}}" {{$productos->blocking_dep7==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
@@ -701,7 +701,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('turn_knob8', 'D8 TURN KNOB/ADAPTOR:') !!}
         <select class="form-control" name="turn_knob8">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==29 and $s->fabricante==77)
                 <option value="{{$s->id}}" {{$productos->turn_knob8==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
@@ -725,7 +725,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('dep9', 'Knobs/Levers:') !!}
         <select class="form-control" name="dep9">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==31 and $s->fabricante==77)
                 <option value="{{$s->id}}" {{$productos->dep9==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
@@ -749,7 +749,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('dep10_libre', 'Spindles:') !!}
         <select class="form-control" name="dep10_libre">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==33 and $s->fabricante==77)
                 <option value="{{$s->id}}" {{$productos->dep10_libre==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
@@ -773,7 +773,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('dep11_libre', 'Cylinders:') !!}
         <select class="form-control" name="dep11_libre">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==35 and $s->fabricante==77)
                 <option value="{{$s->id}}" {{$productos->dep11_libre==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
@@ -797,7 +797,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('dep12_libre', 'D12 LIBRE:') !!}
         <select class="form-control" name="dep12_libre">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==37  and $s->fabricante==77)
                 <option value="{{$s->id}}"  {{$productos->dep12_libre==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
@@ -821,7 +821,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('dep_rossetes', 'D ROSETTES:') !!}
         <select class="form-control" name="dep_rossetes">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==39  and $s->fabricante==77)
                 <option value="{{$s->id}}" {{$productos->dep_rossetes==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
@@ -846,7 +846,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('dep_latches', 'D LATCHES:') !!}
         <select class="form-control" name="dep_latches">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==41 and $s->fabricante==77)
                 <option value="{{$s->id}}" {{$productos->dep_latches==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
@@ -870,7 +870,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('dep_adaptor', 'D ADAPTOR:') !!}
         <select class="form-control" name="dep_adaptor">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==43 and $s->fabricante==77)
                 <option value="{{$s->id}}" {{$productos->dep_adaptor==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
@@ -894,7 +894,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('dep_spindle', 'DS SPINDLE:') !!}
         <select class="form-control" name="dep_spindle">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==45 and $s->fabricante==77)
                 <option value="{{$s->id}}" {{$productos->dep_spindle==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
@@ -918,7 +918,7 @@
     <div class="form-group col-sm-6">
         {!! Form::label('dep_extension', 'D EXT. BUTTON:') !!}
         <select class="form-control" name="dep_extension">
-            <option value="182">Seleccione...</option>
+            <option value="">Seleccione...</option>
             @foreach($sub_baldwins as $s)
                 @if($s->variable==47 and $s->fabricante==77)
                 <option value="{{$s->id}}" {{$productos->dep_extension==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>

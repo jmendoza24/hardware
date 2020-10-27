@@ -1,7 +1,7 @@
 <div class="col-md-12">
 	<table class="table table-striped padding-table table-bordered">
 		<tr>
-			<td colspan="6"> </td>
+			<td colspan="7"> </td>
 			<td class="gris_tabla">Dependencia:</td>
 			<td style="text-align: right;">${{number_format($suma_dependencias->sum_lp,2)}}</td>
 			<td style="text-align: right;">${{number_format($suma_dependencias->sum_phc,2)}}</td>
@@ -14,10 +14,11 @@
 			<td>Sufijo</td>
 			<td>IdFab</td>
 			<td>Descripción</td>
-			<td>Ctd</td>
-			<td>LP</td>
-			<td>PHC</td>
-			<td>PVC</td>
+			<td style="width: 9%;">LP</td>
+			<td style="width: 9%;">Ctd</td>
+			<td style="width: 9%;">LP</td>
+			<td style="width: 9%;">PHC</td>
+			<td style="width: 9%;">PVC</td>
 		</tr>
 		@foreach($dependencias as $d)
 		
@@ -92,14 +93,15 @@
 			</td>
 			<td>{{$d->idfab}}</td>
 			<td>{{$d->descripcion}}</td>
+			<td style="text-align: right;">${{ number_format($d->lp,2)}}</td>
 			<td>
 				<input type="text" id="cantidad_{{$d->id_catalogo}}" class="form-control form-control-sm cantidad-mask text-right" style="width:80px" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}})" value="{{$d->ctd}}">
 			</td>
 			<td style="text-align: right;">
-				<label id="lp_{{$d->id_catalogo}}">{{number_format($d->lp,2)}}</label>
+				<label id="lp_{{$d->id_catalogo}}">{{number_format($d->lp * $d->ctd,2)}}</label>
 			</td>
-			<td style="text-align: right;"><label id="phc_{{$d->id_catalogo}}">{{number_format($d->phc,2)}}</label></td>
-			<td style="text-align: right;"><label id="lpv_{{$d->id_catalogo}}">{{number_format($d->pvc,2)}}</label></td>
+			<td style="text-align: right;"><label id="phc_{{$d->id_catalogo}}">{{number_format($d->phc * $d->ctd,2)}}</label></td>
+			<td style="text-align: right;"><label id="lpv_{{$d->id_catalogo}}">{{number_format($d->pvc * $d->ctd,2)}}</label></td>
 		</tr>
 		@endforeach
 	</table>

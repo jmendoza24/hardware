@@ -6,9 +6,9 @@
 		<td colspan="4" style="text-align: right;"></td>
 		<td class="gris_tabla"> IdFab: </td>
 		<td>{{ str_replace('xxx', $info_adic->finish,  $producto->codigo_sistema)}}</td>
-		<td style="text-align:right">${{ number_format($detalle->lp,2)}}</td>
-		<td style="text-align:right">${{ number_format($detalle->phc,2)}}</td>
-		<td style="text-align:right">${{ number_format($detalle->pvc,2)}}</td>
+		<td style="text-align:right; width: 9%;">${{ number_format($detalle->lp,2)}}</td>
+		<td style="text-align:right; width: 9%;">${{ number_format($detalle->phc,2)}}</td>
+		<td style="text-align:right; width: 9%;">${{ number_format($detalle->pvc,2)}}</td>
 	</tr>
 	<tr>
 		<td class="gris_tabla">Fabricante:</td>
