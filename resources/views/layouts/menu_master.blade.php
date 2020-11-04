@@ -44,7 +44,7 @@
           </a>
           <ul class="dropdown-menu">
             <li class="{{ Request::is('cotizador*') ? 'active' : '' }}" data-menu=""><a class="dropdown-item" data-toggle="dropdown" href="{!! route('cotizador.index') !!}">Cotizador<submenu class="name"></submenu></a></li>
-            <li class="{{ Request::is('cotizador.lista*') ? 'active' : '' }}" data-menu=""><a class="dropdown-item" data-toggle="dropdown" href="{!! route('cotizador.lista') !!}">Historico<submenu class="name"></submenu></a></li>
+            <li class="{{ Request::is('cotizador.lista*') ? 'active' : '' }}" data-menu=""><a class="dropdown-item" data-toggle="dropdown" href="{!! route('cotizador.lista') !!}">Histórico<submenu class="name"></submenu></a></li>
           </ul>
         </li>
         

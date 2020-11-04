@@ -53,7 +53,7 @@ class proyectosController extends AppBaseController
     public function create(){
         $proyectos = array('estatus'=>'',
                            'pais'=>146,
-                           'estado'=>'',
+                           'estado'=>0,
                            'municipio'=>'',
                            'tipo'=>0);
         $estados = estados::get();

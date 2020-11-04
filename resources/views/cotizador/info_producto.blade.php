@@ -4,6 +4,8 @@
      font-size: 11px;
 	}
 	.color{border: 2px solid white; color: gray; text-align: right;}
+
+	.gris_tabla{color: #5C8293; }
 </style>
 <div id="detalle_head">
 	@include('cotizador.detalle_head')		
@@ -13,3 +15,6 @@
 		@include('cotizador.tabla_dependencia')
 	</div>
 @endif
+
+
+

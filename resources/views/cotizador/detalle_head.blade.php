@@ -1,11 +1,16 @@
-<style type="text/css">
-	.gris_tabla{color: #5C8293; }
-</style>
+
+
 <table class="table small table-striped table-bordered">
 	<tr>
 		<td colspan="4" style="text-align: right;"></td>
 		<td class="gris_tabla"> IdFab: </td>
-		<td>{{ str_replace('xxx', $info_adic->finish,  $producto->codigo_sistema)}}</td>
+		<td>
+			@if($producto->info == 5)
+			{{ $detalle->id_fab}}
+			@else
+			{{ str_replace('xxx', $info_adic->finish,  $producto->codigo_sistema)}}
+			@endif
+		</td>
 		<td style="text-align:right; width: 9%;">${{ number_format($detalle->lp,2)}}</td>
 		<td style="text-align:right; width: 9%;">${{ number_format($detalle->phc,2)}}</td>
 		<td style="text-align:right; width: 9%;">${{ number_format($detalle->pvc,2)}}</td>
@@ -13,12 +18,12 @@
 	<tr>
 		<td class="gris_tabla">Fabricante:</td>
 		<td>{{ $informacion->fabricante}}</td>
-		<td class="gris_tabla">Item:</td> 
+		<td class="gris_tabla">Item:</td>  
 		<td>{{$informacion->item}}</td>
 		<td class="gris_tabla">Página:</td>
 		<td>{{$producto->pagina}}</td>
 		<td colspan="3" rowspan="4"></td>
-	</tr>
+	</tr> 
 	<tr>
 		<td class="gris_tabla">Categoria:</td>
 		<td>{{ $informacion->categoria}}</td>
@@ -34,14 +39,14 @@
 					@foreach($finish_1 as $f1)
 						<option value="{{$f1}}" {{$f1==$info_adic->finish?'selected':''}}>{{$f1}}</option>
 					@endforeach
-					@foreach($finish_2 as $f2)
-					<option value="{{$f2}}" {{$f2==$info_adic->finish?'selected':''}}>{{$f2}}</option>
-					@endforeach
-					@foreach($finish_3 as $f3)
-					<option value="{{$f3}}" {{$f3==$info_adic->finish?'selected':''}}>{{$f3}}</option>
-					@endforeach
+						@foreach($finish_2 as $f2)
+						<option value="{{$f2}}" {{$f2==$info_adic->finish?'selected':''}}>{{$f2}}</option>
+						@endforeach
+						@foreach($finish_3 as $f3)
+						<option value="{{$f3}}" {{$f3==$info_adic->finish?'selected':''}}>{{$f3}}</option>
+						@endforeach
 					@foreach($finish_4 as $f4)
-					<option value="{{$f4}}" {{$f3==$info_adic->finish?'selected':''}}>{{$f4}}</option>
+					<option value="{{$f4}}" {{$f4==$info_adic->finish?'selected':''}}>{{$f4}}</option>
 					@endforeach
 			</select>
 		</td>
@@ -63,7 +68,18 @@
 		<td class="gris_tabla">Diseño:</td>
 		<td>{{ $informacion->disenio}}</td>
 		<td class="gris_tabla">Handing</td>
-		<td>{{ $info_adic->handing}}</td>
+		<td>
+			@if($producto->info == 5)
+			<select id="handing" class="form-control form-control-sm" style="width: 100px;" onchange="guarda_detalle({{$info_adic->id_detalle}})">
+				<option value="">Seleccione...</option>
+				<option value="LH" {{$detalle->handing=='LH'?'selected':''}}>LH</option>
+				<option value="RH" {{$detalle->handing=='RH'?'selected':''}}>RH</option>
+			</select>
+			@else
+			<input type="hidden" id="handing" value="{{ $info_adic->handing}}">
+			{{ $info_adic->handing}}
+			@endif
+		</td>
 		<td class="gris_tabla">Descripción:</td>
 		<td>{{$producto->descripcion}}</td>
 	</tr>
@@ -72,6 +88,7 @@
 		<td></td>
 		<td class="gris_tabla">Style</td>
 		<td>
+			@if($producto->info != 5)
 			<?php 
 			  $style_1 = $info_adic->style_1 !='' ? explode(',',($info_adic->style_1)) : array();
 			  $style_2 = $info_adic->style_2 !='' ? explode(',',($info_adic->style_2)) : array();
@@ -104,13 +121,14 @@
 				@foreach($style_1 as $s1)
 					<option value="{{$s1}}" {{$s1==$info_adic->style?'selected':''}}>{{$s1}}</option>
 				@endforeach
-				@foreach($style_2 as $f2)
-				<option value="{{$f2}}" {{$s2==$info_adic->style?'selected':''}}>{{$f2}}</option>
+				@foreach($style_2 as $s2)
+				<option value="{{$s2}}" {{$s2==$info_adic->style?'selected':''}}>{{$s2}}</option>
 				@endforeach
-				@foreach($style_3 as $f3)
-				<option value="{{$f3}}" {{$s3==$info_adic->style?'selected':''}}>{{$f3}}</option>
+				@foreach($style_3 as $s3)
+				<option value="{{$s3}}" {{$s3==$info_adic->style?'selected':''}}>{{$s3}}</option>
 				@endforeach
 			</select>
+			@endif
 		</td>
 		<td colspan="2" style="background: #5C8293; border-left: 1px solid #5C8293; color: white; text-align: right; ">
 			<span class="pull-left"><?php 

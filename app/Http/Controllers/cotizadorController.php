@@ -5,7 +5,7 @@ use App\Models\Clientes;
 use App\Models\proyectos;
 use App\Models\Fabricantes;
 use App\Models\catalogos;
-use App\Models\familia;
+use App\Models\familia; 
 use App\Models\categoria;
 use App\Models\subcategorias;
 use App\Models\disenio;
@@ -168,6 +168,9 @@ class cotizadorController extends AppBaseController
         $produc = productos::where('id',$request->producto)->get();
         $produc = $produc[0];
 
+        if($produc->info==3){
+          db::update('call proceso_idfab('.$id.')');
+        }
         
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0]; 
@@ -186,7 +189,8 @@ class cotizadorController extends AppBaseController
           cotizador_detalle::where('id',$id)
                             ->update(['pvc'=>$produc->costo_1 * $factor->lista,
                                       'lp'=>$produc->costo_1,
-                                      'phc' =>$produc->costo_1 * (1- $factor->factor_hc)]);
+                                      'phc' =>$produc->costo_1 * (1- $factor->factor_hc),
+                                      'id_fab'=>$produc->codigo_sistema]);
         }
 
         $productos = $filtro->detalle_cotizacion($filtro);   
@@ -266,6 +270,7 @@ class cotizadorController extends AppBaseController
         }else{
           $info_adic = array();
         }
+
         
 
         $options = view('cotizador.info_producto',compact('fotos','item','informacion','info_adic','producto','dependencias','suma_dependencias','detalle','cotizacion'))->render();
@@ -328,11 +333,13 @@ class cotizadorController extends AppBaseController
         
         $cotizacion = $cotizacion[0];
 
-        $lista  = $cotizacion->lista_precio ==''?1:$cotizacion->lista_precio;
+        $lista  = $cotizacion->lista_precio ==''? 1 : $cotizacion->lista_precio;
 
         $item = explode('.', $request->item);
         $sufijo = isset($item[2]) ? $item[2] :0;
         
+        $catalog = array(19,20,21,22,23,24,25,26,27);
+
 
         items_productos::where('id',$request->id)
                         ->update(['item'=>$item[0],
@@ -340,119 +347,138 @@ class cotizadorController extends AppBaseController
                                  'color'=>$request->color,
                                  'item_seleccionado'=>$request->item]);
 
-        db::update('call actualiza_item('.$request->id.')');
-
         $datos = items_productos::where('id',$request->id)->get();
         $datos = $datos[0];
-        
-        $producto = db::select("select * from  productos where item = '".$datos->item."' and ifnull(if(sufijo='-',0,sufijo),0)  = '".$datos->sufijo."'");
 
-        if(sizeof($producto)>0){
+        if(!in_array($request->id_catalogo, $catalog)){
 
-            $producto = $producto[0];
-            $factor = db::select("SELECT factor_hc,lp".$lista." as lista FROM fabricantes_costos where id_fabricante=".$producto->fabricante);
-            $factor = $factor[0];
+          db::update('call actualiza_item('.$request->id.')');
 
-            if($producto->fabricante==77){
+         
+          
+          $producto = db::select("select * from  productos where item = '".$datos->item."' and ifnull(if(sufijo='-',0,sufijo),0)  = '".$datos->sufijo."'");
+
+            if(sizeof($producto)>0){
+
+                $producto = $producto[0];
                 
-                $costo = in_array($request->color,explode(',', $datos->colores_1)) ? $producto->costo_1 :0;
-                if($costo==0){
-                    $costo = in_array($request->color,explode(',', $datos->colores_2)) ? $producto->costo_2 :0;
-                }else if($costo==0){
-                    $costo = in_array($request->color,explode(',', $datos->colores_3)) ? $producto->costo_3 :0;
-                }else if($costo==0){
-                    $costo = in_array($request->color,explode(',', $datos->colores_4)) ? $producto->costo_4 :0;
+                if($producto->info==3){
+                  db::update('call proceso_idfab('.$datos->id_detalle.')');
                 }
-            }
-            $producto_padre = productos::where('id',$datos->id_producto)->get();
-            $producto_padre = $producto_padre[0];
 
-            $arr = array(9,10,11,12);
-            if($request->id_catalogo==1){
-                $accion = $producto_padre->exterior_tim_1_accion;
-            }else if($request->id_catalogo==2){
-                $accion = $producto_padre->int_escutcheon_dep2_accion;
-            }else if($request->id_catalogo==3){
-                $accion = $producto_padre->knob_lever_dep3_accion;
-            }else if($request->id_catalogo==4){
-                $accion = $producto_padre->spindle_dep4_accion;
-            }else if($request->id_catalogo==5){
-                $accion = $producto_padre->cylinder_dep5_accion;
-            }else if($request->id_catalogo==6){
-                $accion = $producto_padre->mortise_lock_dep6_accion;
-            }else if($request->id_catalogo==7){
-                $accion = $producto_padre->blocking_dep7_accion;
-            }else if($request->id_catalogo==8){
-                $accion = $producto_padre->turn_knob8_accion;
-            }else if($request->id_catalogo==13){
-                $accion = $producto_padre->dep_rossetes_accion;
-            }else if($request->id_catalogo==14){
-                $accion = $producto_padre->dep_latches_accion;
-            }else if($request->id_catalogo==15){
-                $accion = $producto_padre->dep_adaptor_accion;
-            }else if($request->id_catalogo==16){
-                $accion = $producto_padre->dep_spindle_accion;
-            }else if($request->id_catalogo==17){
-                $accion = $producto_padre->dep_extension_accion;
-            }else if(in_array($request->id_catalogo,$arr)){
-              $accion = 1;
-            }else{
-              $accion = 0;
-            }
-            // }else if($request->id_catalogo==9){
-            //     $accion = $producto->dep9_accion;
-            // }else if($request->id_catalogo==10){
-            //     $accion = $producto->dep10_libre_accion;
-            // }
-            
-            items_productos::where('id',$request->id)
-                            ->update(['idfab'=> str_replace('xxx', $request->color, $producto->codigo_sistema),
-                                      'descripcion'=>$producto->descripcion,
-                                      'ctd'=>$request->cantidad,
-                                      'lp'=>$costo,
-                                      'phc'=>$costo * $factor->factor_hc,
-                                      'pvc'=>$costo * $factor->lista,
-                                      'accion'=>$accion]);
-                $alerta = 1;
-            }else{
+                $factor = db::select("SELECT factor_hc,lp".$lista." as lista FROM fabricantes_costos where id_fabricante=".$producto->fabricante);
+                $factor = $factor[0];
+
+                if($producto->fabricante==77){
+                    
+                    $costo = in_array($request->color,explode(',', $datos->colores_1)) ? $producto->costo_1 :0;
+                    if($costo==0){
+                        $costo = in_array($request->color,explode(',', $datos->colores_2)) ? $producto->costo_2 :0;
+                    }else if($costo==0){
+                        $costo = in_array($request->color,explode(',', $datos->colores_3)) ? $producto->costo_3 :0;
+                    }else if($costo==0){
+                        $costo = in_array($request->color,explode(',', $datos->colores_4)) ? $producto->costo_4 :0;
+                    }
+                }
+                $producto_padre = productos::where('id',$datos->id_producto)->get();
+                $producto_padre = $producto_padre[0];
+
+                $arr = array(9,10,11,12);
+                if($request->id_catalogo==1){
+                    $accion = $producto_padre->exterior_tim_1_accion;
+                }else if($request->id_catalogo==2){
+                    $accion = $producto_padre->int_escutcheon_dep2_accion;
+                }else if($request->id_catalogo==3){
+                    $accion = $producto_padre->knob_lever_dep3_accion;
+                }else if($request->id_catalogo==4){
+                    $accion = $producto_padre->spindle_dep4_accion;
+                }else if($request->id_catalogo==5){
+                    $accion = $producto_padre->cylinder_dep5_accion;
+                }else if($request->id_catalogo==6){
+                    $accion = $producto_padre->mortise_lock_dep6_accion;
+                }else if($request->id_catalogo==7){
+                    $accion = $producto_padre->blocking_dep7_accion;
+                }else if($request->id_catalogo==8){
+                    $accion = $producto_padre->turn_knob8_accion;
+                }else if($request->id_catalogo==13){
+                    $accion = $producto_padre->dep_rossetes_accion;
+                }else if($request->id_catalogo==14){
+                    $accion = $producto_padre->dep_latches_accion;
+                }else if($request->id_catalogo==15){
+                    $accion = $producto_padre->dep_adaptor_accion;
+                }else if($request->id_catalogo==16){
+                    $accion = $producto_padre->dep_spindle_accion;
+                }else if($request->id_catalogo==17){
+                    $accion = $producto_padre->dep_extension_accion;
+                }else if(in_array($request->id_catalogo,$arr)){
+                  $accion = 1;
+                }else{
+                  $accion = 0;
+                }
+                // }else if($request->id_catalogo==9){
+                //     $accion = $producto->dep9_accion;
+                // }else if($request->id_catalogo==10){
+                //     $accion = $producto->dep10_libre_accion;
+                // }
+                
                 items_productos::where('id',$request->id)
-                                ->update(['idfab'=>'',
-                                          'descripcion'=>'',
-                                          'ctd'=>0,
-                                          'lp'=>0,
-                                          'sufijo'=>'',
-                                          'color'=>'',
-                                          'phc'=>0,
-                                          'accion'=>0]);
-                $alerta = 0;
-            }
+                                ->update(['idfab'=> str_replace('xxx', $request->color, $producto->codigo_sistema),
+                                          'descripcion'=>$producto->descripcion,
+                                          'ctd'=>$request->cantidad,
+                                          'lp'=>$costo,
+                                          'phc'=>$costo * $factor->factor_hc,
+                                          'pvc'=>$costo * $factor->lista,
+                                          'accion'=>$accion]);
+                    $alerta = 1;
+                }else{
+                    items_productos::where('id',$request->id)
+                                    ->update(['idfab'=>'',
+                                              'descripcion'=>'',
+                                              'ctd'=>0,
+                                              'lp'=>0,
+                                              'sufijo'=>'',
+                                              'color'=>'',
+                                              'phc'=>0,
+                                              'accion'=>0]);
+                    $alerta = 0;
+                }
+                $producto = $producto_padre;
+          }else{
+            db::update('call proceso_idfab('.$datos->id_detalle.')');
+            $det = items_productos::where('id',$request->id)->get();
+            $det = $det[0];
+            
+            $producto = productos::where('id',$det->id_producto)->get();
+            $producto = $producto[0];
+            $alerta = 1;
+          }
 
-            $dependencias = items_productos::where('id_detalle',$datos->id_detalle)->orderby('id_catalogo')->get();
-            $detalle = cotizador_detalle::where('id',$datos->id_detalle)->get();
-            $detalle = $detalle[0];            
+
+          $dependencias = items_productos::where('id_detalle',$datos->id_detalle)->orderby('id_catalogo')->get();
+          $detalle = cotizador_detalle::where('id',$datos->id_detalle)->get();
+          $detalle = $detalle[0];            
 
 
-            $suma_dependencias = items_productos::where([['id_detalle',$datos->id_detalle],['accion',1]])
-                            ->selectraw('id_detalle,sum(lp * ctd) as sum_lp, sum(phc * ctd) as sum_phc, sum(pvc * ctd) as sum_pvc')
-                            ->groupby('id_detalle')
-                            ->get();
-            if(sizeof($suma_dependencias)>0){
-              $suma_dependencias = $suma_dependencias[0];
-            }else{
-              $suma_dependencias =  array('id_detalle' => $request->id,
-                                          'sum_lp'=>0,
-                                          'sum_phc'=>0,
-                                          'sum_pvc'=>0);
-              $suma_dependencias = (object)$suma_dependencias;
-            }
+          $suma_dependencias = items_productos::where([['id_detalle',$datos->id_detalle],['accion',1]])
+                          ->selectraw('id_detalle,sum(lp * ctd) as sum_lp, sum(phc * ctd) as sum_phc, sum(pvc * ctd) as sum_pvc')
+                          ->groupby('id_detalle')
+                          ->get();
+          if(sizeof($suma_dependencias)>0){
+            $suma_dependencias = $suma_dependencias[0];
+          }else{
+            $suma_dependencias =  array('id_detalle' => $request->id,
+                                        'sum_lp'=>0,
+                                        'sum_phc'=>0,
+                                        'sum_pvc'=>0);
+            $suma_dependencias = (object)$suma_dependencias;
+          }
 
+          $options = view('cotizador.tabla_dependencia',compact('producto','dependencias','suma_dependencias','num_cotizacion','detalle'))->render();
+          $arr = array('options'=>$options,
+                       'alerta'=>$alerta,
+                       'id_detalle'=>$datos->id_detalle);
 
-            $options = view('cotizador.tabla_dependencia',compact('producto','dependencias','suma_dependencias','num_cotizacion','detalle'))->render();
-            $arr = array('options'=>$options,
-                         'alerta'=>$alerta,
-                         'id_detalle'=>$datos->id_detalle);
-
-            return $arr;
+          return $arr;
 
         
         
@@ -552,8 +578,10 @@ WHERE d.id = 264
 
         cotizador_detalle::where('id',$request->id_detalle)
                         ->update(['finish'=>$request->finish,
-                                  'style'=>$request->style]); 
+                                  'style'=>$request->style,
+                                  'handing'=>$request->handing]); 
         /* Asignar precios */
+
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0];
 
@@ -562,6 +590,9 @@ WHERE d.id = 264
         $producto = productos::where('id',$det[0]->item)->get();
         $producto = $producto[0];  
 
+        if($producto->info==3){
+          db::update('call proceso_idfab('.$request->id_detalle.')');
+        }
 
         $factor = db::select("SELECT factor_hc,lp".$lista." as lista FROM fabricantes_costos where id_fabricante=".$producto->fabricante);
         $factor = $factor[0];
@@ -626,6 +657,8 @@ WHERE d.id = 264
         /**
         $info_adic = db::select('call proceso_informacion_producto('.$producto->id.','.$request->id_detalle.')');
         $info_adic = $info_adic[0]; */
+        db::update('call proceso_idfab('.$request->id_detalle.')');
+        
         $detalle = cotizador_detalle::where('id',$request->id_detalle)->get();
         $detalle = $detalle[0];
         $suma_dependencias = items_productos::where([['id_detalle',$request->id_detalle],['accion',1]])

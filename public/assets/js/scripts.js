@@ -885,7 +885,7 @@ function confirmar_eliminar(id){
 
 function guarda_detalle(id_detalle){
   $.ajax({
-        data: {'id_detalle':id_detalle, finish:$("#det_finish").val(), 'style':$("#det_style").val()},
+        data: {'id_detalle':id_detalle, finish:$("#det_finish").val(), 'style':$("#det_style").val(),'handing':$("#handing").val()},
         url: '/api/v1/guarda_detalle',
         dataType: 'json',
         type:  'get',
@@ -1075,4 +1075,36 @@ $.ajax({
         }
     });  
 
+}
+
+
+function enviar_produccion(){
+  $.confirm({
+    title: 'Hardware',
+    type: 'red',
+    typeAnimated: true,
+    theme: 'supervan',
+    content: 'Estas seguro deseas enviar los productos a produccion',
+    buttons: {
+        tryAgain: {
+            text: 'Confirmar',
+            btnClass: 'btn-blue',
+            action: function(){
+              $.ajax({
+                    data: '',
+                    url: '/api/v1/enviar_produccion',
+                    dataType: 'json',
+                    type:  'get',
+                    success:  function (response){  
+                      $.alert('Los productos se enviaron a produccion correctamente');
+                    }
+                });
+            }
+        },
+        close: function () {
+        }
+    }
+});
+
+  
 }

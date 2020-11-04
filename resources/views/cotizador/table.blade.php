@@ -64,7 +64,7 @@
 				<input type="text" name="doort_{{$p->id}}" id="doort_{{$p->id}}" value="{{$p->door_t}}" class="form-control form-control-sm" min="1" onchange="guarda_info_cotizacion({{$p->id}})">
 			</td>
 			<td>
-				{{ str_replace('xxx', $p->finish, $p->codigo_sistema)}}
+				{{ str_replace('xxx', $p->finish, $p->id_fab)}}
 				<span class="pull-right btn-group">
 					<span class="btn btn-sm btn-outline-primary" data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer; font-size: 12px; border-right: 1px solid white;" onclick="agregar_dependencia({{$p->idproducto}},{{$p->id}})"><i class="fa fa-info"></i> <b>{{$p->info}}</b></span>
 					<span class="btn btn-sm btn-outline-success" onclick="agrega_producto({{ $p->idproducto}})"><i class="fa fa-plus"></i></span>

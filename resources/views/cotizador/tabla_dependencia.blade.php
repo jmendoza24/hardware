@@ -1,4 +1,5 @@
 <div class="col-md-12">
+	@if($producto->info == 1 or $producto->info ==2)
 	<table class="table table-striped padding-table table-bordered">
 		<tr>
 			<td colspan="7"> </td>
@@ -20,7 +21,7 @@
 			<td style="width: 9%;">PHC</td>
 			<td style="width: 9%;">PVC</td>
 		</tr>
-		@foreach($dependencias as $d)
+		@foreach($dependencias as $d) 
 		
 		<?php 
 			$elementos = array(1,2,3,5,6,7,9,11,13,14);
@@ -105,4 +106,33 @@
 		</tr>
 		@endforeach
 	</table>
+	@elseif($producto->info ==5)
+	<table class="table table-striped padding-table table-bordered" style="width: 20%;">
+		<tr style="text-align: center;" class="gris_tabla">
+			<td></td>
+			<td>DESCRIPT</td>
+		</tr>
+		@foreach($dependencias as $d) 
+		<tr>
+			<td>
+				{{$d->catagolo}} 
+			</td>
+			<td>
+				<?php
+				 	$items = $d->elemento !='' ? explode(',',($d->elemento)) : array();
+				?> 
+				<select class="form-control form-control-sm" id="item_{{$d->id_catalogo}}" style="width: 100px;" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}});">
+					<option value="">...</option>
+					@foreach($items as $t)
+					<?php $t1 = $t != '' ? explode('.',$t) : array();?>	
+					@if(count($t1)>0)
+					 	<option value="{{trim($t)}}" {{$d->item_seleccionado == trim($t)?'selected':''}}>{{$t1[0]}} @if(isset($t1[2])) [{{$t1[2]}}] @endif</option>
+					@endif
+					@endforeach
+				</select>		
+			</td>
+		</tr>
+		@endforeach
+	</table>
+	@endif
 </div>

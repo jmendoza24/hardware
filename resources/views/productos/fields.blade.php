@@ -377,6 +377,26 @@
             @endforeach
         </select>
     </div>
+    <div class="form-group col-sm-6">
+        {!! Form::label('style_1', 'FINISH INT:') !!}
+        <select class="form-control" name="finish_int">
+            <option value="">Seleccione...</option>
+            @foreach($sub_baldwins as $s)
+                @if($s->variable==49 and $s->fabricante==77)
+                <option value="{{$s->id}}" {{$productos->finish_int==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
+                @endif
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group col-sm-6">
+        {!! Form::label('style_1', 'DT:') !!}
+        <select class="form-control" name="dt">
+            <option value="">Seleccione...</option>
+            <option value="STD">STD</option>
+            <option value="THK">THK</option>
+            <option value="THN">THN</option>
+        </select>
+    </div>
 </div>
 <h4 class="form-section"></h4>
 <div class="row">

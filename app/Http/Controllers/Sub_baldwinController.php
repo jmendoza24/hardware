@@ -40,7 +40,7 @@ class Sub_baldwinController extends AppBaseController
                             28=>'BLOCKING RING  DEP 7 ACCION', 29=>'TURN KNOB / ADAPTOR DEP 8', 30=>'TURN KNOB / ADAPTOR DEP 8 ACCION', 31=>'DEP 9 ',32=>'DEP 9 ACCION',
                             33=>'DEP 10 HC LIBRES ', 34=>'DEP 10 HC LIBRES ACCION', 35=>'DEP 11 HC LIBRES', 36=>'DEP 11 HC LIBRES ACCION', 37=>'DEP 12 HC LIBRES', 38=>'DEP 12 HC LIBRES ACCION',
                             39=>'DEP ROSETTES', 40=>'DEP ROSETTES ACCION', 41=>'DEP LATCHES', 42=>'DEP LATCHES ACCION', 43=>'DEP ADAPTOR ', 44=>'DEP ADAPTOR ACCION', 45=>'DEP SPINDLE', 46 =>'DEP SPINDLE ACCION',
-                            47=>'DEP EXT BUTTON',48=>'DEP EXT BUTTON ACCION');
+                            47=>'DEP EXT BUTTON',48=>'DEP EXT BUTTON ACCION',49=>'Finish INT');
         $variable  = (object)$variable;
 
         return view('sub_baldwins.index',compact('subBaldwins','titulo','cata','variable'));
