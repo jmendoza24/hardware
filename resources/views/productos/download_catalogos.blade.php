@@ -8,91 +8,88 @@
     		<table class="table table-striped table-bordered file-export2" id="items-table">
 			    <thead>
 			        <tr class="gris_tabla">
-			            <th>IdFabricante</th>
 			            <th>Fabricante</th>
-			            <th>IdCatalogos</th>
+			            <th>IdFabricante</th>
 			            <th>Catalogos</th>
-			            <th>IdFamilia</th>
+			            <th>IdCatalogos</th>
 			            <th>Familia</th>
-			            <th>IdCategoria</th>
+			            <th>IdFamilia</th>
 			            <th>Categoria</th>
-			            <th>IdSubcategoria</th>
+			            <th>IdCategoria</th>
 			            <th>Subategoria</th>
-			            <th>IdDiseño</th>
+			            <th>IdSubcategoria</th>
 			            <th>Diseño</th>
-			            <th>IdItem</th>
+			            <th>IdDiseño</th>
 			            <th>Item</th>
+			            <th>IdItem</th>
 			        </tr>
 			    </thead>
 			    <tbody>
 			    @foreach($items as $item)
 		            <tr>
+		            	<td>{{$item->fabricante}}</td>
 		                <td>{{$item->id_fabricante}}</td>
-		                <td>{{$item->fabricante}}</td>
-		                <td>{{$item->id_catalogos}}</td>
 		                <td>{{$item->catalogo}}</td>
-		                <td>{{$item->id_familia}}</td>
+		                <td>{{$item->id_catalogos}}</td>
 		                <td>{{$item->familia}}</td>
-		                <td>{{$item->id_categoria}}</td>
+		                <td>{{$item->id_familia}}</td>
 		                <td>{{$item->categoria}}</td>
-		                <td>{{$item->id_subcategoria}}</td>
+		                <td>{{$item->id_categoria}}</td>
 		                <td>{{$item->subcategoria}}</td>
-		                <td>{{$item->id_disenio}}</td>
+		                <td>{{$item->id_subcategoria}}</td>
 		                <td>{{$item->disenio}}</td>
-		                <td>{{$item->id_item}}</td>
+		                <td>{{$item->id_disenio}}</td>
 		                <td>{{$item->item}}</td>
+		                <td>{{$item->id_item}}</td>
 			        </tr>
 			    @endforeach 
 			    </tbody>
 			</table>
     	</div>
-    	<div class="col-md-2">
+    	{{-- <div class="col-md-2">
     		<label>Sufijos</label>
     		<table class="table table-striped table-bordered file-export2" id="items-table">
 			    <thead>
 			        <tr class="gris_tabla">
-			        	<th>IdCategoria</th>
 			        	<th>Categoria</th>
-			        	<th>IdSubcategoria</th>
+			        	<th>IdCategoria</th>
 			        	<th>Subcategoria</th>
+			        	<th>IdSubcategoria</th>
+			        	<th>Sufijos</th>
 			            <th>IdSufijo</th>
-			            <th>Sufijos</th>
 			        </tr>
 			    </thead>
 			    <tbody>
 			    @foreach($sufijos as $sufijo)
 		            <tr class="gris_tabla">
-		                <td>{{ $sufijo->id_categoria }}</td>
 		                <td>{{ $sufijo->categoria }}</td>
-		                <td>{{ $sufijo->id_subcategoria}}</td>
+		                <td>{{ $sufijo->id_categoria }}</td>
 		                <td>{{ $sufijo->subcategoria}}</td>
-		                <td>{{ $sufijo->id_sufijo}}</td>
+		                <td>{{ $sufijo->id_subcategoria}}</td>
 		                <td>{{ $sufijo->sufijo}}</td>
+		                <td>{{ $sufijo->id_sufijo}}</td>
 			        </tr>
 			    @endforeach 
 			    </tbody>
 			</table>
-    	</div>
+    	</div> --}}
     	<div class="col-md-2">
     		<label>Grupos</label>
     		<table class="table table-striped table-bordered file-export2" id="items-table">
 			    <thead>
 			        <tr class="gris_tabla">
-			            <th>IdFabricante</th>
 			            <th>Fabricantes</th>
-			            <th>Idgrupo</th>
 			            <th>Varibale</th>
 			            <th>Grupos</th>
 			            <th>Opciones</th>
+			            <th>Idgrupo</th>
 			        </tr>
 			    </thead>
 			    <tbody>
 			    @foreach($sub_baldwins  as $grupo)
 		            <tr>
-		            	<td>{{ $grupo->id_fabricante}}</td>
 		            	<td>{{ $grupo->fabricante}}</td>
-		            	<td>{{ $grupo->id_grupo}}</td>
-		                <td>
+		            	<td>
 		                	@if($grupo->id_fabricante==77)
 		                		@foreach ($variable as $key => $value) 
 				                    {{ $key== $grupo->variable?$value:'' }}
@@ -103,8 +100,9 @@
 				                @endforeach
 				            @endif
 				        </td>
-		                <td>{!! $grupo->grupo !!}</td>
-		                <td>{!! $grupo->opciones !!}</td>
+		            	<td>{!! $grupo->grupo !!}</td>
+						<td>{!! $grupo->opciones !!}</td>
+		            	<td>{{ $grupo->id_grupo}}</td>
 			        </tr>
 			    @endforeach 
 			    </tbody>

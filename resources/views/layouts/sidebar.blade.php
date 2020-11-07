@@ -1,11 +1,11 @@
- <nav style="color: white; background-color: #38445a  !important;" class="header-navbar navbar-expand-md navbar navbar-with-menu fixed-top navbar-semi-dark navbar-shadow">
-    <div class="navbar-wrapper"style="color: white; background-color: #38445a  !important;">
-      <div class="navbar-header" style="color: white; background-color: #38445a  !important;">
+ <nav class="header-navbar navbar-expand-md navbar navbar-with-menu fixed-top bg-gradient-x-grey-blue">
+    <div class="navbar-wrapper">
+      <div class="navbar-header" >
         <ul class="nav navbar-nav flex-row position-relative">
           <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
           <li class="nav-item mr-auto" >
-            <a class="navbar-brand" href="{{ route('home')}}">
-              <h2 class="brand-text" >Hardware</h2>
+            <a class="navbar-brand" href="{{ route('home')}}" >
+              <h2 class="brand-text"><img src="{{ url('app-assets/images/logo_hc.png')}}" style="width: 100px; margin-top: -8px;"></h2>
             </a>
           </li>
           <li class="nav-item d-none d-md-block nav-toggle"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i class="toggle-icon ft-toggle-right font-medium-3 white" data-ticon="ft-toggle-right"></i></a></li>

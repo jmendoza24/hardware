@@ -180,7 +180,7 @@ class catalogosController extends AppBaseController
                             28=>'BLOCKING RING  DEP 7 ACCION', 29=>'TURN KNOB / ADAPTOR DEP 8', 30=>'TURN KNOB / ADAPTOR DEP 8 ACCION', 31=>'DEP 9 ',32=>'DEP 9 ACCION',
                             33=>'DEP 10 HC LIBRES ', 34=>'DEP 10 HC LIBRES ACCION', 35=>'DEP 11 HC LIBRES', 36=>'DEP 11 HC LIBRES ACCION', 37=>'DEP 12 HC LIBRES', 38=>'DEP 12 HC LIBRES ACCION',
                             39=>'DEP ROSETTES', 40=>'DEP ROSETTES ACCION', 41=>'DEP LATCHES', 42=>'DEP LATCHES ACCION', 43=>'DEP ADAPTOR ', 44=>'DEP ADAPTOR ACCION', 45=>'DEP SPINDLE', 46 =>'DEP SPINDLE ACCION',
-                            47=>'DEP EXT BUTTON',48=>'DEP EXT BUTTON ACCION');
+                            47=>'DEP EXT BUTTON',48=>'DEP EXT BUTTON ACCION',49=>'Finish INT');
           $variable = (object)$variable;
 
             if($request->tipo==1){
@@ -203,7 +203,7 @@ class catalogosController extends AppBaseController
                             28=>'BLOCKING RING  DEP 7 ACCION', 29=>'TURN KNOB / ADAPTOR DEP 8', 30=>'TURN KNOB / ADAPTOR DEP 8 ACCION', 31=>'DEP 9 ',32=>'DEP 9 ACCION',
                             33=>'DEP 10 HC LIBRES ', 34=>'DEP 10 HC LIBRES ACCION', 35=>'DEP 11 HC LIBRES', 36=>'DEP 11 HC LIBRES ACCION', 37=>'DEP 12 HC LIBRES', 38=>'DEP 12 HC LIBRES ACCION',
                             39=>'DEP ROSETTES', 40=>'DEP ROSETTES ACCION', 41=>'DEP LATCHES', 42=>'DEP LATCHES ACCION', 43=>'DEP ADAPTOR ', 44=>'DEP ADAPTOR ACCION', 45=>'DEP SPINDLE', 46 =>'DEP SPINDLE ACCION',
-                            47=>'DEP EXT BUTTON',48=>'DEP EXT BUTTON ACCION');
+                            47=>'DEP EXT BUTTON',48=>'DEP EXT BUTTON ACCION',49=>'Finish INT');
 
                 }else if($selectores->fabricante==76){
                   $variable=array(1=>'DC', 2=>'MORTISE', 3=>'FMM1', 4=>'STEM', 5=>'FMM2', 6=>'HANDLE', 7=>'FMM3', 8=>'WHEEL', 9=>'FASTENER', 10=>'STYLE', 11=>'FINISH-EMK');
@@ -238,7 +238,7 @@ class catalogosController extends AppBaseController
                             28=>'BLOCKING RING  DEP 7 ACCION', 29=>'TURN KNOB / ADAPTOR DEP 8', 30=>'TURN KNOB / ADAPTOR DEP 8 ACCION', 31=>'DEP 9 ',32=>'DEP 9 ACCION',
                             33=>'DEP 10 HC LIBRES ', 34=>'DEP 10 HC LIBRES ACCION', 35=>'DEP 11 HC LIBRES', 36=>'DEP 11 HC LIBRES ACCION', 37=>'DEP 12 HC LIBRES', 38=>'DEP 12 HC LIBRES ACCION',
                             39=>'DEP ROSETTES', 40=>'DEP ROSETTES ACCION', 41=>'DEP LATCHES', 42=>'DEP LATCHES ACCION', 43=>'DEP ADAPTOR ',44=>'DEP ADAPTOR ACCION', 45=>'DEP SPINDLE', 46 =>'DEP SPINDLE ACCION',
-                            47=>'DEP EXT BUTTON',48=>'DEP EXT BUTTON ACCION');
+                            47=>'DEP EXT BUTTON',48=>'DEP EXT BUTTON ACCION',49=>'Finish INT');
 
                 }else if($selectores->fabricante==76){
                   $variable=array(1=>'DC', 2=>'MORTISE', 3=>'FMM1', 4=>'STEM', 5=>'FMM2', 6=>'HANDLE', 7=>'FMM3', 8=>'WHEEL', 9=>'FASTENER', 10=>'STYLE', 11=>'FINISH-EMK');
@@ -318,7 +318,7 @@ class catalogosController extends AppBaseController
                             28=>'BLOCKING RING  DEP 7 ACCION', 29=>'TURN KNOB / ADAPTOR DEP 8', 30=>'TURN KNOB / ADAPTOR DEP 8 ACCION', 31=>'DEP 9 ',32=>'DEP 9 ACCION',
                             33=>'DEP 10 HC LIBRES ', 34=>'DEP 10 HC LIBRES ACCION', 35=>'DEP 11 HC LIBRES', 36=>'DEP 11 HC LIBRES ACCION', 37=>'DEP 12 HC LIBRES', 38=>'DEP 12 HC LIBRES ACCION',
                             39=>'DEP ROSETTES', 40=>'DEP ROSETTES ACCION', 41=>'DEP LATCHES', 42=>'DEP LATCHES ACCION', 43=>'DEP ADAPTOR ',44=>'DEP ADAPTOR ACCION', 45=>'DEP SPINDLE', 46 =>'DEP SPINDLE ACCION',
-                            47=>'DEP EXT BUTTON',48=>'DEP EXT BUTTON ACCION');
+                            47=>'DEP EXT BUTTON',48=>'DEP EXT BUTTON ACCION',49=>'Finish INT');
 
                 }else if($selectores->fabricante==76){
                   $variable=array(1=>'DC', 2=>'MORTISE', 3=>'FMM1', 4=>'STEM', 5=>'FMM2', 6=>'HANDLE', 7=>'FMM3', 8=>'WHEEL', 9=>'FASTENER', 10=>'STYLE', 11=>'FINISH-EMK');
@@ -375,8 +375,12 @@ class catalogosController extends AppBaseController
         }else if($request->catalogo ==16){
           $filtro = new cotizador_detalle;
           
-          $filtro->id_cotizacion = $request->id;
-          $cotizacion = cotizador::where('id',$request->id)->get();
+          $filtro->id_cotizacion = $request->id; 
+          $cotizacion = db::table('cotizacions as c')
+                        ->leftjoin('cliente_participantes as cl','cl.id','c.cliente')
+                        ->leftjoin('proyectos as p','p.id','c.proyecto')
+                        ->selectraw('c.*, cl.contacto as nombre_cliente, p.nombre_corto')
+                        ->where('c.id',$request->id)->get();
           $cotizacion = $cotizacion[0];
           $productos = $filtro->detalle_cotizacion($filtro);
           $options =  view('cotizador.cotizacion_detalle',compact('productos','cotizacion'))->render();
@@ -498,7 +502,7 @@ class catalogosController extends AppBaseController
                             28=>'BLOCKING RING  DEP 7 ACCION', 29=>'TURN KNOB / ADAPTOR DEP 8', 30=>'TURN KNOB / ADAPTOR DEP 8 ACCION', 31=>'DEP 9 ',32=>'DEP 9 ACCION',
                             33=>'DEP 10 HC LIBRES ', 34=>'DEP 10 HC LIBRES ACCION', 35=>'DEP 11 HC LIBRES', 36=>'DEP 11 HC LIBRES ACCION', 37=>'DEP 12 HC LIBRES', 38=>'DEP 12 HC LIBRES ACCION',
                             39=>'DEP ROSETTES', 40=>'DEP ROSETTES ACCION', 41=>'DEP LATCHES', 42=>'DEP LATCHES ACCION', 43=>'DEP ADAPTOR ', 44=>'DEP ADAPTOR ACCION', 45=>'DEP SPINDLE', 46 =>'DEP SPINDLE ACCION',
-                            47=>'DEP EXT BUTTON',48=>'DEP EXT BUTTON ACCION');
+                            47=>'DEP EXT BUTTON',48=>'DEP EXT BUTTON ACCION',49=>'Finish INT');
 
             }else if($request->fabricante==76){
               $variable=array(1=>'DC', 2=>'MORTISE', 3=>'FMM1', 4=>'STEM', 5=>'FMM2', 6=>'HANDLE', 7=>'FMM3', 8=>'WHEEL', 9=>'FASTENER', 10=>'STYLE', 11=>'FINISH-EMK');
@@ -562,12 +566,12 @@ class catalogosController extends AppBaseController
               productos_temporal::insert(['fabricante'=>$line[0],
                                           'catalogo'=>$line[1],
                                           'pagina'=>$line[2],
-                                          'familia'=>$line[3],
+                                          'familia'=>$line[3]==''?null:$line[3],
                                           'categoria'=>$line[4],
                                           'subcategoria'=>$line[5],
                                           'disenio'=>$line[6],
                                           'item'=>$line[7],
-                                          'sufijo'=>$line[8],
+                                          'sufijo'=>$line[8] == ''?null:$line[8],
                                           'grupo_sufijo'=>$line[9],
                                           'descripcion'=>$line[10],
                                           'descripcion_mtk'=>$line[11],
@@ -594,51 +598,51 @@ class catalogosController extends AppBaseController
                                           'finish_det_2'=>$line[32],
                                           'finish_det_3'=>$line[33],
                                           'finish_det_4'=>$line[34],
-                                          'dependencias'=>$line[35],
-                                          'handing'=>$line[36],
+                                          'dependencias'=>$line[35]==''?null:$line[35],
+                                          'handing'=>$line[36]==''?null:$line[36],
                                           'door_thickness'=>$line[37],
                                           'backset'=>$line[38],
                                           'costo_1'=>$line[39],
                                           'costo_2'=>$line[40],
                                           'costo_3'=>$line[41],
                                           'costo_4'=>$line[42],
-                                          'calculo_codigo'=>$line[43],
+                                          'calculo_codigo'=>$line[43]==''?null:$line[43],
                                           'codigo_sistema'=>$line[44],
                                           'notas'=>$line[45],
                                           'exterior_tim_dep_1'=>$line[46],
-                                          'exterior_tim_1_accion'=>$line[47],
+                                          'exterior_tim_1_accion'=>$line[47]==''?null:$line[47],
                                           'int_escutcheon_dep_2'=>$line[48],
-                                          'int_escutcheon_dep2_accion'=>$line[49],
+                                          'int_escutcheon_dep2_accion'=>$line[49]==''?null:$line[49],
                                           'knob_lever_dep3'=>$line[50],
-                                          'knob_lever_dep3_accion'=>$line[51],
+                                          'knob_lever_dep3_accion'=>$line[51]==''?null:$line[51],
                                           'spindle_dep4'=>$line[52],
-                                          'spindle_dep4_accion'=>$line[53],
+                                          'spindle_dep4_accion'=>$line[53]==''?null:$line[53],
                                           'cylinder_dep5'=>$line[54],
-                                          'cylinder_dep5_accion'=>$line[55],
+                                          'cylinder_dep5_accion'=>$line[55]==''?null:$line[55],
                                           'mortise_lock_dep6'=>$line[56],
-                                          'mortise_lock_dep6_accion'=>$line[57],
+                                          'mortise_lock_dep6_accion'=>$line[57]==''?null:$line[57],
                                           'blocking_dep7'=>$line[58],
-                                          'blocking_dep7_accion'=>$line[59],
+                                          'blocking_dep7_accion'=>$line[59]==''?null:$line[59],
                                           'turn_knob8'=>$line[60],
-                                          'turn_knob8_accion'=>$line[61],
+                                          'turn_knob8_accion'=>$line[61]==''?null:$line[61],
                                           'dep9'=>$line[62],
-                                          'dep9_accion'=>$line[63],
+                                          'dep9_accion'=>$line[63]==''?null:$line[63],
                                           'dep10_libre'=>$line[64],
-                                          'dep10_libre_accion'=>$line[65],
+                                          'dep10_libre_accion'=>$line[65]==''?null:$line[65],
                                           'dep11_libre'=>$line[66],
-                                          'dep11_libre_accion'=>$line[67],
+                                          'dep11_libre_accion'=>$line[67]==''?null:$line[67],
                                           'dep12_libre'=>$line[68],
-                                          'dep12_libre_accion'=>$line[69],
+                                          'dep12_libre_accion'=>$line[69]==''?null:$line[69],
                                           'dep_rossetes'=>$line[70],
-                                          'dep_rossetes_accion'=>$line[71],
+                                          'dep_rossetes_accion'=>$line[71]==''?null:$line[71],
                                           'dep_latches'=>$line[72],
-                                          'dep_latches_accion'=>$line[73],
+                                          'dep_latches_accion'=>$line[73]==''?null:$line[73],
                                           'dep_adaptor'=>$line[74],
-                                          'dep_adaptor_accion'=>$line[75],
+                                          'dep_adaptor_accion'=>$line[75]==''?null:$line[75],
                                           'dep_spindle'=>$line[76],
-                                          'dep_spindle_accion'=>$line[77],
+                                          'dep_spindle_accion'=>$line[77]==''?null:$line[77],
                                           'dep_extension'=>$line[78],
-                                          'dep_extension_accion'=>$line[79]
+                                          'dep_extension_accion'=>$line[79]==''?null:$line[79]
                                         ]);  
             }
 
@@ -754,7 +758,7 @@ class catalogosController extends AppBaseController
                             28=>'BLOCKING RING  DEP 7 ACCION', 29=>'TURN KNOB / ADAPTOR DEP 8', 30=>'TURN KNOB / ADAPTOR DEP 8 ACCION', 31=>'DEP 9 ',32=>'DEP 9 ACCION',
                             33=>'DEP 10 HC LIBRES ', 34=>'DEP 10 HC LIBRES ACCION', 35=>'DEP 11 HC LIBRES', 36=>'DEP 11 HC LIBRES ACCION', 37=>'DEP 12 HC LIBRES', 38=>'DEP 12 HC LIBRES ACCION',
                             39=>'DEP ROSETTES', 40=>'DEP ROSETTES ACCION', 41=>'DEP LATCHES', 42=>'DEP LATCHES ACCION', 43=>'DEP ADAPTOR ', 44=>'DEP ADAPTOR ACCION', 45=>'DEP SPINDLE', 46 =>'DEP SPINDLE ACCION',
-                            47=>'DEP EXT BUTTON',48=>'DEP EXT BUTTON ACCION');
+                            47=>'DEP EXT BUTTON',48=>'DEP EXT BUTTON ACCION',49=>'Finish INT');
               
             }else if($id->fabricante==76){
               $variable=array(1=>'DC', 2=>'MORTISE', 3=>'FMM1', 4=>'STEM', 5=>'FMM2', 6=>'HANDLE', 7=>'FMM3', 8=>'WHEEL', 9=>'FASTENER', 10=>'STYLE', 11=>'FINISH-EMK');

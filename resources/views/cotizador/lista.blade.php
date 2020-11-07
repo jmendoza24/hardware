@@ -1,13 +1,18 @@
 @extends('layouts.app') 
 @section('content')
 <br> 
+    <h3>Histórico</h3>
 <style type="text/css">
     .td-2px{padding: 2px;}
 </style>
+<div class="col-md-12">
+    <a class="btn btn-primary pull-right" href="{!! route('cotizador.index') !!}">+ Cotización</a>
+</div>
+<br><br>
 <div class="col-md-12" id="cotiza_table">
 	  <table class="table table-striped table-bordered zero-configuration responsive" id="tablac">
         <thead>
-            <tr class="gris_tabla">
+            <tr style="background: #5C8293; color: white;">
                 <th>Cotización</th>
                 <th>Proyecto</th>
                 <th>Cliente</th>
@@ -29,6 +34,8 @@
                     <td style="text-align: right">${{ number_format($c->total_mx,2)}}</td>
                     <td>
                         <div class="btn-group">
+                            <a class="btn btn-sm btn-outline-primary btn_gris" href="#" onclick="cambia_oc({{ $c->id}})"><i class="fa fa-retweet"></i></a> &nbsp;
+
                             <a class="btn btn-sm btn-outline-primary btn_azul" href="{{ route('cotizador.revive',['id_cotizacion'=>$c->id])}}"><i class="fa fa-window-maximize"></i></a> &nbsp;
                             <span class="btn btn-sm btn-outline-danger btn_rojo" onclick="eliminar_cotizacion({{ $c->id}})"><i class="fa fa-trash"></i></span>
                         </div>

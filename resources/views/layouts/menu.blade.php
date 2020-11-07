@@ -1,8 +1,8 @@
-<div style="color: white; background-color: #5C8293  !important;"class="btn_azul main-menu menu-fixed menu-dark menu-accordion menu-shadow" >
-    <div class="main-menu-content btn_azul" style="color: white; background-color: #5C8293  !important;">
-      <ul style="color: white; background-color: #5C8293  !important;" class="btn_azul navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-        <li style="color: white; background-color: #5C8293  !important;" class="btn_azul nav-item"><a href="/"><i class="ft-home"></i><span class="menu-title" data-i18n="">Administración</span></a>
-          <ul style="color: white; background-color: #5C8293  !important;" class="btn_azul menu-content">
+<div style="color: white; background-color: #5C8293  !important;"class=" main-menu menu-fixed menu-dark menu-accordion menu-shadow" >
+    <div class="main-menu-content " style="color: white; background-color: #5C8293  !important;">
+      <ul style="color: white; background-color: #5C8293  !important;" class=" navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+        <li style="color: white; background-color: #5C8293  !important;" class=" nav-item"><a href="/"><i class="ft-home"></i><span class="menu-title" data-i18n="">Administración</span></a>
+          <ul style="color: white; background-color: #5C8293  !important;" class=" menu-content">
             <li class="{{ Request::is('clientes*') ? 'active nav-item' : '' }}"><a class="menu-item" href="{!! route('clientes.index') !!}">Participantes</a></li>
             <li class="{{ Request::is('proyectos*') ? 'active' : '' }}"><a href="{!! route('proyectos.index') !!}">Proyectos</a></li>
             <li class="{{ Request::is('fabricantes*') ? 'active nav-item' : '' }}"><a class="menu-item" href="{!! route('fabricantes.index') !!}">Fabricantes</a></li>
@@ -26,29 +26,21 @@
 
           </ul>
         </li>
-        <li class="{{ Request::is('productos*') ? 'active' : '' }}"><a href="{!! route('productos.index') !!}"><i class="ft-align-justify"></i><span>Productos</span></a></li>
+        <li class=" nav-item {{ Request::is('productos*') ? 'active' : '' }}"><a href="{!! route('productos.index') !!}"><i class="ft-align-justify"></i><span class="menu-title" data-i18n="">Productos</span></a></li>        
         <li class=" nav-item"><a href="/"><i class="ft-server"></i><span class="menu-title" data-i18n="">Cotizaciones</span></a>
           <ul class="menu-content">
-            <li class="{{ Request::is('cotizador*') ? 'active' : '' }}"><a href="{!! route('cotizador.index') !!}"><span>Cotizador</span></a></li>
-            <li class="{{ Request::is('cotizaciones_lista*') ? 'active' : '' }}"><a href="{!! route('cotizador.lista') !!}"><span>Historial</span></a></li>
+            <li class="{{ Request::is('cotizador*') ? 'active' : '' }}"><a href="{!! route('cotizador.index') !!}"><span class="menu-title" data-i18n="">Cotizaciones</span></a></li>
+            <li class="{{ Request::is('cotizaciones_lista*') ? 'active' : '' }}"><a href="{!! route('cotizador.lista') !!}"><span class="menu-title" data-i18n="">Histórico</span></a></li>
+            <li class="{{ Request::is('cotizaciones_oc*') ? 'active' : '' }}"><a href="{!! route('cotizador.oc') !!}"><span class="menu-title" data-i18n="">OC</span></a></li>
+
+            <li class="{{ Request::is('tblOcFabs*') ? 'active' : '' }}"><a href="{!! route('tblOcFabs.index') !!}"><span class="menu-title" data-i18n="">OC Fabricantes</span></a></li>
+
           </ul>
-        </li>
+        </li> 
+     
       </ul>
     </div>
   </div>
 
 
-
-
-
-
-
-
-
-
-
-
-<li class="{{ Request::is('tblFotosProductos*') ? 'active' : '' }}">
-    <a href="{{ route('tblFotosProductos.index') }}"><i class="fa fa-edit"></i><span>Tbl Fotos Productos</span></a>
-</li>
 

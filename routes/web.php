@@ -46,6 +46,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('catalogos_download', 'productosController@catalogos_download')->name('catalogos_download.index');
 	Route::get('cotizador', 'cotizadorController@index')->name('cotizador.index');
 	Route::get('cotizaciones_lista', 'cotizadorController@lista')->name('cotizador.lista');
+	Route::get('cotizaciones_oc', 'cotizadorController@oc')->name('cotizador.oc');
+
 	Route::get('selectores', 'Sub_baldwinController@selectores')->name('selectores.index');
 	Route::get('dependencia', 'CatalogosController@dependencia')->name('dependencia.index');
 	Route::get('costos', 'FabricantesController@costos')->name('costos.index');
@@ -99,6 +101,11 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('elimina_cot', 'cotizadorController@elimina_cot');
 	Route::get('actualiza_cots', 'cotizadorController@actualiza_cots');
 	Route::get('guarda_cot_not', 'cotizadorController@guarda_cot_not');
+	Route::get('enviar_produccion', 'productosController@enviar_produccion');
+
+	Route::get('cambia_oc', 'cotizadorController@oc_cambia');
+	Route::get('oc_cambia2', 'cotizadorController@oc_cambia2');
+
 
 });
 
@@ -109,3 +116,5 @@ Route::resource('tipoClientes', 'tipo_clienteController');
 Route::resource('tipoProyectos', 'tipo_proyectoController');
 
 Route::resource('tblFotosProductos', 'tbl_fotos_productosController');
+
+Route::resource('tblOcFabs', 'tbl_oc_fabController');

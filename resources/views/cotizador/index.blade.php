@@ -9,20 +9,21 @@
 </div>
 <div class="col-md-12">
     <h4>Notas de cotización:</h4>
-    <textarea class="form-control" id="nota" onchange="guarda_cot_not({{ $cotizacion->id }})" name="nota">{{ $cotizacion->notas}}</textarea>
+    <textarea class="form-control" style="height: 300px;" id="nota" onchange="guarda_cot_not({{ $cotizacion->id }})" name="nota">{{ $cotizacion->notas}}</textarea>
 </div>
 <br>
-	<div class="col-md-12">
-		<fieldset class="checkboxsas">
-          <label><input type="checkbox" value="1"  name=""> Enviar cotización producto.  </label>
-        </fieldset>
-        <fieldset class="checkboxsas">
-          <label><input type="checkbox" value="1"  name=""> Enviar cotización instalación.  </label>
-        </fieldset>
-        <fieldset class="checkboxsas">
-          <label><input type="checkbox" value="1"  name=""> Generar OCC proveedor.  </label>
-        </fieldset>
-    </div>
+{{-- <br>
+<div class="col-md-12">
+	<fieldset class="checkboxsas">
+      <label><input type="checkbox" value="1"  name=""> Enviar cotización producto.  </label>
+    </fieldset>
+    <fieldset class="checkboxsas">
+      <label><input type="checkbox" value="1"  name=""> Enviar cotización instalación.  </label>
+    </fieldset>
+    <fieldset class="checkboxsas">
+      <label><input type="checkbox" value="1"  name=""> Generar OCC proveedor.  </label>
+    </fieldset>
+</div>
     
  <div class="col-md-12">
     <label>
@@ -31,6 +32,6 @@
     		<li>DESCUENTO SOLO SOBRE EL PRODUCTO</li>
     	</ul>
     </label>
-</div>
+</div> --}}
 
 @endsection

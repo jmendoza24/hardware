@@ -40,7 +40,7 @@
 <body class="horizontal-layout horizontal-menu 2-columns   menu-expanded" data-open="hover"
 data-menu="horizontal-menu" data-col="2-columns">
 @if (!Auth::guest())
-<nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-static-top navbar-dark bg-gradient-x-grey-blue navbar-border navbar-brand-left">
+<nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-static-top navbar-dark bg-gradient-x-grey-blue navbar-border navbar-brand-center">
     <div class="navbar-wrapper">
       <div class="navbar-header">
         <ul class="nav navbar-nav flex-row">
@@ -155,7 +155,7 @@ data-menu="horizontal-menu" data-col="2-columns">
   <div class="modal-dialog modal-xl" role="document" id="modal_primary">
     <div class="modal-content">
       <div class="modal-header bg-primary white">
-        <h4 class="modal-title" id="myModalLabel8">Hardware collection</h4>
+        <h4 class="modal-title" id="myModalLabel8">Hardware Collection</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

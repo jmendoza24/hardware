@@ -77,6 +77,7 @@ class productosController extends AppBaseController
         $listado_vistas = listado_vistas::get();
         $productos  = array('fabricante'=>'',
                             'fmm1'=>'',
+                            'finish_int'=>'',
                             'style'=>'',
                             'style_1'=>'',
                             'style_2'=>'',
@@ -281,12 +282,13 @@ class productosController extends AppBaseController
         }
 
         $productos = $this->productosRepository->update($request->all(), $id);
-        
+        //dd($productos);
         if($productos->calculo_codigo ==''){
             $categoria = $productos->categoria;
         }else{
             $categoria= $productos->calculo_codigo;
         }
+
         if($productos->item !=''){
             db::update('update productos p
                         inner join items i on i.id = p.item
@@ -332,7 +334,8 @@ class productosController extends AppBaseController
     }
 
     function productos_masivo(Request $request){
-        $productos = productos_temporal::get();
+        $productos = db::select('call procesos_masivo()');
+
         return view('productos.masivo',compact('productos'));
     }
 
@@ -383,5 +386,11 @@ class productosController extends AppBaseController
     function confirmar_eliminar(Request $request){
         productos::where('id',$request->id)->delete();
         return 1;
+    }
+
+    function enviar_produccion(){
+        db::update('call enviar_produccion()');
+        return 1;
+
     }
 }

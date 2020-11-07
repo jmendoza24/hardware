@@ -43,10 +43,11 @@
             <span>Cotizaciones</span>
           </a>
           <ul class="dropdown-menu">
-            <li class="<?php echo e(Request::is('cotizador*') ? 'active' : ''); ?>" data-menu=""><a class="dropdown-item" data-toggle="dropdown" href="<?php echo e(route('cotizador.index')); ?>">Cotizador<submenu class="name"></submenu></a></li>
-            <li class="<?php echo e(Request::is('cotizaciones_lista') ? 'active' : ''); ?>" data-menu=""><a class="dropdown-item" data-toggle="dropdown" href="<?php echo route('cotizador.lista'); ?>">Historial<submenu class="name"></submenu></a></li>
+            <li class="<?php echo e(Request::is('cotizador*') ? 'active' : ''); ?>" data-menu=""><a class="dropdown-item" data-toggle="dropdown" href="<?php echo route('cotizador.index'); ?>">Cotizador<submenu class="name"></submenu></a></li>
+            <li class="<?php echo e(Request::is('cotizador.lista*') ? 'active' : ''); ?>" data-menu=""><a class="dropdown-item" data-toggle="dropdown" href="<?php echo route('cotizador.lista'); ?>">Histórico<submenu class="name"></submenu></a></li>
           </ul>
         </li>
+        
       </ul>
     </div>
   </div>
