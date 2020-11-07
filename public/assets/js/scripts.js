@@ -184,7 +184,7 @@ function ver_catalogo(catalogo,id,tipo,fabricante,catalogos,familia,categoria,su
             type:  'get',
             success:  function (response) { 
                $("#contenido").html(response);
-               if(catalogo!=16 || catalogo!=17){
+               if(catalogo!=16 ){
                   $("#modal_primary").removeClass("modal-xl");
                }
                //$("#modal_primary").addClass("modal-lg");
@@ -234,57 +234,6 @@ function guarda_catalogo(catalogo,id,tipo,nom_table){
             }
         });
     }
-}
-
-
-
-function eliminar_cotizacion(id){
-
-var parameters = {
-                    'id':id
-                    }
- 
-
-  $.confirm({
-            title: 'Hardware collection',
-            content: 'Estas seguro deseas elimniar esta cotización?',
-            type:'orange',
-            buttons: {
-                confirmar: function () {
-                  $.ajax({
-                          data: parameters,
-                          url: '/api/v1/elimina_cot',
-                          dataType: 'json',
-                          type:  'get',
-                          success:  function (response) {  
-                        
-                                                          window.location.href = '/cotizaciones_lista';
-
-
-                          }
-                      }); 
-
-                },
-                cancelar: function () {}
-              }  
-          });
-
-}
-
-function actualiza_cots(){
-
- $.ajax({
-          data: parameters,
-          url: '/api/v1/actualiza_cots',
-          dataType: 'json',
-          type:  'get',
-          success:  function (response) {  
-             
-             $("#tablac").html(response);
-          }
-      });
-
-
 }
 
 function elimina_catalogo(catalogo,id,nom_table,fabricante,catalogos,familia,categoria,subcategoria,disenio){
@@ -679,6 +628,7 @@ function eliminar_clientes(id_proyecto, id){
 function guarda_info_cotizacion(id){
   var parameters = {'id':id,
                     'posicion':$("#posicion_"+id).val(),
+                    'descripcion':$("#descripcion_"+id).val(),
                     'bks':$("#bks_"+id).val(),
                     'door_t':$("#doort_"+id).val(),
                     'cantidad':$("#pro_cant_"+id).val(),
@@ -844,6 +794,7 @@ function guarda_datos(id,id_catalogo){
             }else{
               $("#tabla_dependencias").html(response.options);
             }
+            guarda_detalle(response.id_detalle);
             $('.cantidad-mask').inputmask({ 
                         groupSeparator: ".",
                         alias: "numeric",
@@ -934,7 +885,7 @@ function confirmar_eliminar(id){
 
 function guarda_detalle(id_detalle){
   $.ajax({
-        data: {'id_detalle':id_detalle, finish:$("#det_finish").val(), 'style':$("#det_style").val()},
+        data: {'id_detalle':id_detalle, finish:$("#det_finish").val(), 'style':$("#det_style").val(),'handing':$("#handing").val()},
         url: '/api/v1/guarda_detalle',
         dataType: 'json',
         type:  'get',
@@ -1019,6 +970,7 @@ function actualiza_fotos(id_proyecto){
 
 
 function borra_foto(id){     
+
    $.confirm({
             title: 'Hardware collection',
             content: 'Estas seguro deseas elimniar esta foto?',
@@ -1042,6 +994,7 @@ function borra_foto(id){
                 cancelar: function () {}
               } 
           });
+
 }
 
 function enviar_cotizacion(tipo){
@@ -1056,6 +1009,58 @@ function enviar_cotizacion(tipo){
     });  
 }
 
+
+
+function eliminar_cotizacion(id){
+
+var parameters = {
+                    'id':id
+                    }
+ 
+
+  $.confirm({
+            title: 'Hardware collection',
+            content: 'Estas seguro deseas elimniar esta cotización?',
+            type:'orange',
+            buttons: {
+                confirmar: function () {
+                  $.ajax({
+                          data: parameters,
+                          url: '/api/v1/elimina_cot',
+                          dataType: 'json',
+                          type:  'get',
+                          success:  function (response) {  
+                            window.location.href = '/cotizaciones_lista';
+                          }
+                      }); 
+
+                },
+                cancelar: function () {}
+              }  
+          });
+
+}
+
+
+function actualiza_cots(){
+
+ $.ajax({
+          data: parameters,
+          url: '/api/v1/actualiza_cots',
+          dataType: 'json',
+          type:  'get',
+          success:  function (response) {  
+              
+              alert(response);
+             
+             $("#tablac").html(response);
+          }
+      });
+
+
+}
+
+
 function guarda_cot_not(id_cot){
 
 var nota= $("#nota").val();
@@ -1066,7 +1071,40 @@ $.ajax({
         dataType: 'json',
         type:  'get',
         success:  function (response){  
-            window.location.href = '/cotizaciones_lista';
+            console.log(1);
         }
-    }); 
+    });  
+
+}
+
+
+function enviar_produccion(){
+  $.confirm({
+    title: 'Hardware',
+    type: 'red',
+    typeAnimated: true,
+    theme: 'supervan',
+    content: 'Estas seguro deseas enviar los productos a produccion',
+    buttons: {
+        tryAgain: {
+            text: 'Confirmar',
+            btnClass: 'btn-blue',
+            action: function(){
+              $.ajax({
+                    data: '',
+                    url: '/api/v1/enviar_produccion',
+                    dataType: 'json',
+                    type:  'get',
+                    success:  function (response){  
+                      $.alert('Los productos se enviaron a produccion correctamente');
+                    }
+                });
+            }
+        },
+        close: function () {
+        }
+    }
+});
+
+  
 }

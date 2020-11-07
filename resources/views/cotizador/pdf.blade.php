@@ -3,12 +3,15 @@
      <tr style="width: 100%;" >
         <td style="background-color: #000000; text-align: center; "><label style="font-size: 26px;"><b>Hardware<br> Collection</b></label></td>
         <td style="background-color: #5C8293; "><label style="font-family:sans-serif; font-size: 11px; ">Calzada San Pedro # 108<br>San Pedro Garza García, N,L, México, 66220<br>+52 (81) 8378 0601 <br/> info@hardwarecollection.mx</label></td>
-        <td style="background-color: #5C8293; ">{{ date("m-d-Y",strtotime(substr($cot->created_at,0,10)))}}<br> <label style="font-size: 20px; "> Cotización #{{$cot->id_cot}}</label><br></td>
+              @php(setlocale(LC_TIME, 'es_CO.UTF-8'))
+
+        <td style="background-color: #5C8293; "> {{  
+ strftime("%A, %d %B %G", strtotime($cot->created_at)) }}<br> <label style="font-size: 20px; "> Cotización #{{$cot->id_cot}}</label><br></td>
      </tr>
      <tr style="background: #D2D2D2; color:#5C8293; font-size: 11px;">
         <td>Proyecto: {{ $cot->proyecto }}<br> Participante: {{ $cot->contacto }}<br>Empresa: {{ $cot->empresa }}</td>
         <td>Correo:  {{ str_replace(';', ' ',  $cot->correo) }}<br>Teléfono: {{ $cot->telefono }}<br></td>
-        <td>Cotización válida  hasta {{ date("m-d-Y",strtotime($cot->created_at."+ 30 days")) }}</td>
+        <td>Cotización válida  hasta {{ strftime("%A, %d %B %G", strtotime($cot->created_at."+ 30 days"))    }}</td>
      </tr> 
 </table>
 @if($tipo==1)
