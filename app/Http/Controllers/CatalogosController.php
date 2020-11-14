@@ -20,6 +20,7 @@ use App\Models\cliente_participantes;
 use App\Models\cotizador_detalle;
 use App\Models\Clientes;
 use App\Models\tbl_fotos_productos;
+use App\Models\subcategoria_colores;
 use App\Http\Requests\CreatecatalogosRequest;
 use App\Http\Requests\UpdatecatalogosRequest;
 use App\Repositories\catalogosRepository;
@@ -398,6 +399,30 @@ class catalogosController extends AppBaseController
           }
 
           $options =  view('productos.alta_imagen',compact('imagenes'))->render();
+        }else if($request->catalogo ==18){
+
+          $subcategorias = db::select("SELECT s.*, c.categoria as nom_categoria
+                                      FROM subcategorias s
+                                      INNER JOIN categorias c ON c.id = s.categoria
+                                      INNER JOIN familias f ON f.id = c.familia
+                                      INNER JOIN catalogos ca ON ca.id = f.catalogo
+                                      WHERE ca.fabricante = 76
+                                      AND s.subcategoria NOT LIKE '%Sin Sub%'
+                                      order by  c.categoria,s.subcategoria");
+          
+          if($request->tipo==1){
+            $colores = array('id'=>0,
+                              'subcategoria' => 0,
+                              'color'=>'',
+                              'costo'=>'');
+            $colores = (object)$colores;
+
+          }else if($request->tipo==2){
+            $colores = subcategoria_colores::where('id',$request->id)->get();
+            $colores = $colores[0];
+          }
+
+          $options =  view('emtek_subcat.fields',compact('colores','subcategorias'))->render();
         }
 
 
@@ -642,7 +667,8 @@ class catalogosController extends AppBaseController
                                           'dep_spindle'=>$line[76],
                                           'dep_spindle_accion'=>$line[77]==''?null:$line[77],
                                           'dep_extension'=>$line[78],
-                                          'dep_extension_accion'=>$line[79]==''?null:$line[79]
+                                          'dep_extension_accion'=>$line[79]==''?null:$line[79],
+                                          'info'=>$line[80]==''?null:$line[80]
                                         ]);  
             }
 
@@ -708,6 +734,37 @@ class catalogosController extends AppBaseController
 
            $imagenes = tbl_fotos_productos::where('id_producto',$request->id_producto)->get();
            $options = view('productos.imagenes',compact('imagenes'))->render();
+        }else if($request->id_catalogo==18){
+            $existe = subcategoria_colores::where('id',$request->id)->count();
+            if($existe>0){
+                subcategoria_colores::where('id',$request->id)
+                                    ->update(['color'=>$request->color,
+                                              'costo'=>$request->costo]);
+
+                $colores = db::select('SELECT s.*, ss.subcategoria AS nombre_sub
+                                       FROM subcategoria_colores s
+                                       INNER JOIN subcategorias ss ON ss.id = s.subcategoria
+                                       where s.subcategoria = '.$request->subcategoria);
+
+                $tipo = 2;
+                $subcategorias = array();
+            }else{
+                subcategoria_colores::insert(['color'=>$request->color,
+                                              'costo'=>$request->costo,
+                                              'id_fabricante'=>76,
+                                              'subcategoria'=>$request->subcategoria]);
+                $subcategorias =  db::select('SELECT DISTINCT ss.*
+                                      FROM subcategoria_colores s
+                                      INNER JOIN subcategorias ss ON ss.id = s.subcategoria
+                                      order by ss.subcategoria');
+
+                $colores = db::select('SELECT s.*, ss.subcategoria AS nombre_sub
+                                       FROM subcategoria_colores s
+                                       INNER JOIN subcategorias ss ON ss.id = s.subcategoria');
+                $tipo = 1;
+            }
+            
+            $options = view('emtek_subcat.table',compact('colores','tipo','subcategorias'))->render();
         }
 
         return $options;
@@ -811,6 +868,18 @@ class catalogosController extends AppBaseController
            
            $imagenes = tbl_fotos_productos::where('id_producto',$request->fabricante)->get();
            $options = view('productos.imagenes',compact('imagenes'))->render();
+        }else if($request->catalogo==18){
+           
+           subcategoria_colores::where('id',$request->id)->delete();
+           
+           $colores = db::select('SELECT s.*, ss.subcategoria AS nombre_sub
+                               FROM subcategoria_colores s
+                               INNER JOIN subcategorias ss ON ss.id = s.subcategoria
+                               where s.subcategoria = '.$request->fabricante);
+
+           $tipo = 2;
+
+           $options = view('emtek_subcat.table',compact('colores','tipo'))->render();
         }
 
 

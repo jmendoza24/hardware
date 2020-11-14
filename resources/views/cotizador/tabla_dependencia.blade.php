@@ -98,15 +98,13 @@
 			<td>
 				<input type="text" id="cantidad_{{$d->id_catalogo}}" class="form-control form-control-sm cantidad-mask text-right" style="width:80px" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}})" value="{{$d->ctd}}">
 			</td>
-			<td style="text-align: right;">
-				<label id="lp_{{$d->id_catalogo}}">{{number_format($d->lp * $d->ctd,2)}}</label>
-			</td>
+			<td style="text-align: right;"><label id="lp_{{$d->id_catalogo}}">{{number_format($d->lp * $d->ctd,2)}}</label></td>
 			<td style="text-align: right;"><label id="phc_{{$d->id_catalogo}}">{{number_format($d->phc * $d->ctd,2)}}</label></td>
 			<td style="text-align: right;"><label id="lpv_{{$d->id_catalogo}}">{{number_format($d->pvc * $d->ctd,2)}}</label></td>
 		</tr>
 		@endforeach
 	</table>
-	@elseif($producto->info ==5)
+	@elseif($producto->info ==5 || $producto->info ==7 )
 	<table class="table table-striped padding-table table-bordered" style="width: 20%;">
 		<tr style="text-align: center;" class="gris_tabla">
 			<td></td>
@@ -116,7 +114,7 @@
 		<tr>
 			<td>
 				{{$d->catagolo}} 
-			</td>
+			</td> 
 			<td>
 				<?php
 				 	$items = $d->elemento !='' ? explode(',',($d->elemento)) : array();
@@ -131,6 +129,29 @@
 					@endforeach
 				</select>		
 			</td>
+		</tr>
+		@endforeach
+	</table>
+	@elseif($producto->info==6)
+	<table class="table table-striped padding-table table-bordered" style="width: 20%;">
+		<tr style="text-align: center;" class="gris_tabla">
+			<td></td>
+			<td>LP</td>
+			<td>CTD</td>
+			<td>PHC</td>
+			<td>PVC</td>
+		</tr>
+		@foreach($dependencias as $d) 
+		<tr>
+			<td>
+				{{$d->catagolo}} 
+			</td> 
+			<td style="text-align: right;"><label id="lp_{{$d->id_catalogo}}">{{number_format($d->lp,2)}}</label></td>
+			<td>
+				<input type="text" id="cantidad_{{$d->id_catalogo}}" class="form-control form-control-sm cantidad-mask text-right" style="width:80px" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}})" value="{{$d->ctd}}">
+			</td>
+			<td style="text-align: right;"><label id="phc_{{$d->id_catalogo}}">{{number_format($d->phc * $d->ctd,2)}}</label></td>
+			<td style="text-align: right;"><label id="lpv_{{$d->id_catalogo}}">{{number_format($d->pvc * $d->ctd,2)}}</label></td>
 		</tr>
 		@endforeach
 	</table>

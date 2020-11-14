@@ -151,10 +151,17 @@ $a[12] = "Diciembre";
             <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">$ {{ number_format(($subtotal_m - $desc_mod) + $iva_mod,2)}}</td>
             <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">$ {{ number_format(($subtotal_i - $desc_mx) + $iva_mx,2)}}</td>
           </tr>
+          <tr>
+            <td class="text-left white" style="background:#D2D2D2;" colspan="4">Flete:</td>
+            <td style="background:#D2D2D2; border-left: 3px solid white;"  class="white text-right" colspan="3">
+              {{ number_format($cotizacion->flete,2) }}
+            </td>
+            <td style="background:#D2D2D2; border-left: 3px solid white;" class="text-right  white" colspan="3"></td>
+          </tr>
           <tr style="font-size: 14px; font-weight: bold;">
             <td colspan="4"></td>
             <td colspan="2" style="text-align: right; background: #D2D2D2; color:#5C8293;">Gran Total</td>
-            <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">USD $ {{ number_format( (($subtotal - $desc) + $iva) + (($subtotal_m - $desc_mod) + $iva_mod) ,2)}}</td>
+            <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">USD $ {{ number_format( (($subtotal - $desc) + $iva) + (($subtotal_m - $desc_mod) + $iva_mod) + $cotizacion->flete ,2)}}</td>
             <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">+ MXN $ {{ number_format(($subtotal_i - $desc_mx) + $iva_mx,2)}}</td>
           </tr>
     </table>

@@ -49,7 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('selectores', 'Sub_baldwinController@selectores')->name('selectores.index');
 	Route::get('dependencia', 'CatalogosController@dependencia')->name('dependencia.index');
 	Route::get('costos', 'FabricantesController@costos')->name('costos.index');
-
+	Route::get('subcategorias_colores', 'subcategoriasController@colores')->name('colores.index');
 	Route::get('catalogos_generales', 'CatalogosController@catalogos_generales')->name('catalogos_generales');
 
 	

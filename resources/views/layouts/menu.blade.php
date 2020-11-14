@@ -15,6 +15,7 @@
             <li class="{{ Request::is('catalogos*') ? 'active' : '' }}"><a href="{!! route('catalogos.index') !!}"><span>Catálogos</span></a></li>
             <li class="{{ Request::is('subBaldwins*') ? 'active' : '' }}"><a href="{!! route('subBaldwins.index') !!}"><span>Baldwin</span></a></li>
             <li class="{{ Request::is('SubEmktek*') ? 'active' : '' }}"><a href="{!! route('subEmtek.index') !!}"><span>Emtek</span></a></li>
+            <li class="{{ Request::is('SubEmktek*') ? 'active' : '' }}"><a href="{!! route('colores.index') !!}"><span>Emtek Colores</span></a></li>
             <li class="{{ Request::is('sufijos*') ? 'active' : '' }}"><a href="{!! route('sufijos.index') !!}"><span>Sufijos</span></a></li>
             <li class="{{ Request::is('formulas*') ? 'active' : '' }}"><a href="{!! route('formulas.index') !!}"><span>Formulas</span></a></li>
             <li class="{{ Request::is('selectores*') ? 'active' : '' }}"><a href="{!! route('selectores.index') !!}"><span>Selectores</span></a></li>

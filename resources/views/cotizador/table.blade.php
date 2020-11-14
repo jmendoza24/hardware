@@ -80,7 +80,7 @@
 			<td>
 				<input type="text" id="pro_cant_{{$p->id}}" value="{{$p->cantidad}}" class="form-control form-control-sm cantidad-mask text-right"  onchange="guarda_info_cotizacion({{$p->id}})" style="width: 50px;">
 			</td>
-			<td class="text-right"> <label > ${{ number_format($suma_pv* $p->cantidad,2)}}</label></td>
+			<td class="text-right"> <label > ${{ number_format($suma_pv * $p->cantidad,2)}}</label></td>
 			<td style="border-left: 3px solid white;"><input type="text" id="mod_pre_unit_{{$p->id}}" value="{{$p->mod_precio_unit}}" class="form-control form-control-sm p_unit-mask text-right" onchange="guarda_info_cotizacion({{$p->id}})" style="width: 90px;"></td>
 			<td><input type="text" id="mod_cant_{{$p->id}}" class="form-control form-control-sm cantidad-mask text-right" value="{{$p->mod_cantidad}}" onchange="guarda_info_cotizacion({{$p->id}})" style="width: 50px;"></td>
 			<td class="text-right"><label>${{ number_format($p->mod_precio_unit*$p->mod_cantidad,2)}}</label></td>
@@ -93,7 +93,7 @@
 		@php($subtotal_ps   += $p->inst_precio_unit * $p->inst_cantidad)
 		@endforeach
 		<tr>
-			<td colspan="8" class="color" rowspan="5"></td>
+			<td colspan="8" class="color" rowspan="6"></td>
 			<td colspan="2" style="background:#67A957; color: white; ">Subtotal:</td>
 			<td colspan="2" class="text-right">${{number_format($subtotal_dl,2)}}</td>
 			<td colspan="3" class="text-right" style="border-left: 3px solid white;">${{number_format($subtotal_dl_1,2)}}</td>
@@ -161,9 +161,16 @@
 			<td style="background:#67A957; border-left: 3px solid white;"  class="white text-right" colspan="3"> ${{number_format($desc_mod + (($desc_mod * $cotizacion->iva_mod)/100),2)}}</td>
 			<td  style="background:#67A957;border-left: 3px solid white;" class="text-right  white" colspan="3"> ${{number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)}}</td>
 		</tr>
+		<tr>
+			<td class="text-left white" style="background:#67A957;" colspan="4">Flete:</td>
+			<td style=" border-left: 3px solid white; text-align: right;"  colspan="3">
+				<input type="text" id="flete" class="desc-mask form-control form-control-sm text-right" style="width: 100px; float: right;" value="{{ number_format($cotizacion->flete,2) }}" onchange="guardar_descuentos()">
+			</td>
+			<td style=" border-left: 3px solid white;" class="text-right  white" colspan="3"></td>
+		</tr>
 		<tr style="background:#5C8293; color: white;" class="text-right">
 			<td colspan="4"  >Gran Total:</td>
-			<td colspan="3">USD: ${{ number_format($desc_usa + (($desc_usa * $cotizacion->iva_usa)/100) + $desc_mod + (($desc_mod * $cotizacion->iva_mod)/100),2)}}</td>
+			<td colspan="3">USD: ${{ number_format($desc_usa + (($desc_usa * $cotizacion->iva_usa)/100) + $desc_mod + (($desc_mod * $cotizacion->iva_mod)/100) + $cotizacion->flete ,2) }}</td>
 			<td colspan="3" style="border-left: 3px solid white;" >+MXN: ${{ number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)}}</td>
 		</tr>
 	</table>

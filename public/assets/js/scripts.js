@@ -209,7 +209,14 @@ function guarda_catalogo(catalogo,id,tipo,nom_table){
             contentType: false,
             processData: false, 
             success: function(respuesta){
+              if(catalogo == 18 && id == 0){
                 $('#tabla_catalogos').html(respuesta);
+              }else if(catalogo == 18 && id > 0){
+                $('#catalogo_'+nom_table).html(respuesta);
+              }else{
+                $('#tabla_catalogos').html(respuesta);
+              }
+                
                 $('.file-export').DataTable({
                       dom: 'Bfrtip',
                       "paging": false,
@@ -259,7 +266,15 @@ function elimina_catalogo(catalogo,id,nom_table,fabricante,catalogos,familia,cat
                           dataType: 'json',
                           type:  'get',
                           success:  function (response) {  
-                            $('#tabla_catalogos').html(response);
+                            if(catalogo == 18 && id == 0){
+                              $('#tabla_catalogos').html(response);
+                            }else if(catalogo == 18 && fabricante > 0){
+                              $('#catalogo_'+fabricante).html(response);
+                            }else{
+                              $('#tabla_catalogos').html(response);
+                            }
+
+                            //$('#tabla_catalogos').html(response);
                             $('.file-export').DataTable({
                                   dom: 'Bfrtip',
                                   "paging": false,
@@ -683,7 +698,9 @@ function guardar_descuentos(){
                     'descuento_mod':$("#descuento_mod").val(),
                     'iva_mx':$("#iva_mx").val(),
                     'iva_usa':$("#iva_usa").val(),
-                    'iva_mod':$("#iva_mod").val()}
+                    'iva_mod':$("#iva_mod").val(),
+                    'flete':$("#flete").val()
+                  }
   $.ajax({
         data: parameters,
         url: '/api/v1/guardar_descuentos',
