@@ -8,26 +8,31 @@
 	}
 	.color{border: 2px solid white; color: gray; text-align: right;}
 </style>
-	<table class="table table-striped small row-border" style="font-size: 13px;" id="" border="0">
-		<tr style="border-top: 2px solid white; background:white;">
-			<td colspan="7"><span class="badge badge-primary">Cotización {{ $num_cotizacion}}</span></td>
-			<td colspan="3" style="background: #67A957;" class="text-center white"><b>Producto USD:</b></td>
-			<td colspan="2"></td>
+	<table class="table table-striped small row-border" style="font-size: 11px;" id="" border="0">
+		<tr style="border-top: 3px solid white; background:white;">
+			<td colspan="{{ $estatus == 1 ? 9:7}}"><span class="badge badge-primary">Cotización {{ $num_cotizacion}}</span></td>
+			<td colspan="7" style="background: #67A957;" class="text-center white"><b>Producto USD:</b></td>
 			<td colspan="3" style="background: #67A957; border-left: 3px solid white;" class="text-center white"><b>Modificación USD:</b></td>
 			<td colspan="3" style="background: #67A957; border-left: 3px solid white;" class="text-center white"><b>Instalación MXN:</b></td>
 		</tr>
 		<tr style="border:2px solid #67A957; color: white; background:#67A957; text-align: center; ">
 			<td></td>
-			<td>Item</td>
+			<!--<td>Item</td>-->
+			<td>Fab</td>
 			<td>Posición</td>
 			<td>Descripción</td>
 			<td>BKS</td>
 			<td>Door T.</td>
-			<td>Fab</td>
+			<th>Finish</th>
 			<td>LP</td>
 			<td>PHC</td>
 			<td>PVC</td>
+			<td colspan="2">Inv I II</td>
 			<td>Ctd</td> 
+			@if($estatus==1)
+			<td></td>
+			<td></td>
+			@endif
 			<td>Total</td> 
 			<td style="border-left: 3px solid white;">PU</td>
 			<td>Ctd</td>
@@ -39,11 +44,17 @@
 		@foreach($productos as $p)
 		<tr>
 			<td>
-				<span class="btn btn-sm btn-outline-danger" style="cursor: pointer;" onclick="elimina_producto({{$p->id}})">
-				<i class="fa fa-trash"></i></span>
+				<span class="pull-right btn-group">
+					<span class="btn btn-sm btn-outline-danger" style="cursor: pointer;" onclick="elimina_producto({{$p->id}})"><i class="fa fa-trash"></i></span> &nbsp;
+					<span class="btn btn-sm btn-outline-primary" data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer; font-size: 12px; border-right: 1px solid white;" onclick="agregar_dependencia({{$p->idproducto}},{{$p->id}})"><i class="fa fa-info"></i> <b>{{$p->info}}</b></span>&nbsp;
+					<span class="btn btn-sm btn-outline-success" onclick="agrega_producto({{ $p->idproducto}})"><i class="fa fa-plus"></i></span>
+				</span>
 			</td>
-			<td style="text-align: left; font-weight: bold;">
+			<!--<td style="text-align: left; font-weight: bold;">
 				{{$p->item_nom}}
+			</td>-->
+			<td>
+				{{ str_replace('xxx', $p->finish, $p->id_fab)}}
 			</td>
 			<td>
 				<input type="text" name="posicion_{{$p->id}}" value="{{ $p->posicion}}" id="posicion_{{$p->id}}" class="form-control form-control-sm" onchange="guarda_info_cotizacion({{$p->id}})">
@@ -63,13 +74,7 @@
 			<td>
 				<input type="text" name="doort_{{$p->id}}" id="doort_{{$p->id}}" value="{{$p->door_t}}" class="form-control form-control-sm" min="1" onchange="guarda_info_cotizacion({{$p->id}})">
 			</td>
-			<td>
-				{{ str_replace('xxx', $p->finish, $p->id_fab)}}
-				<span class="pull-right btn-group">
-					<span class="btn btn-sm btn-outline-primary" data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer; font-size: 12px; border-right: 1px solid white;" onclick="agregar_dependencia({{$p->idproducto}},{{$p->id}})"><i class="fa fa-info"></i> <b>{{$p->info}}</b></span>
-					<span class="btn btn-sm btn-outline-success" onclick="agrega_producto({{ $p->idproducto}})"><i class="fa fa-plus"></i></span>
-				</span>
-			</td>
+			<td>{{ $p->finish}}</td>
 			<td class="text-right">${{ number_format($p->lp + $p->sum_lp,2)}}</td>
 			<td class="text-right">${{ number_format($p->phc + $p->sum_phc,2)}}</td>
 			@php($suma_pv = $p->pvc + $p->sum_pvc)
@@ -77,9 +82,18 @@
 			{{-- <td>{{ number_format($p->lp + $p->sum_lp,2)}}</td>
 			<td>{{ number_format($p->phc + $p->sum_phc,2)}}</td>
 			<td>{{ number_format($p->pvc + $p->sum_pvc,2)}}</td> --}}
+			<td ><span class="badge badge-primary">{{ $p->inv1}}</span></td>
+			<td> <span class="badge badge-primary">{{ $p->inv2}}</span></td>
 			<td>
 				<input type="text" id="pro_cant_{{$p->id}}" value="{{$p->cantidad}}" class="form-control form-control-sm cantidad-mask text-right"  onchange="guarda_info_cotizacion({{$p->id}})" style="width: 50px;">
 			</td>
+			
+			@if($p->estatus== 1)
+			<td>
+				<input type="text" id="pro_cant_{{$p->id}}" value="{{$p->cantidad}}" class="form-control form-control-sm cantidad-mask text-right"  onchange="guarda_info_cotizacion({{$p->id}})" style="width: 50px;">
+			</td>
+			<td><input type="text" id="pro_cant_{{$p->id}}" value="{{$p->cantidad}}" class="form-control form-control-sm cantidad-mask text-right"  onchange="guarda_info_cotizacion({{$p->id}})" style="width: 50px;"></td>
+			@endif
 			<td class="text-right"> <label > ${{ number_format($suma_pv * $p->cantidad,2)}}</label></td>
 			<td style="border-left: 3px solid white;"><input type="text" id="mod_pre_unit_{{$p->id}}" value="{{$p->mod_precio_unit}}" class="form-control form-control-sm p_unit-mask text-right" onchange="guarda_info_cotizacion({{$p->id}})" style="width: 90px;"></td>
 			<td><input type="text" id="mod_cant_{{$p->id}}" class="form-control form-control-sm cantidad-mask text-right" value="{{$p->mod_cantidad}}" onchange="guarda_info_cotizacion({{$p->id}})" style="width: 50px;"></td>
@@ -93,7 +107,7 @@
 		@php($subtotal_ps   += $p->inst_precio_unit * $p->inst_cantidad)
 		@endforeach
 		<tr>
-			<td colspan="8" class="color" rowspan="6"></td>
+			<td colspan="{{ $estatus == 1 ? 12:10}}" class="color" rowspan="6"></td>
 			<td colspan="2" style="background:#67A957; color: white; ">Subtotal:</td>
 			<td colspan="2" class="text-right">${{number_format($subtotal_dl,2)}}</td>
 			<td colspan="3" class="text-right" style="border-left: 3px solid white;">${{number_format($subtotal_dl_1,2)}}</td>

@@ -7,7 +7,7 @@ $a[5] = "Mayo";
 $a[6] = "Junio"; 
 $a[7] = "Julio"; 
 $a[8] = "Agosto";
-$a[9] = "Septiembre";
+$a[9] = "Septiembre"; 
 $a[10] = "Octubre";
 $a[11] = "Noviembre";
 $a[12] = "Diciembre";
@@ -76,7 +76,7 @@ $a[12] = "Diciembre";
           <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">$ {{ number_format(($subtotal - $desc) + $iva,2)}}</td>
         </tr>
   </table>
-  @else
+  @elseif( $tipo == 2)
   <br>
     <table style="width: 100%; font-size: 11px; font-family: sans-serif; border-collapse: collapse; color:#5C8293;" border="0">
       <tr style="background: #D2D2D2;  text-align: center;">
@@ -162,6 +162,81 @@ $a[12] = "Diciembre";
             <td colspan="4"></td>
             <td colspan="2" style="text-align: right; background: #D2D2D2; color:#5C8293;">Gran Total</td>
             <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">USD $ {{ number_format( (($subtotal - $desc) + $iva) + (($subtotal_m - $desc_mod) + $iva_mod) + $cotizacion->flete ,2)}}</td>
+            <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">+ MXN $ {{ number_format(($subtotal_i - $desc_mx) + $iva_mx,2)}}</td>
+          </tr>
+    </table>
+  @elseif($tipo == 3)
+  <br>
+    <table style="width: 100%; font-size: 11px; font-family: sans-serif; border-collapse: collapse; color:#5C8293;" border="1">
+      <tr style="background: #D2D2D2;  text-align: center;">
+          <td>ID HC</th>
+          <td>Posición</th>
+          <td>Descripción</th>
+          <td>Piezas</th>
+          <td>P.U (P)</th>
+          <td>Instalación MXN:</th>
+        </tr>
+        @php($subtotal = 0)
+        @php($subtotal_m = 0)
+        @php($subtotal_i = 0)
+        @php($subtotal_ps = 0)
+        @php($descuento_mx = 0)
+          @foreach($productos2 as $productos2)
+            <tr>
+               <td>{{ $productos2->id_hc }}</td>
+               <td>{{ $productos2->posicion }}</td>
+               <td>{{ $productos2->descripcion }}</td>
+               <td style="text-align: center;">{{ $productos2->inst_cantidad }}</td>
+               <td style="text-align: right">$ {{ number_format($productos2->inst_precio_unit ,2)}}</td>
+               @php($suma_pvc = $productos2->total_det * $productos2->cantidad)
+               <td style="text-align: right">$ {{ number_format($productos2->inst_precio_unit * $productos2->inst_cantidad,2)}} </td>
+            </tr>
+
+            @php($subtotal += $suma_pvc)
+            @php($subtotal_m += $productos2->mod_precio_unit * $productos2->mod_cantidad)
+            @php($subtotal_i += $productos2->inst_precio_unit * $productos2->inst_cantidad)
+            @php($subtotal_ps   += $productos2->inst_precio_unit * $productos2->inst_cantidad)
+          @endforeach
+          @php($desc = ($subtotal * $cot->descuento_usa)/100)
+          @php($desc_mod = ($subtotal_m * $cot->descuento_mod)/100)
+          @php($desc_mx = ($subtotal_i * $cot->descuento_mx)/100)
+          @php($iva = (($subtotal -$desc) * $cot->iva_usa)/100)
+          @php($iva_mod = ($subtotal_m - $desc_mod ) * $cot->iva_mod/100)
+          @php($iva_mx = ($subtotal_i - $desc_mx) * $cot->iva_mx / 100)
+          <tr>
+            <td colspan="4"></td>
+            <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Subtotal</td>
+            <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">${{ number_format($subtotal_i,2)}}</td>
+          </tr>
+          @if($cot->descuento_mod > 0 || $cot->descuento_usa > 0 || $cot->descuento_mx)
+          <tr>
+            <td colspan="4"></td>
+            <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Descuento</td>
+            <td style="text-align: right;">$ {{ number_format($desc_mx,2) }}</td>
+          </tr>
+          @endif
+          @if($cot->iva_mod > 0 || $cot->iva_usa >0)
+          <tr>
+            <td colspan="4"></td>
+            <td style="text-align: right; background: #D2D2D2; color:#5C8293;">IVA</td>
+            <td style="text-align: right;">$ {{number_format($iva_mx,2)}}</td>
+          </tr>
+          @endif
+          <tr style="font-size: 14px; font-weight: bold;">
+            <td colspan="4"></td>
+            <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Total</td>
+            <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">$ {{ number_format(($subtotal_i - $desc_mx) + $iva_mx,2)}}</td>
+          </tr>
+          <tr style="font-size: 14px; font-weight: bold;">
+            <td colspan="4"></td>
+            <td class="text-left white" style="background:#D2D2D2; text-align: right;">Flete:</td>
+            <td class="white" style="text-align: right;" >
+              {{ number_format($cotizacion->flete,2) }}
+            </td>
+          </tr>
+          <tr style="font-size: 14px; font-weight: bold;">
+            <td colspan="4"></td>
+            <td style="text-align: right; background: #D2D2D2; color:#5C8293;">Gran Total</td>
             <td style="text-align: right;  background: #D2D2D2; color:#5C8293;">+ MXN $ {{ number_format(($subtotal_i - $desc_mx) + $iva_mx,2)}}</td>
           </tr>
     </table>

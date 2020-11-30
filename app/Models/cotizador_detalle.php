@@ -13,8 +13,9 @@ class cotizador_detalle extends Model
 
     function detalle_cotizacion($cotizacion){
 
-        return db::select('SELECT d.*,  p.id as idproducto, p.codigo_sistema, p.costo_1, i.item as item_nom, s.selector, sum_lp, sum_phc, sum_pvc, p.info
+        return db::select('SELECT d.*, ifnull(inv.inv1,0) as inv1,  ifnull(inv.inv2,0) as inv2, c.estatus, p.id as idproducto, p.codigo_sistema, p.costo_1, i.item as item_nom, s.selector, sum_lp, sum_phc, sum_pvc, p.info
                             FROM cotizacion_detalle AS d
+                            inner join cotizacions c on c.id = d.id_cotizacion
                             INNER JOIN productos as p on p.id = d.item
                             INNER JOIN items  AS i on i.id = p.id_item
                             LEFT JOIN sub_baldwins AS s on s.id = p.backset
@@ -26,14 +27,8 @@ class cotizador_detalle extends Model
                                         AND accion = 1
                                         GROUP BY id_detalle 
                                     ) dt ON dt.id_detalle = d.id
+                            left join tbl_inventarios inv on inv.id_producto = d.item
                             WHERE id_cotizacion = ' .$cotizacion->id_cotizacion);
-    	/**
-        left join (
-                                        SELECT id_detalle, IFNULL(SUM(lp),0) AS extra
-                                            FROM items_productos
-                                            WHERE id_cotizacion = ' .$cotizacion->id_cotizacion. '
-                                            AND id_catalogo  IN (29,31,33)
-                                            GROUP BY id_detalle ) as ex on ex.id_detalle = d.id
-                                            */
+
     }
 }

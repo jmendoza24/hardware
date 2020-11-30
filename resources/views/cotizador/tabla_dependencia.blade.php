@@ -150,8 +150,8 @@
 			<td>
 				<input type="text" id="cantidad_{{$d->id_catalogo}}" class="form-control form-control-sm cantidad-mask text-right" style="width:80px" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}})" value="{{$d->ctd}}">
 			</td>
-			<td style="text-align: right;"><label id="phc_{{$d->id_catalogo}}">{{number_format($d->phc * $d->ctd,2)}}</label></td>
-			<td style="text-align: right;"><label id="lpv_{{$d->id_catalogo}}">{{number_format($d->pvc * $d->ctd,2)}}</label></td>
+			<td style="text-align: right;"><label id="phc_{{$d->id_catalogo}}">{{number_format($d->phc ,2)}}</label></td>
+			<td style="text-align: right;"><label id="lpv_{{$d->id_catalogo}}">{{number_format($d->pvc ,2)}}</label></td>
 		</tr>
 		@endforeach
 	</table>

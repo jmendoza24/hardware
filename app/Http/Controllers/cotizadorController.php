@@ -117,8 +117,10 @@ class cotizadorController extends AppBaseController
         
         
         $tipo=0;
+
+        $estatus = sizeof($productos)> 0 ? $productos[0]->estatus :0;
         $fabricantes  = fabricantes::orderby('fabricante')->get();
-        return view('cotizador.index',compact('fabricantes','num_cotizacion','productos','cotizacion','proyectos','clientes','tipo'));
+        return view('cotizador.index',compact('fabricantes','num_cotizacion','productos','cotizacion','proyectos','clientes','tipo','estatus'));
     }
 
     function detalle_producto(Request $request){
@@ -182,12 +184,20 @@ class cotizadorController extends AppBaseController
         $factor = db::select("SELECT factor_hc,lp".$lista." as lista FROM fabricantes_costos where id_fabricante=".$produc->fabricante);
         $factor = $factor[0];
         
-        cotizador_detalle::where('id',$id)
+        if($produc->info != 6){
+          cotizador_detalle::where('id',$id)
                           ->update(['pvc'=>$produc->costo_1 * $factor->lista,
                                     'lp'=>$produc->costo_1,
                                     'phc' =>$produc->costo_1 * (1- $factor->factor_hc),
                                     'id_fab'=>$produc->codigo_sistema,
+                                    'info'=>$produc->info]);  
+        }else{
+          cotizador_detalle::where('id',$id)
+                          ->update(['id_fab'=>$produc->codigo_sistema,
                                     'info'=>$produc->info]);
+        }
+
+        
 
         /**
         if($produc->fabricante == 76 || $produc->fabricante == 77 ){
@@ -208,7 +218,9 @@ class cotizadorController extends AppBaseController
 
         $productos = $filtro->detalle_cotizacion($filtro);   
 
-        $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion'))->render();
+        $estatus = sizeof($productos)> 0 ? $productos[0]->estatus :0;
+
+        $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion','estatus'))->render();
 
         return json_encode($options);
     }
@@ -223,7 +235,8 @@ class cotizadorController extends AppBaseController
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0];  
 
-        $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion'))->render();
+        $estatus = sizeof($productos)> 0 ? $productos[0]->estatus :0;
+        $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion','estatus'))->render();
 
         return json_encode($options); 
     }
@@ -311,8 +324,9 @@ class cotizadorController extends AppBaseController
         $productos = $filtro->detalle_cotizacion($filtro);
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0];
+        $estatus = sizeof($productos)> 0 ? $productos[0]->estatus :0;
 
-        $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion'))->render();
+        $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion','estatus'))->render();
 
         return json_encode($options);
     }
@@ -334,8 +348,9 @@ class cotizadorController extends AppBaseController
         $productos = $filtro->detalle_cotizacion($filtro);
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0];
+        $estatus = sizeof($productos)> 0 ? $productos[0]->estatus :0;
 
-        $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion'))->render();
+        $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion','estatus'))->render();
 
         return json_encode($options); 
     }
@@ -433,7 +448,8 @@ class cotizadorController extends AppBaseController
                                           'descripcion'=>$producto->descripcion,
                                           'ctd'=>$request->cantidad,
                                           'lp'=>$costo,
-                                          'phc'=>$costo * $factor->factor_hc,
+                                          //'phc'=>$costo * $factor->factor_hc 
+                                          'phc'=>$costo * (1-$factor->factor_hc),
                                           'pvc'=>$costo * $factor->lista,
                                           'accion'=>$accion]);
                     $alerta = 1;
@@ -467,14 +483,14 @@ class cotizadorController extends AppBaseController
               db::update('call proceso_idfab('.$datos->id_detalle.')');
               
               db::update('update items_productos
-                          set phc = lp *' . $factor->factor_hc .',
+                          set phc = lp * (1-' . $factor->factor_hc .'),
                               pvc = lp *' . $factor->lista. '
                           where id = '.$request->id);
 
             }else{
               db::update('update items_productos
                           set ctd = '.$request->cantidad.',
-                              phc = ('.$request->cantidad.' * lp) *' . $factor->factor_hc .',
+                              phc = ('.$request->cantidad.' * lp) * (1-' . $factor->factor_hc .'),
                               pvc = ('.$request->cantidad.' * lp) *' . $factor->lista. '
                           where id = '.$request->id);
             }
@@ -718,7 +734,8 @@ WHERE d.id = 264
         $productos = $filtro->detalle_cotizacion($filtro);   
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0]; 
-        $options2 = view('cotizador.table',compact('productos','cotizacion','num_cotizacion'))->render();
+        $estatus = sizeof($productos)> 0 ? $productos[0]->estatus :0;
+        $options2 = view('cotizador.table',compact('productos','cotizacion','num_cotizacion','estatus'))->render();
 
         $arr = array('options'=>$options,
                      'options2'=>$options2);
@@ -733,6 +750,8 @@ WHERE d.id = 264
 
         $filtro = new cotizador_detalle;
         $num_cotizacion = $request->session()->get('num_cotizacion');
+        $cotizacion = cotizador::where('id',$num_cotizacion)->get();
+        $cotizacion = $cotizacion[0];
         
        $cot = db::table('cotizacions as c')
                   ->leftjoin('proyectos as p','p.id','c.proyecto')
@@ -765,8 +784,8 @@ WHERE d.id = 264
       $data=$data[0];
       $tipo = $request->id_tipo;
 
-     // return view('cotizador.pdf',compact('cot','productos2','data','tipo'));
-      $pdf = \PDF::loadView('cotizador.pdf',compact('cot','productos2','data','tipo'))->setPaper('A4','portrait');
+      return view('cotizador.pdf',compact('cot','productos2','data','tipo','cotizacion'));
+      $pdf = \PDF::loadView('cotizador.pdf',compact('cot','productos2','data','tipo','cotizacion'))->setPaper('A4','portrait');
       return  $pdf->download('Cotizacion_'.$num_cotizacion.'.pdf');
     }
 

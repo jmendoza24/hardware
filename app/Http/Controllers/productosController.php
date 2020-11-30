@@ -45,20 +45,53 @@ class productosController extends AppBaseController
      *
      * @return Response
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request){
+
+        $fabricantes = Fabricantes::selectraw('id_fabricante,fabricante')->distinct()->orderby('fabricante')->get();
+
         $productos = db::select('SELECT p.id,p.item, p.descripcion, f.abrev, p.sufijo, p.codigo_sistema, f.fabricante, c.catalogo, fa.familia, ca.categoria, s.subcategoria, p.pagina
                                 FROM productos p
                                 LEFT JOIN tbl_fabricantes f ON f.id_fabricante = p.fabricante
                                 LEFT JOIN catalogos c ON c.id = p.catalogo
                                 LEFT JOIN familias fa ON fa.id = p.familia
                                 LEFT JOIN categorias ca ON ca.id = p.categoria
-                                LEFT JOIN subcategorias s ON s.id = p.subcategoria');
+                                LEFT JOIN subcategorias s ON s.id = p.subcategoria 
+                                where p.fabricante = 77
+                                limit 150;');
+        $cantidad = ceil(productos::where('fabricante',77)->count()/150);
+        $numero = 1;
 
-        return view('productos.index')
-            ->with('productos', $productos);
+        return view('productos.index',compact('fabricantes','productos','cantidad','numero'));
     }
 
+    function buscar_producto(Request $request){
+        if($request->numero == 1){
+            $inicio = 1;
+            $fin    = 150;
+        }else{
+            $inicio = ($request->numero - 1) * 150;
+            $fin    = $request->numero * 150;
+        }
+
+        $numero = $request->numero;
+        $productos = db::select('SELECT p.id,p.item, p.descripcion, f.abrev, p.sufijo, p.codigo_sistema, f.fabricante, c.catalogo, fa.familia, ca.categoria, s.subcategoria, p.pagina
+                                FROM productos p
+                                LEFT JOIN tbl_fabricantes f ON f.id_fabricante = p.fabricante
+                                LEFT JOIN catalogos c ON c.id = p.catalogo
+                                LEFT JOIN familias fa ON fa.id = p.familia
+                                LEFT JOIN categorias ca ON ca.id = p.categoria
+                                LEFT JOIN subcategorias s ON s.id = p.subcategoria 
+                                where p.fabricante = '.$request->fabricantes.'
+                                limit ' .$inicio . ' ,'.$fin);
+
+        $cantidad = ceil(productos::where('fabricante',$request->fabricantes)->count()/150);        
+
+        $options = view('productos.table',compact('productos'))->render();
+        $options2 = view('productos.conteos',compact('productos','cantidad','numero'))->render();
+
+        return array('options'=> $options,
+                    'options2'=> $options2);
+    }
     /**
      * Show the form for creating a new productos.
      *
@@ -135,7 +168,11 @@ class productosController extends AppBaseController
                             'dep_adaptor_accion'=>'',
                             'dep_spindle_accion'=>'',
                             'dep_extension_accion'=>'',
-                            'dependencias'=>''
+                            'dependencias'=>'',
+                            'selector_mkt'=>'',
+                            'mortise'=>'',
+                            'wheel'=>'',
+                            'fastener'=>''
                         );
 
         $productos = (object)$productos;
@@ -318,7 +355,7 @@ class productosController extends AppBaseController
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return Response 
      */
     public function destroy($id)
     {
@@ -395,6 +432,14 @@ class productosController extends AppBaseController
 
     function enviar_produccion(){
         db::update('call enviar_produccion()');
+
+        $productos = db::select('select id from productos where date(created_at) = date(now()) and calculo_codigo > 0');
+        //$productos = db::select('select id from productos where  calculo_codigo > 0 limit 4');
+        foreach($productos as $p){
+            //dd('call proceso_crear_formula('.$p->id.')');
+            db::update('call proceso_crear_formula(0,'.$p->id.')');            
+        }
+
         return 1;
 
     }

@@ -199,6 +199,10 @@ function guarda_catalogo(catalogo,id,tipo,nom_table){
     $.alert("Llene todos los campos");
   }else{
    var formData = new FormData($("#catalogos_forma")[0]);
+
+   if(catalogo ==11){
+    $.blockUI({ message: 'Proccesing, please wait.' }); 
+   }
    $.ajax({
             url:"/api/v1/guarda_catalogo",
             type: 'POST',
@@ -209,14 +213,11 @@ function guarda_catalogo(catalogo,id,tipo,nom_table){
             contentType: false,
             processData: false, 
             success: function(respuesta){
-              if(catalogo == 18 && id == 0){
                 $('#tabla_catalogos').html(respuesta);
-              }else if(catalogo == 18 && id > 0){
-                $('#catalogo_'+nom_table).html(respuesta);
-              }else{
-                $('#tabla_catalogos').html(respuesta);
-              }
-                
+                if(catalogo ==11){
+                  setTimeout($.unblockUI, 2000);
+                  window.location.href = 'productos_masivo';
+                }
                 $('.file-export').DataTable({
                       dom: 'Bfrtip',
                       "paging": false,
@@ -1107,14 +1108,22 @@ function enviar_produccion(){
             text: 'Confirmar',
             btnClass: 'btn-blue',
             action: function(){
+              $.blockUI({ message: 'Proccesing, please wait.' }); 
               $.ajax({
                     data: '',
                     url: '/api/v1/enviar_produccion',
                     dataType: 'json',
                     type:  'get',
                     success:  function (response){  
+                      setTimeout($.unblockUI, 2000);
                       $.alert('Los productos se enviaron a produccion correctamente');
-                    }
+                      window.location.href = 'productos_masivo';
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                      $.alert('Proceso finalizado');
+                        setTimeout($.unblockUI, 2000);
+                        window.location.href = 'productos_masivo';
+                    } 
                 });
             }
         },
@@ -1124,4 +1133,20 @@ function enviar_produccion(){
 });
 
   
+}
+
+function busca_producto(num){
+ $.ajax({
+        data: {'numero':num,'fabricantes':$("#fabricantes").val()},
+        url: '/api/v1/buscar_producto',
+        dataType: 'json',
+        type:  'get',
+        success:  function (response){  
+            $("#conteos").html(response.options2);
+            $("#productos").html(response.options);
+            $(".scroll-vertical").dataTable({"scrollY":        "500px",
+                                            "scrollCollapse": true,
+                                            "paging":false})
+        }
+    });   
 }
