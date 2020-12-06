@@ -101,7 +101,9 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('guarda_cot_not', 'cotizadorController@guarda_cot_not');
 	Route::get('enviar_produccion', 'productosController@enviar_produccion');
 	Route::get('buscar_producto', 'productosController@buscar_producto');
+	Route::get('duplica_cotizacion', 'cotizadorController@duplica_cotizacion');
 	
+
 });
 
 
