@@ -115,9 +115,13 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('actualiza_cots', 'cotizadorController@actualiza_cots');
 	Route::get('guarda_cot_not', 'cotizadorController@guarda_cot_not');
 	Route::get('enviar_produccion', 'productosController@enviar_produccion');
+
 	Route::get('cambia_oc', 'cotizadorController@oc_cambia');
 	Route::get('oc_cambia2', 'cotizadorController@oc_cambia2');
 	Route::get('agrega_producto_oc', 'tbl_oc_fabController@agrega_producto_oc');
+
+	Route::get('buscar_producto', 'productosController@buscar_producto');
+	Route::get('duplica_cotizacion', 'cotizadorController@duplica_cotizacion');
 
 
 	Route::get('enviar_cotizacion2', 'cotizadorController@enviar_cotizacion2');
