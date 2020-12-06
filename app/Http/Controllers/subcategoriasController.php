@@ -10,7 +10,6 @@ use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
-use DB;
 
 class subcategoriasController extends AppBaseController
 {
@@ -155,19 +154,5 @@ class subcategoriasController extends AppBaseController
         Flash::success('Subcategorias deleted successfully.');
 
         return redirect(route('subcategorias.index'));
-    }
-
-    function colores(Request $request){
-        $subcategorias =  db::select("SELECT distinct ss.id, concat(c.categoria,'-',ss.subcategoria) as subcategoria
-                                      FROM subcategoria_colores s
-                                      INNER JOIN subcategorias ss ON ss.id = s.subcategoria
-                                      inner join categorias c ON c.id = ss.categoria 
-                                      order by c.categoria,ss.subcategoria");
-
-        $colores = db::select('SELECT s.*, ss.subcategoria AS nombre_sub
-                               FROM subcategoria_colores s
-                               INNER JOIN subcategorias ss ON ss.id = s.subcategoria');
-        $tipo = 1;
-        return view('emtek_subcat.index',compact('subcategorias','colores','tipo'));
     }
 }

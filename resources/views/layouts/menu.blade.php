@@ -15,7 +15,6 @@
             <li class="{{ Request::is('catalogos*') ? 'active' : '' }}"><a href="{!! route('catalogos.index') !!}"><span>Catálogos</span></a></li>
             <li class="{{ Request::is('subBaldwins*') ? 'active' : '' }}"><a href="{!! route('subBaldwins.index') !!}"><span>Baldwin</span></a></li>
             <li class="{{ Request::is('SubEmktek*') ? 'active' : '' }}"><a href="{!! route('subEmtek.index') !!}"><span>Emtek</span></a></li>
-            <li class="{{ Request::is('SubEmktek*') ? 'active' : '' }}"><a href="{!! route('colores.index') !!}"><span>Emtek Colores</span></a></li>
             <li class="{{ Request::is('sufijos*') ? 'active' : '' }}"><a href="{!! route('sufijos.index') !!}"><span>Sufijos</span></a></li>
             <li class="{{ Request::is('formulas*') ? 'active' : '' }}"><a href="{!! route('formulas.index') !!}"><span>Formulas</span></a></li>
             <li class="{{ Request::is('selectores*') ? 'active' : '' }}"><a href="{!! route('selectores.index') !!}"><span>Selectores</span></a></li>
@@ -32,10 +31,31 @@
           <ul class="menu-content">
             <li class="{{ Request::is('cotizador*') ? 'active' : '' }}"><a href="{!! route('cotizador.index') !!}"><span class="menu-title" data-i18n="">Cotizaciones</span></a></li>
             <li class="{{ Request::is('cotizaciones_lista*') ? 'active' : '' }}"><a href="{!! route('cotizador.lista') !!}"><span class="menu-title" data-i18n="">Histórico</span></a></li>
+           
+          </ul>
+        </li> 
+        <li class=" nav-item"><a href="/"><i class="ft-server"></i><span class="menu-title" data-i18n="">OC</span></a>
+          <ul class="menu-content">
+            <li class="{{ Request::is('cotizaciones_oc*') ? 'active' : '' }}"><a href="{!! route('cotizador.oc') !!}"><span class="menu-title" data-i18n="">OC Clientes</span></a></li>
+            <li class="{{ Request::is('cotizaciones_oc*') ? 'active' : '' }}"><a href="{!! route('enviadas') !!}"><span class="menu-title" data-i18n="">Envios</span></a></li>
+
+          </ul>
+        </li> 
+
+
+        <li class=" nav-item"><a href="#"><i class="ft-server"></i><span class="menu-title" data-i18n="">Pedidos</span></a>
+         <ul class="menu-content">
+                <li class="{{ Request::is('tblOcFabs*') ? 'active' : '' }}"><a href="{!! route('tblOcFabs.index') !!}"><span class="menu-title" data-i18n="">OC Fabricantes</span></a></li>
+                <li class="{{ Request::is('tblOcFabs*') ? 'active' : '' }}"><a href="{!! route('pedidos') !!}"><span class="menu-title" data-i18n="">Pedidos Fabricante</span></a></li>
+
+
+          </ul>
+        </li> 
+
+     
           </ul>
         </li>        
       </ul>
     </div>
   </div>
-
 

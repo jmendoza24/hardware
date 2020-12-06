@@ -1,8 +1,8 @@
 /*================================================================================
-  Item Name: Stack - Responsive Admin Theme
-  Version: 1.0
-  Author: PIXINVENT
-  Author URL: http://www.themeforest.net/user/pixinvent
+	Item Name: Stack - Responsive Admin Theme
+	Version: 1.0
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
 ================================================================================
 
 NOTE:
@@ -11,14 +11,14 @@ PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
 
 textarea{resize: none;
-    height: 100px;}
+		height: 100px;}
 
-  .negro{
+	.negro{
 
       background-color: #D2D2D2;
       color: white;
 
-  }
+	}
 
     .verde{
       background-color: #404E67;
@@ -40,7 +40,7 @@ textarea{resize: none;
     }
     .gris_tabla{  
         background-color: #D2D2D2;
-       color: #5C8293;
+       color: white;
     }
     .gris_barra{
       background-color: #D2D2D2;
@@ -154,32 +154,5 @@ textarea{resize: none;
 
 
 .main-menu.menu-dark .navigation > li.open > a{
-  background: #5C8293  !important;
+  color: #5C8293  !important
 }
-.main-menu.menu-dark .navigation > li ul li > a{
- background: #5C8293  !important; 
-}
-
-
-.btn-outline-success, .btn-outline-success:hover{
-  border: 1px solid #5C8293 ;
-  color: white;
-  background-color:#5C8293 ; 
-}
-
-.btn-outline-danger, .btn-outline-danger:hover{
-  border: 2px solid #CA003A ;
-  background-color: #CA003A ;
-  color: white;
-}
- 
-
- .btn-outline-primary, .btn-outline-primary:hover{
-    border: 1px solid #5C8293 ;
-    color: white;
-    background-color:#5C8293 ; 
- }
-
- .main-menu.menu-dark .navigation > li.open > a{
-  color: white;
- }
