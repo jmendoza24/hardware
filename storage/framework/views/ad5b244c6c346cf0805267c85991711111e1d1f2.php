@@ -7,7 +7,8 @@
   <meta name="description" content="Hardware">
   <meta name="keywords" content="Hardware">
   <meta name="author" content="Hardware">
-  <title>HhahahaahahC</title>
+  <meta name="author" content="HardwareCollection">
+  <title>HC</title>
   <link rel="apple-touch-icon" href="<?php echo e(url('app-assets/images/ico/apple-icon-120.png')); ?>">
   <link rel="shortcut icon" type="image/x-icon" href="<?php echo e(url('app-assets/images/ico/favicon.ico')); ?>">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i"
@@ -162,8 +163,8 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 <div class="modal fade" id="primary" tabindex="-1" role="dialog" aria-labelledby="myModalLabel8" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document" id="modal_primary">
     <div class="modal-content">
-      <div class="modal-header bg-primary white">
-        <h4 class="modal-title" id="myModalLabel8">Hardware collection</h4>
+      <div class="modal-header white" style=" background: #38445a  !important;">
+        <h4 class="modal-title" id="myModalLabel8">Hardware Collection</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

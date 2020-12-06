@@ -15,6 +15,7 @@
             <li class="<?php echo e(Request::is('catalogos*') ? 'active' : ''); ?>"><a href="<?php echo route('catalogos.index'); ?>"><span>Catálogos</span></a></li>
             <li class="<?php echo e(Request::is('subBaldwins*') ? 'active' : ''); ?>"><a href="<?php echo route('subBaldwins.index'); ?>"><span>Baldwin</span></a></li>
             <li class="<?php echo e(Request::is('SubEmktek*') ? 'active' : ''); ?>"><a href="<?php echo route('subEmtek.index'); ?>"><span>Emtek</span></a></li>
+            <li class="<?php echo e(Request::is('SubEmktek*') ? 'active' : ''); ?>"><a href="<?php echo route('colores.index'); ?>"><span>Emtek Colores</span></a></li>
             <li class="<?php echo e(Request::is('sufijos*') ? 'active' : ''); ?>"><a href="<?php echo route('sufijos.index'); ?>"><span>Sufijos</span></a></li>
             <li class="<?php echo e(Request::is('formulas*') ? 'active' : ''); ?>"><a href="<?php echo route('formulas.index'); ?>"><span>Formulas</span></a></li>
             <li class="<?php echo e(Request::is('selectores*') ? 'active' : ''); ?>"><a href="<?php echo route('selectores.index'); ?>"><span>Selectores</span></a></li>
@@ -31,17 +32,11 @@
           <ul class="menu-content">
             <li class="<?php echo e(Request::is('cotizador*') ? 'active' : ''); ?>"><a href="<?php echo route('cotizador.index'); ?>"><span class="menu-title" data-i18n="">Cotizaciones</span></a></li>
             <li class="<?php echo e(Request::is('cotizaciones_lista*') ? 'active' : ''); ?>"><a href="<?php echo route('cotizador.lista'); ?>"><span class="menu-title" data-i18n="">Histórico</span></a></li>
-            <li class="<?php echo e(Request::is('cotizaciones_oc*') ? 'active' : ''); ?>"><a href="<?php echo route('cotizador.oc'); ?>"><span class="menu-title" data-i18n="">OC</span></a></li>
-
-            <li class="<?php echo e(Request::is('tblOcFabs*') ? 'active' : ''); ?>"><a href="<?php echo route('tblOcFabs.index'); ?>"><span class="menu-title" data-i18n="">OC Fabricantes</span></a></li>
-
           </ul>
-        </li> 
-     
+        </li>        
       </ul>
     </div>
   </div>
-
 
 
 <?php /**PATH /var/www/html/hardware/resources/views/layouts/menu.blade.php ENDPATH**/ ?>

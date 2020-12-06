@@ -5,7 +5,7 @@
     .td-2px{padding: 2px;}
 </style>
 <div class="col-md-12">
-    <h3>OC Clientes</h3>
+    <h3>Enviados</h3>
 </div>
 <br><br>
 <div class="col-md-12" id="cotiza_table">
@@ -20,7 +20,6 @@
                 <th>Teléfono</th>
                 <th>Total USD</th>
                 <th>Total MXN</th>
-                <th></th>
                 <th>Correo</th>
             </tr>
         </thead>
@@ -33,12 +32,7 @@
                     <td><?php echo e($c->telefono); ?></td>
                     <td style="text-align: right">$<?php echo e(number_format($c->total_usa,2)); ?></td>
                     <td style="text-align: right">$<?php echo e(number_format($c->total_mx,2)); ?></td>
-                    <td>
-                        <div class="btn-group">
-                            <a class="btn btn-sm btn-outline-secundary btn_gris" href="#" onclick="cambia_oc2(<?php echo e($c->id); ?>)"><i class="fa fa-retweet"></i></a> &nbsp;
-                            <a class="btn btn-sm btn-outline-primary btn_azul" href="<?php echo e(route('cotizador.revive',['id_cotizacion'=>$c->id])); ?>"><i class="fa fa-window-maximize"></i></a> &nbsp;
-                        </div>
-                    </td>
+                    
                     <td><?php echo e($c->correo); ?></td>
                 </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -47,4 +41,4 @@
       </table>
 </div>
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/hardware/resources/views/cotizador/oc.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/hardware/resources/views/cotizador/oc_enviadas.blade.php ENDPATH**/ ?>

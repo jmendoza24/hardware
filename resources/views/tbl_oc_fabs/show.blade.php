@@ -1,23 +1,40 @@
     @extends('layouts.app')
 
-@section('titulo') @endsection
+@section('titulo') <h4 >OC Fabricantes</h4> @endsection
 @section('content')
-    <div class="col-md-12">    
-    <h1 class="pull-right">
-    </h1>
-    </div>OC Fabricantes  Desgloce
-    <br><br><br>
-    <div class="col-md-12" style="overflow-x: scroll;">
+     <table>
+            <div class="col-md-12">  
+
+            <div class="col text-right" style="margin-top: 10px;">
+                <span style="color: white" class=" btn btn-outline-primary btn_azul " onclick="finaliza_pedido()">Finalizar Pedido</span>
+                <span style="color: white" class="btn btn-outline-primary btn_azul " onclick="regresar()">Regresar</span>
+
+            </div>
+            </div>
+         <tr>
+            <td colspan="4"></td>
             
-        <table class="table table-striped responsive  table-bordered scroll-vertical" id="tblOcFabs-table2">
+            <td style="text-align: right"><h2 id="tot">Total:</h2></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <div class="col-md-12" style="overflow-x: scroll;">
+        <table class="table table-bordered file-export" id="tblOcFabs-table">
+
         <thead>
             <tr style="background: #5C8293; color: white;">
             <th>Fabricante</th>
             <th>Producto</th>
+            <th>Handing</th>
+            <th>Finish</th>
+            <th>Style</th>
             <th>Cantidad</th>
-            <th>Sub Total</th>
+            <th>Cant. Pedido</th>
+            <th>Inv 1</th>
+            <th>Inv 2</th>
+            <th>LP</th>
             <th>Total</th>
-            <th></th>
             </tr>
         </thead>
         <tbody>
@@ -25,38 +42,28 @@
             <tr>
             <td>{{ $tblOcFab->fabricante }}</td>
             <td>{{ $tblOcFab->id_fab }}</td>
+            <td>{{ $tblOcFab->handing }}</td>
+            <td>{{ $tblOcFab->finish }}</td>
+            <td>{{ $tblOcFab->style }}</td>
             <td>{{ $tblOcFab->cant }}</td>
-            <td style="text-align: right">${{ number_format($tblOcFab->subtotal,2) }}</td>
-            <td style="text-align: right">${{ number_format($tblOcFab->total,2) }}</td>
-            <td>
-
-
-                <div class="form-check">
-                <label class="form-check-label">
-                  <input class="form-check-input" type="checkbox"   onchange="agrega_producto({{ $tblOcFab->idf }})">
-                  <span class="form-check-sign">
-                    <span class="check"></span>
-                  </span>
-                </label>
-              </div>
-                </td>
+            <td><input type="text" id="cpedido{{ $tblOcFab->id_dc }}" onchange="agrega_producto_oc({{ $tblOcFab->idf }},'{{ $tblOcFab->id_fab }}','{{ $tblOcFab->fabricante  }}',{{ $tblOcFab->cant }},'{{ $tblOcFab->lp }}','{{ $tblOcFab->lp }}',{{ $tblOcFab->id_dc }})" name="cpedido{{ $tblOcFab->id_dc }}" class="form-control"></td>
+            <td>{{ $tblOcFab->inv1 }}</td>
+            <td>{{ $tblOcFab->inv2 }}</td>
+            <td style="text-align: right">${{ number_format($tblOcFab->lp,2) }}</td>
+            <td style="text-align: right">${{ number_format($tblOcFab->lp*$tblOcFab->cant,2) }}</td>
+            
                 
                 </tr>
         @endforeach
 
         </tbody>
 
-         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td style="text-align: right">Total:</td>
-            <td></td>
-            <td></td>
-            </tr>
     </table>
+   
     </div>
 @endsection
+
+
 
 
 

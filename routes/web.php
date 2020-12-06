@@ -46,12 +46,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('catalogos_download', 'productosController@catalogos_download')->name('catalogos_download.index');
 	Route::get('cotizador', 'cotizadorController@index')->name('cotizador.index');
 	Route::get('cotizaciones_lista', 'cotizadorController@lista')->name('cotizador.lista');
-	Route::get('cotizaciones_oc', 'cotizadorController@oc')->name('cotizador.oc');
-
 	Route::get('selectores', 'Sub_baldwinController@selectores')->name('selectores.index');
 	Route::get('dependencia', 'CatalogosController@dependencia')->name('dependencia.index');
 	Route::get('costos', 'FabricantesController@costos')->name('costos.index');
-
+	Route::get('subcategorias_colores', 'subcategoriasController@colores')->name('colores.index');
 	Route::get('catalogos_generales', 'CatalogosController@catalogos_generales')->name('catalogos_generales');
 
 	
@@ -102,10 +100,9 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('actualiza_cots', 'cotizadorController@actualiza_cots');
 	Route::get('guarda_cot_not', 'cotizadorController@guarda_cot_not');
 	Route::get('enviar_produccion', 'productosController@enviar_produccion');
-
-	Route::get('cambia_oc', 'cotizadorController@oc_cambia');
-	Route::get('oc_cambia2', 'cotizadorController@oc_cambia2');
-
+	Route::get('buscar_producto', 'productosController@buscar_producto');
+	Route::get('duplica_cotizacion', 'cotizadorController@duplica_cotizacion');
+	
 
 });
 
@@ -116,5 +113,3 @@ Route::resource('tipoClientes', 'tipo_clienteController');
 Route::resource('tipoProyectos', 'tipo_proyectoController');
 
 Route::resource('tblFotosProductos', 'tbl_fotos_productosController');
-
-Route::resource('tblOcFabs', 'tbl_oc_fabController');

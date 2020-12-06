@@ -10,7 +10,7 @@
 </style>
 	<table class="table table-striped small row-border" style="font-size: 13px;" id="" border="0">
 		<tr style="border-top: 2px solid white; background:white;">
-			<td colspan="7"><span class="badge badge-primary">Cotización <?php echo e($num_cotizacion); ?></span></td>
+			<td colspan="<?php echo e($productos[0]->estatus == 1 ? 11:9); ?>"><span class="badge badge-primary">Cotización <?php echo e($num_cotizacion); ?></span></td>
 			<td colspan="3" style="background: #67A957;" class="text-center white"><b>Producto USD:</b></td>
 			<td colspan="2"></td>
 			<td colspan="3" style="background: #67A957; border-left: 3px solid white;" class="text-center white"><b>Modificación USD:</b></td>
@@ -27,7 +27,12 @@
 			<td>LP</td>
 			<td>PHC</td>
 			<td>PVC</td>
+			<td colspan="2">Inv I II</td>
 			<td>Ctd</td> 
+			<?php if($productos[0]->estatus==1): ?>
+			<td>INV I</td>
+			<td>INV II</td>
+			<?php endif; ?>
 			<td>Total</td> 
 			<td style="border-left: 3px solid white;">PU</td>
 			<td>Ctd</td>
@@ -77,10 +82,19 @@
 			<?php ($suma_pv = $p->pvc + $p->sum_pvc); ?>
 			<td class="text-right">$<?php echo e(number_format($suma_pv,2)); ?></td>
 			
+			<td ><span class="badge badge-primary"><?php echo e($p->inv1); ?></span> <input type="hidden" id="cin2<?php echo e($p->id); ?>" value="<?php echo e($p->inv1); ?>"></td>
+			<td> <span class="badge badge-primary"><?php echo e($p->inv2); ?></span> <input type="hidden" id="cin1<?php echo e($p->id); ?>" value="<?php echo e($p->inv2); ?>"> </td>
 			<td>
 				<input type="text" id="pro_cant_<?php echo e($p->id); ?>" value="<?php echo e($p->cantidad); ?>" class="form-control form-control-sm cantidad-mask text-right"  onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)" style="width: 50px;">
 			</td>
-			<td class="text-right"> <label > $<?php echo e(number_format($suma_pv* $p->cantidad,2)); ?></label></td>
+			
+			<?php if($p->estatus== 1): ?>
+			<td>
+				<input type="text" id="cantinv1<?php echo e($p->id); ?>" value="<?php echo e($p->inventa1); ?>" class="form-control form-control-sm cantidad-mask text-right"  onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)" style="width: 50px;">
+			</td>
+			<td><input type="text" id="cantinv2<?php echo e($p->id); ?>" value="<?php echo e($p->inventa2); ?>" class="form-control form-control-sm cantidad-mask text-right"  onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)" style="width: 50px;"></td>
+			<?php endif; ?>
+			<td class="text-right"> <label > $<?php echo e(number_format($suma_pv * $p->cantidad,2)); ?></label></td>
 			<td style="border-left: 3px solid white;"><input type="text" id="mod_pre_unit_<?php echo e($p->id); ?>" value="<?php echo e($p->mod_precio_unit); ?>" class="form-control form-control-sm p_unit-mask text-right" onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)" style="width: 90px;"></td>
 			<td><input type="text" id="mod_cant_<?php echo e($p->id); ?>" class="form-control form-control-sm cantidad-mask text-right" value="<?php echo e($p->mod_cantidad); ?>" onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)" style="width: 50px;"></td>
 			<td class="text-right"><label>$<?php echo e(number_format($p->mod_precio_unit*$p->mod_cantidad,2)); ?></label></td>
@@ -93,7 +107,7 @@
 		<?php ($subtotal_ps   += $p->inst_precio_unit * $p->inst_cantidad); ?>
 		<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 		<tr>
-			<td colspan="8" class="color" rowspan="5"></td>
+			<td colspan="<?php echo e($productos[0]->estatus == 1 ? 12:10); ?>" class="color" rowspan="6"></td>
 			<td colspan="2" style="background:#67A957; color: white; ">Subtotal:</td>
 			<td colspan="2" class="text-right">$<?php echo e(number_format($subtotal_dl,2)); ?></td>
 			<td colspan="3" class="text-right" style="border-left: 3px solid white;">$<?php echo e(number_format($subtotal_dl_1,2)); ?></td>
@@ -164,9 +178,16 @@
 			<td style="background:#67A957; border-left: 3px solid white;"  class="white text-right" colspan="3"> $<?php echo e(number_format($desc_mod + (($desc_mod * $cotizacion->iva_mod)/100),2)); ?></td>
 			<td  style="background:#67A957;border-left: 3px solid white;" class="text-right  white" colspan="3"> $<?php echo e(number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)); ?></td>
 		</tr>
+		<tr>
+			<td class="text-left white" style="background:#67A957;" colspan="4">Flete:</td>
+			<td style=" border-left: 3px solid white; text-align: right;"  colspan="3">
+				<input type="text" id="flete" class="desc-mask form-control form-control-sm text-right" style="width: 100px; float: right;" value="<?php echo e(number_format($cotizacion->flete,2)); ?>" onchange="guardar_descuentos()">
+			</td>
+			<td style=" border-left: 3px solid white;" class="text-right  white" colspan="3"></td>
+		</tr>
 		<tr style="background:#5C8293; color: white;" class="text-right">
 			<td colspan="4"  >Gran Total:</td>
-			<td colspan="3">USD: $<?php echo e(number_format($desc_usa + (($desc_usa * $cotizacion->iva_usa)/100) + $desc_mod + (($desc_mod * $cotizacion->iva_mod)/100),2)); ?></td>
+			<td colspan="3">USD: $<?php echo e(number_format($desc_usa + (($desc_usa * $cotizacion->iva_usa)/100) + $desc_mod + (($desc_mod * $cotizacion->iva_mod)/100) + $cotizacion->flete ,2)); ?></td>
 			<td colspan="3" style="border-left: 3px solid white;" >+MXN: $<?php echo e(number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)); ?></td>
 		</tr>
 	</table><?php /**PATH /var/www/html/hardware/resources/views/cotizador/table.blade.php ENDPATH**/ ?>

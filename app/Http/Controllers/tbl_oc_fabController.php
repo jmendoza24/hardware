@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Flash;
 use Response;
 use DB;
+use Session;
+use Redirect;
 class tbl_oc_fabController extends AppBaseController
 {
     /** @var  tbl_oc_fabRepository */
@@ -29,17 +31,103 @@ class tbl_oc_fabController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $tblOcFabs = db::select("SELECT f.id_fabricante as idf,f.fabricante,sum(d.cantidad) AS cant,IFNULL(SUM(d.lp),0) AS total
-                FROM cotizacions c
-                INNER JOIN cotizacion_detalle d ON d.id_cotizacion = c.id
-                INNER JOIN productos p ON p.id=d.item
-                INNER JOIN tbl_fabricantes f ON f.id_fabricante=p.fabricante
-                WHERE c.estatus=1
-                GROUP BY f.fabricante,f.id_fabricante");
+        $tblOcFabs = db::select("CALL totales_oc()");
+
 
         return view('tbl_oc_fabs.index',compact('tblOcFabs'));
     }   
 
+
+
+    public function estatus_pedido2(Request $request){
+
+
+
+     DB::table('pedidos_fabricantes')->where([['id_pedido',$request['pedido']]])->update(['estatus'=>$request['cpedido']]);
+      
+    //return Redirect::back();
+     return 1;
+
+    }
+
+
+    public function agrega_producto_oc(Request $request){
+
+
+    $id_fab=$request['id_fab'];
+    $fabricante=$request['fabricante'];
+    $cant=$request['cant'];
+    $idf=$request['idf'];
+    $subtotal=$request['subtotal'];
+    $total=$request['total'];
+    $id_dc=$request['id_dc'];
+    $pedido = $request->session()->get('pedido');
+    $cpedido=$request['cpedido'];
+
+    if($cpedido=='' || $cpedido==0){
+        $cpedido=0;
+    }else{
+        $cpedido=$request['cpedido'];
+
+    }
+
+        $maxcotizacion=DB::table('pedidos_fabricantes')
+                         ->selectraw('max(id_pedido) as id_pedido') 
+                         ->get();
+        $maxcotizacion = $maxcotizacion[0];
+
+
+        $tblOcFabs = db::select("SELECT count(*) as c from tbl_oc_fabricantes where id_relacion=$id_dc and id_pedido=$maxcotizacion->id_pedido");
+
+        if($tblOcFabs[0]->c!=0  and $cpedido==0){
+
+
+           db::table('tbl_oc_fabricantes')
+                ->where('id_relacion',$id_dc)
+                ->delete();
+        }else{
+
+
+            db::table('tbl_oc_fabricantes')
+              ->insert(['id_fab'=>$id_fab,
+                         'fabricante'=>$fabricante,
+                         'cant'=>$cpedido,
+                         'idf'=>$idf,
+                         'subtotal'=>$subtotal,
+                         'total'=>$total*$cant,
+                         'id_relacion'=>$id_dc,
+                         'id_pedido'=>$maxcotizacion->id_pedido, 
+
+                      ]);
+
+        }
+
+      $totales = db::select("SELECT CAST(sum(total) AS DECIMAL(10,6)) as tot from tbl_oc_fabricantes where id_pedido=$maxcotizacion->id_pedido");
+      $totales=$totales[0];
+      $totales->tot;
+
+      $valor=$totales->tot; 
+      return  $valor;
+
+
+
+
+    }
+
+    public function finaliza_pedido(Request $request){
+
+
+
+        $maxcotizacion=DB::table('pedidos_fabricantes')
+                         ->selectraw('max(id_pedido) as id_pedido') 
+                         ->get();
+        $maxcotizacion = $maxcotizacion[0];
+
+        DB::table('pedidos_fabricantes')->where([['id_pedido',$maxcotizacion->id_pedido]])->update(['estatus'=>1]);
+
+        $request->session()->forget('id_pedido');
+        return 1;
+    }
     /**
      * Show the form for creating a new tbl_oc_fab.
      *
@@ -75,22 +163,68 @@ class tbl_oc_fabController extends AppBaseController
      *
      * @return Response
      */
-    public function show($id)
+    public function show(Request $request,$id)
     {
-        
-                $tblOcFabs = db::select("SELECT f.id_fabricante as idf,f.fabricante,d.id_fab,
-                    IFNULL(sum(d.cantidad),0) AS cant,IFNULL(sum(d.lp),0) AS total,
-                    IFNULL(sum(d.lp),0) * ifnull(sum(d.cantidad),0) AS subtotal
-                    FROM cotizacions c
-                    INNER JOIN cotizacion_detalle d ON d.id_cotizacion = c.id
-                    INNER JOIN productos p ON p.id=d.item
-                    INNER JOIN tbl_fabricantes f ON f.id_fabricante=p.fabricante
-                    WHERE c.estatus=1 AND f.id_fabricante =77
-                    GROUP BY  f.id_fabricante,f.fabricante,d.id_fab");
+        $tblOcFabs = db::select("CALL producto_fab_ordenes($id)");
 
+       
+        $maxcotizacion=DB::table('pedidos_fabricantes')
+                         ->selectraw('ifnull(max(id_pedido),0)+1 as id_pedido') 
+                         ->get();
+            $maxcotizacion = $maxcotizacion[0];
+
+            $id = DB::table('pedidos_fabricantes')->insertGetId(
+                array('estatus' => 0)
+            );
+
+            $request->session()->put('id_pedido',$maxcotizacion->id_pedido);
+
+            #insert into cotizacion ''' 
+         //   $pedido = $request->session()->get('id_pedido');
+
+//dd($pedido);
+            //session('num_cot'=>$session->cotizacion_num);
+
+        
         return view('tbl_oc_fabs.show',compact('tblOcFabs'));
   
 
+
+
+    }
+
+
+    public function pedidos(Request $request){
+
+
+
+        $pedidos = db::select("SELECT p.id_pedido,c.fabricante,p.estatus ,SUM(c.cant) AS cant, SUM(c.total) AS total
+        FROM pedidos_fabricantes p
+        INNER JOIN tbl_oc_fabricantes c ON c.id_pedido=p.id_pedido
+        where p.estatus!=0
+        GROUP BY c.fabricante,p.id_pedido,p.estatus");
+
+        return view('tbl_oc_fabs.show2',compact('pedidos'));
+
+
+    }
+
+
+    public function ver_pedidos(Request $request){
+
+        $id_pedido=$request['id_pedido'];
+
+        $pedidos = db::select("SELECT p.id_pedido,c.fabricante,c.id_fab,p.estatus ,c.cant AS cant, c.total AS total
+        FROM pedidos_fabricantes p
+        INNER JOIN tbl_oc_fabricantes c ON c.id_pedido=p.id_pedido
+        where p.id_pedido=$id_pedido
+        ");
+
+
+
+        $options = view('tbl_oc_fabs.vista_pedido',compact('pedidos'))->render();
+
+        return json_encode($options);
 
 
     }

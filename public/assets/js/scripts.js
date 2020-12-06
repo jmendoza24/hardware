@@ -1,3 +1,17 @@
+
+
+function ver_pedido(id_pedido){
+	
+	$.ajax({
+				data: {'id_pedido':id_pedido},
+				url: '/api/v1/ver_pedidos',
+				dataType: 'json',
+				type:  'get',
+				success:  function (response){  
+						$("#contenido").html(response);
+				}
+		});
+}
 function cambia_oc(id){
 
 		$.confirm({
@@ -286,6 +300,72 @@ function guarda_catalogo(catalogo,id,tipo,nom_table){
 						}
 				});
 		}
+        var parameters = {             'id':id,
+                    'tipo':tipo,
+                    'fabricante':fabricante,
+                    'catalogos':catalogos,
+                    'familia':familia,
+                    'categoria':categoria,
+                    'subcategoria':subcategoria,
+                    'disenio':disenio
+                    }
+  $.ajax({
+            data: parameters,
+            url:   '/api/v1/opciones_catalogo',
+            dataType: 'json',
+            type:  'get',
+            success:  function (response) { 
+               $("#contenido").html(response);
+               if(catalogo!=16 ){
+                  $("#modal_primary").removeClass("modal-xl");
+               }
+               //$("#modal_primary").addClass("modal-lg");
+               $('.modal-dialog').draggable({handle: ".modal-header"});
+               $("#footer_primary").hide();
+            }
+        }); 
+}
+
+function guarda_catalogo(catalogo,id,tipo,nom_table){
+  if($("#fabricante").val()==''){
+    $.alert("Llene todos los campos");
+  }else{
+   var formData = new FormData($("#catalogos_forma")[0]);
+   $.ajax({
+            url:"/api/v1/guarda_catalogo",
+            type: 'POST',
+            method: "POST",        
+            data:  formData,
+            //async: false,
+            cache: false,
+            contentType: false,
+            processData: false, 
+            success: function(respuesta){
+                $('#tabla_catalogos').html(respuesta);
+                $('.file-export').DataTable({
+                      dom: 'Bfrtip',
+                      "paging": false,
+                      "columnDefs": [
+                          {
+                              "targets": [ 0 ],
+                              "visible": false
+                          }
+                      ],
+                      buttons: [
+                          {
+                              extend: 'excelHtml5',
+                              exportOptions: {
+                                  columns: [0,1,2]
+                              }
+                          }
+                      ]
+                  });
+                  $('.buttons-excel').addClass('btn btn-outline-primary');
+                $("#primary").modal('hide');
+                $("#catalogos_forma")[0].reset();
+            }
+        });
+    }
 }
 
 function elimina_catalogo(catalogo,id,nom_table,fabricante,catalogos,familia,categoria,subcategoria,disenio){
@@ -570,6 +650,84 @@ function agrega_producto(producto){
 						
 					}
 			}); 
+} 
+
+function regresar(){
+
+	
+	window.location.href = '/tblOcFabs';
+
+}
+
+function finaliza_pedido(id_pedido){
+					 $.confirm({
+						title: 'Hardware collection',
+						content: 'Estas seguro deseas Finalizar este pedido?',
+						type:'orange',
+						buttons: {
+								confirmar: function () {
+									$.ajax({
+														data: {'id_pedido':id_pedido},
+														url: '/api/v1/finaliza_pedido',
+														dataType: 'json',
+														type:  'get',
+														success:  function (response){
+															window.location.href = '/pedidos';
+														}
+												});
+								},
+								cancelar: function () {}
+							} 
+					});
+}
+
+function estatus_pedido2(){
+var cpedido = $("#cpedido").val();
+var pedido = $("#pedido").val();
+			
+
+	$.confirm({
+						title: 'Hardware collection',
+						content: 'Estas seguro deseas cambiar el estatus de este pedido?',
+						type:'orange',
+						buttons: {
+								confirmar: function () {
+									$.ajax({
+													data: {'cpedido':cpedido,'pedido':pedido},
+													url: '/api/v1/estatus_pedido2',
+													dataType: 'json',
+													type:  'get',
+													success:  function (response) { 
+ 														$('#primary').modal('hide');
+														window.location.href = '/pedidos';
+													}
+											}); 
+
+								},
+								cancelar: function () {}
+							}  
+					});
+
+
+												 
+
+
+				 
+}
+
+function agrega_producto_oc(idf,id_fab,fabricante,cant,subtotal,total,id_dc){
+
+var cpedido = $("#cpedido"+id_dc).val();
+
+		$.ajax({
+					data: {'cpedido':cpedido,'idf':idf,'id_fab':id_fab,'fabricante':fabricante,'cant':cant,'subtotal':subtotal,'total':total,'id_dc':id_dc},
+					url: '/api/v1/agrega_producto_oc',
+					dataType: 'json',
+					type:  'get',
+					success:  function (response) {  
+						$('#tot').html('Total: $'+response);
+					}
+			}); 
 }
 
 function elimina_producto(producto){
@@ -678,16 +836,51 @@ function eliminar_clientes(id_proyecto, id){
 }
 
 function guarda_info_cotizacion(id){
-	var parameters = {'id':id,
-										'posicion':$("#posicion_"+id).val(),
-										'descripcion':$("#descripcion_"+id).val(),
-										'bks':$("#bks_"+id).val(),
-										'door_t':$("#doort_"+id).val(),
-										'cantidad':$("#pro_cant_"+id).val(),
-										'mod_precio_unit':$("#mod_pre_unit_"+id).val(),
-										'mod_cantidad':$("#mod_cant_"+id).val(),
-										'inst_precio_unit':$("#inst_pre_unit_"+id).val(),
-										'inst_cantidad':$("#inst_cant_"+id).val()}
+
+
+  var cin1=$("#cin1"+id).val();
+  var cin2=$("#cin2"+id).val();
+
+  var cin1_com=$("#cantinv1"+id).val();
+  var cin2_com=$("#cantinv2"+id).val();
+
+  if((cin1_com>cin1) || (cin2_com>cin2)){
+
+		$.confirm({
+			title: 'Hardware collection',
+			content: 'Valores ingresados en cantidad de inventarios superiores a las disponibles',
+			type:'orange',
+			buttons: {
+					confirmar: function () {},
+				} 
+		});
+
+  }else if((cin1_com<0) || (cin2_com<0)){
+
+  			$.confirm({
+			title: 'Hardware collection',
+			content: 'Valores ingresados en cantidad de inventarios inferiores a las disponibles',
+			type:'orange',
+			buttons: {
+					confirmar: function () {},
+				} 
+		});
+  }else{
+
+  
+
+  var parameters = {'id':id,
+                    'posicion':$("#posicion_"+id).val(),
+                    'descripcion':$("#descripcion_"+id).val(),
+                    'bks':$("#bks_"+id).val(),
+                    'door_t':$("#doort_"+id).val(),
+                    'cantidad':$("#pro_cant_"+id).val(),
+                    'mod_precio_unit':$("#mod_pre_unit_"+id).val(),
+                    'mod_cantidad':$("#mod_cant_"+id).val(),
+                    'inst_precio_unit':$("#inst_pre_unit_"+id).val(),
+                    'inst_cantidad':$("#inst_cant_"+id).val(),
+                    'cantinv1':$("#cantinv1"+id).val(),
+                   'cantinv2':$("#cantinv2"+id).val()}
 
  $.ajax({
 				data: parameters,
@@ -727,6 +920,7 @@ function guarda_info_cotizacion(id){
 										});
 				}
 		});  
+ 	}
 }
 
 function guardar_descuentos(){
@@ -802,9 +996,6 @@ function muestra_sufijo_ext(id_catalogo){
 	
 }
 
-function ver_dependencias(catalogo){
-	
-}
 
 function guarda_costo(id,campo){
 	var parameters =  {'id':id,
@@ -860,6 +1051,41 @@ function guarda_datos(id,id_catalogo){
 						//$("#lista_costs").html(response);
 				}
 		}); 
+  var parameters = {'item':$("#item_"+id_catalogo).val(),
+                    'color':$("#color_"+id_catalogo).val(),
+                    'sufijo':$("#sufijo_"+id_catalogo).val(),
+                    'cantidad':$("#cantidad_"+id_catalogo).val(),
+                    'id':id,
+                    'id_catalogo':id_catalogo}
+
+  $.ajax({
+        data: parameters,
+        url: '/api/v1/guarda_datos',
+        dataType: 'json',
+        type:  'get',
+        success:  function (response){  
+            console.log(response);
+            if(response.alerta==0){
+              $("#tabla_dependencias").html(response.options);
+              $.alert("El item no existe, intente con otro");
+
+            }else{
+              $("#tabla_dependencias").html(response.options);
+            }
+            guarda_detalle(response.id_detalle);
+            $('.cantidad-mask').inputmask({ 
+                        groupSeparator: ".",
+                        alias: "numeric",
+                        placeholder: "0",
+                        autoGroup: !0,
+                        digits: 0,
+                        digitsOptional: !1,
+                        clearMaskOnLostFocus: !1,
+                        max:9999
+                    });
+            //$("#lista_costs").html(response);
+        }
+    }); 
 
 }
 
@@ -947,6 +1173,17 @@ function guarda_detalle(id_detalle){
 						$("#cotiza_table").html(response.options2);
 					}
 			}); 
+  $.ajax({
+        data: {'id_detalle':id_detalle, finish:$("#det_finish").val(), 'style':$("#det_style").val(),'handing':$("#handing").val()},
+        url: '/api/v1/guarda_detalle',
+        dataType: 'json',
+        type:  'get',
+        success:  function (response){
+            console.log(response);
+            $("#detalle_head").html(response.options);
+            $("#cotiza_table").html(response.options2);
+          }
+      }); 
 }
 
 
@@ -1047,12 +1284,36 @@ function borra_foto(id){
 							} 
 					});
 
+   $.confirm({
+            title: 'Hardware collection',
+            content: 'Estas seguro deseas elimniar esta foto?',
+            type:'orange',
+            buttons: {
+                confirmar: function () {
+                  
+                    $.ajax({
+                          data: {'id':id},
+                          url: '/api/v1/borra_foto',
+                          dataType: 'json',
+                          type:  'get',
+                          success:  function (response){   
+
+                             actualiza_fotos(response)
+                          }
+                      });
+
+
+                },
+                cancelar: function () {}
+              } 
+          });
+
 }
 
 function enviar_cotizacion(tipo){
  $.ajax({
 				data: {'tipo':tipo},
-				url: '/api/v1/enviar_cotizacion',
+				url: '/api/v1/enviar_cotizacion2',
 				dataType: 'json',
 				type:  'get',
 				success:  function (response){  
@@ -1090,6 +1351,30 @@ var parameters = {
 								cancelar: function () {}
 							}  
 					});
+                  var parameters = {   'id':id
+                    }
+ 
+
+  $.confirm({
+            title: 'Hardware collection',
+            content: 'Estas seguro deseas elimniar esta cotización?',
+            type:'orange',
+            buttons: {
+                confirmar: function () {
+                  $.ajax({
+                          data: parameters,
+                          url: '/api/v1/elimina_cot',
+                          dataType: 'json',
+                          type:  'get',
+                          success:  function (response) {  
+                            window.location.href = '/cotizaciones_lista';
+                          }
+                      }); 
+
+                },
+                cancelar: function () {}
+              }  
+          });
 
 }
 
@@ -1108,26 +1393,11 @@ function actualiza_cots(){
 						 $("#tablac").html(response);
 					}
 			});
-
-
-}
-
-
-function guarda_cot_not(id_cot){
-
-var nota= $("#nota").val();
-
-$.ajax({
-				data: {'id_cot':id_cot,'nota':nota},
-				url: '/api/v1/guarda_cot_not',
-				dataType: 'json',
-				type:  'get',
-				success:  function (response){  
-						console.log(1);
-				}
-		});  
+      
 
 }
+
+
 
 
 function enviar_produccion(){
@@ -1159,4 +1429,50 @@ function enviar_produccion(){
 });
 
 	
+  $.confirm({
+    title: 'Hardware',
+    type: 'red',
+    typeAnimated: true,
+    theme: 'supervan',
+    content: 'Estas seguro deseas enviar los productos a produccion',
+    buttons: {
+        tryAgain: {
+            text: 'Confirmar',
+            btnClass: 'btn-blue',
+            action: function(){
+              $.ajax({
+                    data: '',
+                    url: '/api/v1/enviar_produccion',
+                    dataType: 'json',
+                    type:  'get',
+                    success:  function (response){  
+                      $.alert('Los productos se enviaron a produccion correctamente');
+                    }
+                });
+            }
+        },
+        close: function () {
+        }
+    }
+});
+
+  
+}
+
+
+
+function guarda_cot_not(id_cot){
+
+var nota= $("#nota").val();
+
+$.ajax({
+				data: {'id_cot':id_cot,'nota':nota},
+				url: '/api/v1/guarda_cot_not',
+				dataType: 'json',
+				type:  'get',
+				success:  function (response){  
+						console.log(1);
+				}
+		});  
+
 }
