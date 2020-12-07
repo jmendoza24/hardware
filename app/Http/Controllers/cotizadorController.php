@@ -80,6 +80,7 @@ class cotizadorController extends AppBaseController
                                           'notas'=>$generales[0]->notas,
                                           'created_at'=>$fecha]);       
             $request->session()->put('num_cotizacion',$id);
+            cotizador::where('id',$id)->update(['id_hijo'=>$id,'ver'=>0]);
             $num_cotizacion = $request->session()->get('num_cotizacion');
 
          }
@@ -114,13 +115,13 @@ class cotizadorController extends AppBaseController
           $proyectos = proyectos::where('estatus',1)->get();
           $clientes = cliente_participantes::where('activo',1)->get();
         }
-        
-        
+
         $tipo=0;
+        $info_adic = db::select('select * from tbl_datos_productos where id_cotizacion = '.$num_cotizacion);
 
         $estatus = sizeof($productos)> 0 ? $productos[0]->estatus :0;
         $fabricantes  = fabricantes::orderby('fabricante')->get();
-        return view('cotizador.index',compact('fabricantes','num_cotizacion','productos','cotizacion','proyectos','clientes','tipo','estatus'));
+        return view('cotizador.index',compact('fabricantes','num_cotizacion','productos','cotizacion','proyectos','clientes','tipo','estatus','info_adic'));
     }
 
     function detalle_producto(Request $request){
@@ -168,6 +169,8 @@ class cotizadorController extends AppBaseController
         $filtro->id_cotizacion = $num_cotizacion;
         $produc = productos::where('id',$request->producto)->get();
         $produc = $produc[0];
+
+        db::update('call proceso_informacion_producto('.$produc->id.','.$id.')');
 
         if($produc->info==3){
           db::update('call proceso_idfab('.$id.')');
@@ -217,6 +220,7 @@ class cotizadorController extends AppBaseController
         */
 
         $productos = $filtro->detalle_cotizacion($filtro);   
+
 
         $estatus = sizeof($productos)> 0 ? $productos[0]->estatus :0;
 
@@ -784,7 +788,7 @@ WHERE d.id = 264
       $data=$data[0];
       $tipo = $request->id_tipo;
 
-      return view('cotizador.pdf',compact('cot','productos2','data','tipo','cotizacion'));
+      //return view('cotizador.pdf',compact('cot','productos2','data','tipo','cotizacion'));
       $pdf = \PDF::loadView('cotizador.pdf',compact('cot','productos2','data','tipo','cotizacion'))->setPaper('A4','portrait');
       return  $pdf->download('Cotizacion_'.$num_cotizacion.'.pdf');
     }
@@ -919,6 +923,16 @@ WHERE d.id = 264
                   ->update(['notas'=>$request->nota]);
 
 
+    }
+
+    function duplica_cotizacion(Request $request){
+      $cotizaciones = db::select("CALL listado_cotizacion()");
+      
+      db::update('CALL proceso_duplica_cotizacion('.$request->id_cotizacion.')');
+
+      $options =   view('cotizador.cotizaciones',compact('cotizaciones'))->render();
+
+      return json_encode($options);
     }
     
 

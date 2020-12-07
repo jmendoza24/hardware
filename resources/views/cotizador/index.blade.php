@@ -4,7 +4,7 @@
 <style type="text/css">
     .td-2px{padding: 2px;}
 </style>
-<div class="col-md-12" id="cotiza_table">
+<div class="col-md-12" id="cotiza_table" style="overflow-x: scroll;">
 	  @include('cotizador.table')		
 </div>
 <div class="col-md-12">
