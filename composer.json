@@ -12,6 +12,7 @@
         "barryvdh/laravel-dompdf": "^0.8.7",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
+        "guzzlehttp/guzzle": "^7.2",
         "infyomlabs/adminlte-templates": "6.0.x-dev",
         "infyomlabs/laravel-generator": "6.0.x-dev",
         "laravel/framework": "^6.2",

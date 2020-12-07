@@ -46,11 +46,27 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('catalogos_download', 'productosController@catalogos_download')->name('catalogos_download.index');
 	Route::get('cotizador', 'cotizadorController@index')->name('cotizador.index');
 	Route::get('cotizaciones_lista', 'cotizadorController@lista')->name('cotizador.lista');
+	Route::get('cotizaciones_oc', 'cotizadorController@oc')->name('cotizador.oc');
+
 	Route::get('selectores', 'Sub_baldwinController@selectores')->name('selectores.index');
 	Route::get('dependencia', 'CatalogosController@dependencia')->name('dependencia.index');
 	Route::get('costos', 'FabricantesController@costos')->name('costos.index');
-	Route::get('subcategorias_colores', 'subcategoriasController@colores')->name('colores.index');
+
 	Route::get('catalogos_generales', 'CatalogosController@catalogos_generales')->name('catalogos_generales');
+
+	Route::resource('tipoClientes', 'tipo_clienteController');
+
+	Route::resource('tipoProyectos', 'tipo_proyectoController');
+
+	Route::resource('tblFotosProductos', 'tbl_fotos_productosController');
+
+	Route::resource('tblOcFabs', 'tbl_oc_fabController');
+
+	Route::get('pedidos', 'tbl_oc_fabController@pedidos')->name('pedidos');
+
+	Route::get('enviadas', 'cotizadorController@enviadas')->name('enviadas');
+
+
 
 	
 });
@@ -88,28 +104,30 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('confirmar_eliminar', 'productosController@confirmar_eliminar');
 	Route::get('guarda_detalle', 'cotizadorController@guarda_detalle');
 	Route::get('guarda_comentarios', 'proyectosController@guarda_comentarios');
-	Route::get('/baja_cotiza_pdf', 'cotizadorController@baja_cotiza_pdf');
+	Route::get('baja_cotiza_pdf', 'cotizadorController@baja_cotiza_pdf');
 	Route::get('guarda_generales', 'CatalogosController@guarda_generales');
 	Route::get('/nuevo_dibujo', 'productosController@nuevo_dibujo');	
 	Route::POST('/ajaxupload', 'tbl_fotos_productosController@store')->name('ajaxupload');
 	Route::get('actualiza_fotos', 'tbl_fotos_productosController@actualiza_fotos');
 	Route::get('borra_foto', 'tbl_fotos_productosController@destroy');
-	Route::get('/enviar_cotizacion', 'cotizadorController@enviar_cotizacion');
 	Route::get('revive_cotizacion/{id_cotizacion}', 'cotizadorController@revive_cotizacion')->name('cotizador.revive');
 	Route::get('elimina_cot', 'cotizadorController@elimina_cot');
 	Route::get('actualiza_cots', 'cotizadorController@actualiza_cots');
 	Route::get('guarda_cot_not', 'cotizadorController@guarda_cot_not');
 	Route::get('enviar_produccion', 'productosController@enviar_produccion');
+
+	Route::get('cambia_oc', 'cotizadorController@oc_cambia');
+	Route::get('oc_cambia2', 'cotizadorController@oc_cambia2');
+	Route::get('agrega_producto_oc', 'tbl_oc_fabController@agrega_producto_oc');
+
 	Route::get('buscar_producto', 'productosController@buscar_producto');
 	Route::get('duplica_cotizacion', 'cotizadorController@duplica_cotizacion');
-	
+	Route::get('enviar_cotizacion2', 'cotizadorController@enviar_cotizacion2');
 
+	Route::get('finaliza_pedido', 'tbl_oc_fabController@finaliza_pedido');
+
+	Route::get('ver_pedidos', 'tbl_oc_fabController@ver_pedidos');
+	Route::get('estatus_pedido2', 'tbl_oc_fabController@estatus_pedido2');
 });
 
 
-
-Route::resource('tipoClientes', 'tipo_clienteController');
-
-Route::resource('tipoProyectos', 'tipo_proyectoController');
-
-Route::resource('tblFotosProductos', 'tbl_fotos_productosController');

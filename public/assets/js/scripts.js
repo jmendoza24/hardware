@@ -184,7 +184,7 @@ function ver_catalogo(catalogo,id,tipo,fabricante,catalogos,familia,categoria,su
             type:  'get',
             success:  function (response) { 
                $("#contenido").html(response);
-               if(catalogo!=16 ){
+               if(catalogo!=16 || catalogo!=17){
                   $("#modal_primary").removeClass("modal-xl");
                }
                //$("#modal_primary").addClass("modal-lg");
@@ -199,10 +199,6 @@ function guarda_catalogo(catalogo,id,tipo,nom_table){
     $.alert("Llene todos los campos");
   }else{
    var formData = new FormData($("#catalogos_forma")[0]);
-
-   if(catalogo ==11){
-    $.blockUI({ message: 'Proccesing, please wait.' }); 
-   }
    $.ajax({
             url:"/api/v1/guarda_catalogo",
             type: 'POST',
@@ -214,10 +210,6 @@ function guarda_catalogo(catalogo,id,tipo,nom_table){
             processData: false, 
             success: function(respuesta){
                 $('#tabla_catalogos').html(respuesta);
-                if(catalogo ==11){
-                  setTimeout($.unblockUI, 2000);
-                  window.location.href = 'productos_masivo';
-                }
                 $('.file-export').DataTable({
                       dom: 'Bfrtip',
                       "paging": false,
@@ -244,6 +236,57 @@ function guarda_catalogo(catalogo,id,tipo,nom_table){
     }
 }
 
+
+
+function eliminar_cotizacion(id){
+
+var parameters = {
+                    'id':id
+                    }
+ 
+
+  $.confirm({
+            title: 'Hardware collection',
+            content: 'Estas seguro deseas elimniar esta cotización?',
+            type:'orange',
+            buttons: {
+                confirmar: function () {
+                  $.ajax({
+                          data: parameters,
+                          url: '/api/v1/elimina_cot',
+                          dataType: 'json',
+                          type:  'get',
+                          success:  function (response) {  
+                        
+                                                          window.location.href = '/cotizaciones_lista';
+
+
+                          }
+                      }); 
+
+                },
+                cancelar: function () {}
+              }  
+          });
+
+}
+
+function actualiza_cots(){
+
+ $.ajax({
+          data: parameters,
+          url: '/api/v1/actualiza_cots',
+          dataType: 'json',
+          type:  'get',
+          success:  function (response) {  
+             
+             $("#tablac").html(response);
+          }
+      });
+
+
+}
+
 function elimina_catalogo(catalogo,id,nom_table,fabricante,catalogos,familia,categoria,subcategoria,disenio){
   var parameters = {'catalogo':catalogo,
                     'id':id,
@@ -267,15 +310,7 @@ function elimina_catalogo(catalogo,id,nom_table,fabricante,catalogos,familia,cat
                           dataType: 'json',
                           type:  'get',
                           success:  function (response) {  
-                            if(catalogo == 18 && id == 0){
-                              $('#tabla_catalogos').html(response);
-                            }else if(catalogo == 18 && fabricante > 0){
-                              $('#catalogo_'+fabricante).html(response);
-                            }else{
-                              $('#tabla_catalogos').html(response);
-                            }
-
-                            //$('#tabla_catalogos').html(response);
+                            $('#tabla_catalogos').html(response);
                             $('.file-export').DataTable({
                                   dom: 'Bfrtip',
                                   "paging": false,
@@ -644,7 +679,6 @@ function eliminar_clientes(id_proyecto, id){
 function guarda_info_cotizacion(id){
   var parameters = {'id':id,
                     'posicion':$("#posicion_"+id).val(),
-                    'descripcion':$("#descripcion_"+id).val(),
                     'bks':$("#bks_"+id).val(),
                     'door_t':$("#doort_"+id).val(),
                     'cantidad':$("#pro_cant_"+id).val(),
@@ -696,12 +730,8 @@ function guarda_info_cotizacion(id){
 function guardar_descuentos(){
   var parameters = {'descuento_mx':$("#descuento_mx").val(),
                     'descuento_usa':$("#descuento_usa").val(),
-                    'descuento_mod':$("#descuento_mod").val(),
                     'iva_mx':$("#iva_mx").val(),
-                    'iva_usa':$("#iva_usa").val(),
-                    'iva_mod':$("#iva_mod").val(),
-                    'flete':$("#flete").val()
-                  }
+                    'iva_usa':$("#iva_usa").val()}
   $.ajax({
         data: parameters,
         url: '/api/v1/guardar_descuentos',
@@ -812,7 +842,6 @@ function guarda_datos(id,id_catalogo){
             }else{
               $("#tabla_dependencias").html(response.options);
             }
-            guarda_detalle(response.id_detalle);
             $('.cantidad-mask').inputmask({ 
                         groupSeparator: ".",
                         alias: "numeric",
@@ -903,7 +932,7 @@ function confirmar_eliminar(id){
 
 function guarda_detalle(id_detalle){
   $.ajax({
-        data: {'id_detalle':id_detalle, finish:$("#det_finish").val(), 'style':$("#det_style").val(),'handing':$("#handing").val()},
+        data: {'id_detalle':id_detalle, finish:$("#det_finish").val(), 'style':$("#det_style").val()},
         url: '/api/v1/guarda_detalle',
         dataType: 'json',
         type:  'get',
@@ -988,7 +1017,6 @@ function actualiza_fotos(id_proyecto){
 
 
 function borra_foto(id){     
-
    $.confirm({
             title: 'Hardware collection',
             content: 'Estas seguro deseas elimniar esta foto?',
@@ -1012,7 +1040,6 @@ function borra_foto(id){
                 cancelar: function () {}
               } 
           });
-
 }
 
 function enviar_cotizacion(tipo){
@@ -1027,58 +1054,6 @@ function enviar_cotizacion(tipo){
     });  
 }
 
-
-
-function eliminar_cotizacion(id){
-
-var parameters = {
-                    'id':id
-                    }
- 
-
-  $.confirm({
-            title: 'Hardware collection',
-            content: 'Estas seguro deseas elimniar esta cotización?',
-            type:'orange',
-            buttons: {
-                confirmar: function () {
-                  $.ajax({
-                          data: parameters,
-                          url: '/api/v1/elimina_cot',
-                          dataType: 'json',
-                          type:  'get',
-                          success:  function (response) {  
-                            window.location.href = '/cotizaciones_lista';
-                          }
-                      }); 
-
-                },
-                cancelar: function () {}
-              }  
-          });
-
-}
-
-
-function actualiza_cots(){
-
- $.ajax({
-          data: parameters,
-          url: '/api/v1/actualiza_cots',
-          dataType: 'json',
-          type:  'get',
-          success:  function (response) {  
-              
-              alert(response);
-             
-             $("#tablac").html(response);
-          }
-      });
-
-
-}
-
-
 function guarda_cot_not(id_cot){
 
 var nota= $("#nota").val();
@@ -1089,65 +1064,9 @@ $.ajax({
         dataType: 'json',
         type:  'get',
         success:  function (response){  
-            console.log(1);
+            window.location.href = '/cotizaciones_lista';
         }
-    });  
-
-}
-
-
-function enviar_produccion(){
-  $.confirm({
-    title: 'Hardware',
-    type: 'red',
-    typeAnimated: true,
-    theme: 'supervan',
-    content: 'Estas seguro deseas enviar los productos a produccion',
-    buttons: {
-        tryAgain: {
-            text: 'Confirmar',
-            btnClass: 'btn-blue',
-            action: function(){
-              $.blockUI({ message: 'Proccesing, please wait.' }); 
-              $.ajax({
-                    data: '',
-                    url: '/api/v1/enviar_produccion',
-                    dataType: 'json',
-                    type:  'get',
-                    success:  function (response){  
-                      setTimeout($.unblockUI, 2000);
-                      $.alert('Los productos se enviaron a produccion correctamente');
-                      window.location.href = 'productos_masivo';
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                      $.alert('Proceso finalizado');
-                        setTimeout($.unblockUI, 2000);
-                        window.location.href = 'productos_masivo';
-                    } 
-                });
-            }
-        },
-        close: function () {
-        }
-    }
-});
-
-  
-}
-
-function busca_producto(num){
- $.ajax({
-        data: {'numero':num,'fabricantes':$("#fabricantes").val()},
-        url: '/api/v1/buscar_producto',
-        dataType: 'json',
-        type:  'get',
-        success:  function (response){  
-            $("#conteos").html(response.options2);
-            $("#productos").html(response.options);
-            $(".scroll-vertical").dataTable({"scrollY":        "500px",
-                                            "scrollCollapse": true,
-                                            "paging":false})
-        }
+<<<<<<< HEAD
     });   
 }
 
@@ -1211,4 +1130,7 @@ function duplica_cotizacion(id_cotizacion){
 
         }
     });    
+=======
+    }); 
+>>>>>>> 026896913c9d0075adaf9bf4a44a035e0cf6a0dc
 }
