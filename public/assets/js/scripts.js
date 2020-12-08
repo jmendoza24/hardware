@@ -1066,7 +1066,7 @@ $.ajax({
         success:  function (response){  
             window.location.href = '/cotizaciones_lista';
         }
-<<<<<<< HEAD
+
     });   
 }
 
@@ -1130,7 +1130,5 @@ function duplica_cotizacion(id_cotizacion){
 
         }
     });    
-=======
-    }); 
->>>>>>> 026896913c9d0075adaf9bf4a44a035e0cf6a0dc
+
 }

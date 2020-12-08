@@ -21,7 +21,7 @@ $a[12] = "Diciembre";
      <tr style="background: #D2D2D2; color:#5C8293; font-size: 11px; padding-top: 3px;">
         <td>Proyecto: {{ $cotizacion->proyecto }}<br> Participante: {{ $cotizacion->contacto }}<br>Empresa: {{ $cotizacion->empresa }}</td>
         <td>Correo:  {{ str_replace(';', ' ',  $cotizacion->correo) }}<br>Teléfono: {{ $cotizacion->telefono }}<br></td>
-        <td style="text-align: right;">cotizacionización válida  hasta <br/> {{ date("d",strtotime($cotizacion->created_at)). ' de ' .$a[date("m",strtotime($cotizacion->created_at))+1] . ' de '.date("Y",strtotime($cotizacion->created_at))  }}
+        <td style="text-align: right;">Cotización válida  hasta <br/> {{ date("d",strtotime($cotizacion->created_at)). ' de ' }} @if(date("m",strtotime($cotizacion->created_at)) == 12) {{ $a[1]}} @else {{$a[date("m",strtotime($cotizacion->created_at))+1] }} @endif  {{' de '}} @if(date("m",strtotime($cotizacion->created_at))==12) {{date("Y",strtotime($cotizacion->created_at)) +1  }} @else {{date("Y",strtotime($cotizacion->created_at)) }} @endif
         </td> 
      </tr> 
 </table>
