@@ -53,7 +53,8 @@
 					<span class="btn btn-sm btn-outline-danger" style="cursor: pointer;" onclick="elimina_producto(<?php echo e($p->id); ?>)"><i class="fa fa-trash"></i></span> &nbsp;
 					<span class="btn btn-sm btn-outline-primary" data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer; font-size: 12px; border-right: 1px solid white;" onclick="agregar_dependencia(<?php echo e($p->idproducto); ?>,<?php echo e($p->id); ?>)"><i class="fa fa-info"></i> <b><?php echo e($p->info); ?></b></span>&nbsp;
 					<span class="btn btn-sm btn-outline-success" onclick="agrega_producto(<?php echo e($p->idproducto); ?>)"><i class="fa fa-plus"></i></span>&nbsp;
-					<span  class="btn btn-sm btn-outline-success"><a href="/storage/<?php echo e($p->foto); ?>" target="_blank"><i class="fa fa-camera" aria-hidden="true"></i></a> </span>
+
+					<span  class="btn btn-sm btn-outline-success"><i class="fa fa-camera" aria-hidden="true"></i></span>
 				</span>
 			</td>
 			<!--<td style="text-align: left; font-weight: bold;">
