@@ -166,7 +166,7 @@ class cotizadorController extends AppBaseController
 
         $estatus=0;
 
-        //return View('cotizador.pdf',compact('cotizacion','productos','data','tipo','tipo_doc','Insta','idhc','descripcion_mtk','estatus'));
+     // return View('cotizador.pdf',compact('cotizacion','productos','data','tipo','tipo_doc','Insta','idhc','descripcion_mtk','estatus'));
       $pdf = \PDF::loadView('cotizador.pdf',compact('cotizacion','productos','data','tipo','tipo_doc','Insta','idhc','descripcion_mtk','estatus'))->setPaper('A4','portrait');
       return  $pdf->download('Cotizacion_'.$num_cotizacion.'.pdf');
 

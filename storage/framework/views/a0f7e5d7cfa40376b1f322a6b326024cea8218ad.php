@@ -127,7 +127,7 @@ $a[12] = "Diciembre";
     <tr>
       <td class="text-left white" style="background:#67A957;" colspan="">Flete:</td>
       <td style=" border-left: 3px solid white; text-align: right;"  colspan="">
-        <?php echo e(number_format($cotizacion->flete,2)); ?>
+        $<?php echo e(number_format($cotizacion->flete,2)); ?>
 
       </td>
     </tr>
@@ -171,49 +171,14 @@ $a[12] = "Diciembre";
     <?php ($j=1); ?>
     <?php $__currentLoopData = $productos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
-    <tr>
-      <!--<td style="text-align: left; font-weight: bold;">
-        <?php echo e($p->item_nom); ?>
-
-      </td>-->
-      <td style="text-align: center;"><?php echo e($i); ?></td>
-      <td>
-        <?php echo e($p->posicion); ?>
-
-      </td>
-      <td>
-        <?php echo e(substr(str_replace('xxx', $p->finish, $p->id_fab),0,6)); ?>
-
-      </td>
-      
-      
-      <td style="text-align: center;">
-       <?php echo e($p->finish); ?>
-
-      </td>
-      <td>
-        <?php echo e($p->door_t); ?>
-
-      </td>
-      <td>
-        <?php echo e($p->descripcion); ?>
-
-      </td>
-      <td>
-        <?php echo e($p->cantidad); ?>
-
-      </td>
       <?php ($suma_pv = $p->pvc + $p->sum_pvc); ?>
-      <td class="text-right">$<?php echo e(number_format($suma_pv,2)); ?></td>
-      <td class="text-right"> <label > $<?php echo e(number_format($suma_pv * $p->cantidad,2)); ?></label></td>
-
-    </tr>
+     
     <?php if($p->mod_cantidad>0): ?>
     <tr>
-      <td style="text-align: center;"><?php echo e($i+$j); ?></td>
+      <td style="text-align: center;"><?php echo e($i); ?></td>
       <td></td>
       <td style="color: red">MOD<?php echo e(substr(str_replace('xxx', $p->finish, $p->id_fab),0,6)); ?></td>
-       <td>
+       <td style="text-align: center;">
        <?php echo e($p->finish); ?>
 
       </td>
@@ -223,22 +188,23 @@ $a[12] = "Diciembre";
       </td>
       <td></td>
       <td style=""><?php echo e($p->mod_cantidad); ?></td>
-      <td><?php echo e($p->mod_precio_unit); ?></td>
-      <td><?php echo e($p->mod_precio_unit * $p->mod_cantidad); ?></td>
-     <?php ($i++); ?>
-  
+      <td style="text-align: center;"><?php echo e($p->mod_precio_unit); ?></td>
+      <td style="text-align: center;"><?php echo e($p->mod_precio_unit * $p->mod_cantidad); ?></td>
+           <?php ($i++); ?>
+
     </tr>
+
+
     <?php endif; ?>
     <?php ($subtotal_dl   += $suma_pv * $p->cantidad); ?>   
     <?php ($subtotal_dl_1 += $p->mod_precio_unit * $p->mod_cantidad); ?>
     <?php ($subtotal_ps   += $p->inst_precio_unit * $p->inst_cantidad); ?>
-    <?php ($i++); ?>
   
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     <tr>
       <td colspan="7" class="color" rowspan="6"></td>
       <td colspan="" style="background:#67A957; color: white; ">Subtotal:</td>
-      <td colspan="" class="text-right">$<?php echo e(number_format($subtotal_dl+$subtotal_dl_1,2)); ?> </td>
+      <td colspan="" class="text-right">$<?php echo e(number_format($subtotal_dl_1,2)); ?> </td>
     </tr>
     <tr>
       <td style="background:#67A957; color: white;" colspan="">Descuento:</td>
@@ -246,7 +212,7 @@ $a[12] = "Diciembre";
         <?php ($desc_mod = $subtotal_dl_1 - ($subtotal_dl_1 * $cotizacion->descuento_mod)/100); ?>
   
         <?php ($desc_usa = $subtotal_dl - ($subtotal_dl * $cotizacion->descuento_usa)/100); ?>
-        $<?php echo e(number_format($desc_usa + $desc_mod,2)); ?>
+        $<?php echo e(number_format($desc_mod,2)); ?>
 
 
       </td>
@@ -258,25 +224,25 @@ $a[12] = "Diciembre";
       <td style="background:#67A957; color: white; " colspan="">IVA:</td>
       
       <td class="text-right">
-        <span >+$<?php echo e(number_format(( ($desc_usa * $cotizacion->iva_usa)/100  ) +   (($desc_mod * $cotizacion->iva_mod/100))  ,2)); ?></span>
+        <span >+$<?php echo e(number_format((($desc_mod * $cotizacion->iva_mod/100))  ,2)); ?></span>
       </td>
       
 
     </tr>
     <tr>
       <td class="text-left white" style="background:#67A957;" colspan="">Total:</td>
-      <td style="background:#67A957;" class="white text-right" colspan="" > $<?php echo e(number_format($desc_usa + (($desc_usa * $cotizacion->iva_usa)/100),2)); ?></td>
+      <td style="background:#67A957;" class="white text-right" colspan="" > $<?php echo e(number_format($desc_mod + (($desc_mod * $cotizacion->iva_mod)/100),2)); ?></td>
     </tr>
     <tr>
       <td class="text-left white" style="background:#67A957;" colspan="">Flete:</td>
       <td style=" border-left: 3px solid white; text-align: right;"  colspan="">
-        <?php echo e(number_format($cotizacion->flete,2)); ?>
+        $<?php echo e(number_format($cotizacion->flete,2)); ?>
 
       </td>
     </tr>
     <tr style="background:#5C8293; color: white;" class="text-right">
       <td colspan="" >Gran Total:</td>
-      <td colspan="">USD: $<?php echo e(number_format($desc_usa + (($desc_usa * $cotizacion->iva_usa)/100) + $desc_mod + (($desc_mod * $cotizacion->iva_mod)/100) + $cotizacion->flete ,2)); ?></td>
+      <td colspan="">USD: $<?php echo e(number_format($desc_mod + (($desc_mod * $cotizacion->iva_mod)/100) + $cotizacion->flete ,2)); ?></td>
     </tr>
   </table>
 
@@ -314,12 +280,12 @@ $a[12] = "Diciembre";
     <?php ($i=1); ?>
     <?php ($j=1); ?>
     <?php $__currentLoopData = $productos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-
+<!--
     <tr>
-      <!--<td style="text-align: left; font-weight: bold;">
+      <td style="text-align: left; font-weight: bold;">
         <?php echo e($p->item_nom); ?>
 
-      </td>-->
+      </td>
       <td style="text-align: center;"><?php echo e($i); ?></td>
       <td>
         <?php echo e($p->posicion); ?>
@@ -352,9 +318,11 @@ $a[12] = "Diciembre";
       <td class="text-right"> <label > $<?php echo e(number_format($suma_pv * $p->cantidad,2)); ?></label></td>
 
     </tr>
-    <?php if($p->mod_cantidad>0): ?>
+
+    -->
+    <?php if($p->inst_cantidad>0): ?>
     <tr>
-      <td style="text-align: center;"><?php echo e($i+$j); ?></td>
+      <td style="text-align: center;"><?php echo e($i); ?></td>
       <td></td>
       <td style="color: red">INST<?php echo e(substr(str_replace('xxx', $p->finish, $p->id_fab),0,6)); ?></td>
        <td>
@@ -376,13 +344,12 @@ $a[12] = "Diciembre";
     <?php ($subtotal_dl   += $suma_pv * $p->cantidad); ?>   
     <?php ($subtotal_dl_1 += $p->mod_precio_unit * $p->mod_cantidad); ?>
     <?php ($subtotal_ps   += $p->inst_precio_unit * $p->inst_cantidad); ?>
-    <?php ($i++); ?>
   
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     <tr>
       <td colspan="7" class="color" rowspan="6"></td>
       <td colspan="" style="background:#67A957; color: white; ">Subtotal:</td>
-      <td colspan="" class="text-right">$<?php echo e(number_format($subtotal_dl+$subtotal_ps,2)); ?> </td>
+      <td colspan="" class="text-right">$<?php echo e(number_format($subtotal_ps,2)); ?> </td>
     </tr>
     <tr>
       <td style="background:#67A957; color: white;" colspan="">Descuento:</td>
@@ -412,16 +379,10 @@ $a[12] = "Diciembre";
       <td class="text-left white" style="background:#67A957;" colspan="">Total:</td>
       <td style="background:#67A957;" class="white text-right" colspan="" > $<?php echo e(number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)); ?></td>
     </tr>
-    <tr>
-      <td class="text-left white" style="background:#67A957;" colspan="">Flete:</td>
-      <td style=" border-left: 3px solid white; text-align: right;"  colspan="">
-        <?php echo e(number_format($cotizacion->flete,2)); ?>
-
-      </td>
-    </tr>
+    
     <tr style="background:#5C8293; color: white;" class="text-right">
       <td colspan="" >Gran Total:</td>
-      <td colspan="">MX: $<?php echo e(number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100) + $desc_mod + (($desc_mod * $cotizacion->iva_mod)/100) + $cotizacion->flete ,2)); ?></td>
+      <td colspan="">MX: $<?php echo e(number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100) ,2)); ?></td>
     </tr>
   </table>
 
@@ -502,19 +463,19 @@ $a[12] = "Diciembre";
     <tr>
       <td style="text-align: center;"><?php echo e($i+$j); ?></td>
       <td></td>
-      <td style="color: red">MOD<?php echo e(substr(str_replace('xxx', $p->finish, $p->id_fab),0,6)); ?></td>
-       <td>
+      <td style="text-align: center;color: red">MOD<?php echo e(substr(str_replace('xxx', $p->finish, $p->id_fab),0,6)); ?></td>
+       <td style="text-align: center;">
        <?php echo e($p->finish); ?>
 
       </td>
-      <td>
+      <td style="text-align: center;">
         <?php echo e($p->door_t); ?>
 
       </td>
       <td></td>
-      <td style=""><?php echo e($p->mod_cantidad); ?></td>
-      <td><?php echo e($p->mod_precio_unit); ?></td>
-      <td><?php echo e($p->mod_precio_unit * $p->mod_cantidad); ?></td>
+      <td style="text-align: center;"><?php echo e($p->mod_cantidad); ?></td>
+      <td style="text-align: center;"><?php echo e($p->mod_precio_unit); ?></td>
+      <td style="text-align: center;"><?php echo e($p->mod_precio_unit * $p->mod_cantidad); ?></td>
      <?php ($i++); ?>
   
     </tr>
@@ -528,7 +489,7 @@ $a[12] = "Diciembre";
     <tr>
       <td colspan="7" class="color" rowspan="6"></td>
       <td colspan="" style="background:#67A957; color: white; ">Subtotal:</td>
-      <td colspan="" class="text-right">$<?php echo e(number_format($subtotal_dl,2)); ?> </td>
+      <td colspan="" class="text-right">$<?php echo e(number_format($subtotal_dl + $subtotal_dl_1,2)); ?> </td>
     </tr>
     <tr>
       <td style="background:#67A957; color: white;" colspan="">Descuento:</td>
@@ -536,7 +497,7 @@ $a[12] = "Diciembre";
         <?php ($desc_mod = $subtotal_dl_1 - ($subtotal_dl_1 * $cotizacion->descuento_mod)/100); ?>
   
         <?php ($desc_usa = $subtotal_dl - ($subtotal_dl * $cotizacion->descuento_usa)/100); ?>
-        $<?php echo e(number_format($desc_usa,2)); ?>
+        $<?php echo e(number_format($desc_usa + $desc_mod,2)); ?>
 
 
       </td>
@@ -548,25 +509,25 @@ $a[12] = "Diciembre";
       <td style="background:#67A957; color: white; " colspan="">IVA:</td>
       
       <td class="text-right">
-        <span >+$<?php echo e(number_format(( ($desc_usa * $cotizacion->iva_usa)/100  ),2)); ?></span>
+        <span >+$<?php echo e(number_format(( ($desc_usa * $cotizacion->iva_usa)/100  ) +   (($desc_mod * $cotizacion->iva_mod/100))  ,2)); ?></span>
       </td>
       
 
     </tr>
     <tr>
       <td class="text-left white" style="background:#67A957;" colspan="">Total:</td>
-      <td style="background:#67A957;" class="white text-right" colspan="" > $<?php echo e(number_format($desc_usa + (($desc_usa * $cotizacion->iva_usa)/100),2)); ?></td>
+      <td style="background:#67A957;" class="white text-right" colspan="" > $<?php echo e(number_format($desc_usa + (($desc_usa * $cotizacion->iva_usa)/100) + $desc_mod + (($desc_mod * $cotizacion->iva_mod)/100),2)); ?></td>
     </tr>
     <tr>
       <td class="text-left white" style="background:#67A957;" colspan="">Flete:</td>
       <td style=" border-left: 3px solid white; text-align: right;"  colspan="">
-        <?php echo e(number_format($cotizacion->flete,2)); ?>
+       $<?php echo e(number_format($cotizacion->flete,2)); ?>
 
       </td>
     </tr>
     <tr style="background:#5C8293; color: white;" class="text-right">
       <td colspan="" >Gran Total:</td>
-      <td colspan="">USD: $<?php echo e(number_format($desc_usa + (($desc_usa * $cotizacion->iva_usa)/100)  + $cotizacion->flete ,2)); ?></td>
+      <td colspan="">USD: $<?php echo e(number_format($desc_usa + (($desc_usa * $cotizacion->iva_usa)/100)  + $desc_mod + (($desc_mod * $cotizacion->iva_mod)/100) + $cotizacion->flete ,2)); ?></td>
     </tr>
   </table>
 
