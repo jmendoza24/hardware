@@ -139,7 +139,7 @@ class cotizadorController extends AppBaseController
             $idhc="Producto";
             $descripcion_mtk=1;
 
-        }else if($tipo==3){
+        }else if($tipo==2){
             $tipo_doc='Instalacion';
             $Insta="MX";
             $idhc="Inst";
@@ -151,7 +151,7 @@ class cotizadorController extends AppBaseController
             $idhc="Mod";
             $descripcion_mtk=1;
 
-        }elseif($tipo==5){
+        }elseif($tipo==3){
             $tipo_doc='Producto y Modificacion';
             $Insta="USD";
             $idhc="Mod";
