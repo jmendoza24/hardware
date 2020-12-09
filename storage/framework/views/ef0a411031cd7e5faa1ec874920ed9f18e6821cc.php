@@ -38,10 +38,9 @@
             <option value="">Seleccione...</option>
             
             <option value="1">PDF Producto</option>
-            <option value="2">PDF Completo</option>
-            <option value="3">PDF Instalación</option>
+            <option value="2">PDF Instalación</option>
             <option value="4">PDF Modificación</option>
-            <option value="5">PDF Producto y Modificación</option>
+            <option value="3">PDF Producto y Modificación</option>
 
         </select>
     </div>

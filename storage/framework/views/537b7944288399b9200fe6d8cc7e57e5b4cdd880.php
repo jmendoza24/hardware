@@ -1,1 +1,0 @@
-Prueba de envio <?php /**PATH C:\wamp64\www\laravel\hardware\resources\views/cotizador/mailEnvio.blade.php ENDPATH**/ ?>

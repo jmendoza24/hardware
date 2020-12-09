@@ -253,13 +253,11 @@ var parameters = {
                 confirmar: function () {
                   $.ajax({
                           data: parameters,
-                          url: '/api/v1/elimina_cot',
+                          url: '/api/v1/elimina_cotizacion',
                           dataType: 'json',
                           type:  'get',
                           success:  function (response) {  
-                        
-                                                          window.location.href = '/cotizaciones_lista';
-
+                           window.location.href = '/cotizaciones_lista';
 
                           }
                       }); 

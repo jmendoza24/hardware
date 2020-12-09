@@ -66,8 +66,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('enviadas', 'cotizadorController@enviadas')->name('enviadas');
 
-
-
 	
 });
 
@@ -111,8 +109,7 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('actualiza_fotos', 'tbl_fotos_productosController@actualiza_fotos');
 	Route::get('borra_foto', 'tbl_fotos_productosController@destroy');
 	Route::get('revive_cotizacion/{id_cotizacion}', 'cotizadorController@revive_cotizacion')->name('cotizador.revive');
-	Route::get('elimina_cot', 'cotizadorController@elimina_cot');
-	Route::get('actualiza_cots', 'cotizadorController@actualiza_cots');
+	Route::get('elimina_cotizacion', 'cotizadorController@elimina_cotizacion');	
 	Route::get('guarda_cot_not', 'cotizadorController@guarda_cot_not');
 	Route::get('enviar_produccion', 'productosController@enviar_produccion');
 

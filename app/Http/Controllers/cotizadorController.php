@@ -58,117 +58,7 @@ class cotizadorController extends AppBaseController
 
     public function oc_cambia(Request $request){
 
-
-          cotizador::where('id',$request['id'])
-                            ->update(['estatus'=>1]);
-
-    }
-
-
-
-
-
-     function baja_cotiza_pdf(Request $request){
-
-
-        $filtro = new cotizador_detalle;
-        $num_cotizacion = $request->session()->get('num_cotizacion');
-        
-       $cot = db::table('cotizacions as c')
-                  ->leftjoin('proyectos as p','p.id','c.proyecto')
-                  ->leftjoin('cliente_participantes as cp','cp.id','c.cliente')
-                  ->leftjoin('tbl_clientes as tc','tc.id_cliente','cp.id_cliente')
-                  ->where('c.id',$num_cotizacion)
-                  ->selectraw('c.id_hijo,c.flete,p.nombre AS proyecto,cp.*,tc.empresa,c.id AS id_cot,c.created_at, c.iva_usa , c.descuento_usa, c.notas,descuento_mx,iva_mx, descuento_mod, iva_mod')
-                  ->get();
-        $cotizacion=$cot[0];
-        $productos = db::select(
-          "SELECT d.*, ifnull(inv.inv1,0) as inv1,c.id_hijo,  ifnull(inv.inv2,0) as inv2, c.estatus, p.id as idproducto, p.codigo_sistema, p.costo_1, i.item as item_nom, s.selector, sum_lp, sum_phc, sum_pvc, p.info, p.sufijo, '' as foto,
-                            dp.finish_1, dp.finish_2,  dp.finish_3, dp.finish_4, dp.style_1,dp.style_2,dp.style_3
-                            FROM cotizacion_detalle AS d
-                            inner join cotizacions c on c.id = d.id_cotizacion
-                            INNER JOIN productos as p on p.id = d.item
-                            INNER JOIN items  AS i on i.id = p.id_item
-                            LEFT JOIN sub_baldwins AS s on s.id = p.backset
-                            LEFT JOIN formulas AS f on f.id = p.calculo_codigo
-                            LEFT JOIN (
-                                        SELECT id_detalle,sum(lp * ctd) as sum_lp, sum(phc * ctd) as sum_phc, sum(pvc * ctd) as sum_pvc
-                                        FROM items_productos
-                                        WHERE id_cotizacion = ' .$num_cotizacion. '
-                                        AND accion = 1
-                                        GROUP BY id_detalle 
-                                    ) dt ON dt.id_detalle = d.id
-                            left join tbl_inventarios inv on inv.id_producto = d.item
-                            left join tbl_datos_productos dp on dp.id_detalle = d.id  
-                            WHERE d.id_cotizacion = " .$num_cotizacion. "
-                            order by d.mod_cantidad"  
-
-/*
-          'SELECT pr.id AS id_hc, ifnull(d.pvc,0) + IFNULL(sum_pvc,0)  AS total_det,c.flete,
-                                         IFNULL(mod_precio_unit,0) * IFNULL(mod_cantidad,0) AS total_mod,
-                                         IFNULL(inst_precio_unit,0) * IFNULL(inst_cantidad,0) AS total_inst,
-                                         d.item,d.pvc,d.cantidad, d.mod_precio_unit , d.mod_cantidad, d.inst_precio_unit , d.inst_cantidad,
-                                         d.descripcion, d.posicion,SUBSTRING(idfab, 1, 6) as id_fab,pr.descripcion_mtk
-                                FROM cotizacions c
-                                INNER JOIN cotizacion_detalle d ON d.id_cotizacion = c.id
-                                inner join productos AS  pr ON  pr.id = d.item
-                                LEFT JOIN (
-                                       SELECT  idfab,id_cotizacion, id_detalle, ifnull(sum(lp * ctd),0) as sum_lp, ifnull(sum(phc * ctd),0) as sum_phc, ifnull(sum(pvc * ctd),0) as sum_pvc
-                                       FROM items_productos
-                                       WHERE id_cotizacion = '. $num_cotizacion.' 
-                                     and accion = 1
-                                       GROUP BY id_cotizacion, id_detalle  ,idfab
-                                   ) dt ON dt.id_cotizacion = c.id AND d.id = dt.id_detalle
-                                LEFT JOIN proyectos p ON p.id = c.proyecto
-                                LEFT JOIN cliente_participantes cl ON cl.id = c.cliente
-                                WHERE c.id =  '. $num_cotizacion*/
-
-                                );
-  
-      $data= DB::select("SELECT * FROM tbl_datos_generales");
-      $data=$data[0];
-      $tipo = $request->id_tipo;
-
-    $tipo_doc="";
-
-
-        if($tipo==1){
-            
-            $tipo_doc='Producto';
-            $Insta="USD";
-            $idhc="Producto";
-            $descripcion_mtk=1;
-
-        }else if($tipo==3){
-            $tipo_doc='Instalacion';
-            $Insta="MX";
-            $idhc="Inst";
-            $descripcion_mtk=1;
-
-        }elseif($tipo==4){
-            $tipo_doc='Modificacion';
-            $Insta="USD";
-            $idhc="Mod";
-            $descripcion_mtk=1;
-
-        }elseif($tipo==5){
-            $tipo_doc='Producto y Modificacion';
-            $Insta="USD";
-            $idhc="Mod";
-            $descripcion_mtk=0;
-        }else{
-
-            $tipo_doc='Producto';
-            $Insta="USD";
-            $idhc="Producto";
-            $descripcion_mtk=1;
-        }
-
-        $estatus=0;
-
-        //return View('cotizador.pdf',compact('cotizacion','productos','data','tipo','tipo_doc','Insta','idhc','descripcion_mtk','estatus'));
-      $pdf = \PDF::loadView('cotizador.pdf',compact('cotizacion','productos','data','tipo','tipo_doc','Insta','idhc','descripcion_mtk','estatus'))->setPaper('A4','portrait');
-      return  $pdf->download('Cotizacion_'.$num_cotizacion.'.pdf');
+          cotizador::where('id',$request['id'])->update(['estatus'=>1]);
     }
 
     
@@ -209,26 +99,6 @@ class cotizadorController extends AppBaseController
           }
 
 
-
-            
-/**
-
-          $pdf = \PDF::loadView('cotizador.pdf',compact('cot','productos2','data','tipo'))->setPaper('A4','portrait');
-          Storage::put('Cotizacion_'.$num_cotizacion.'.pdf', $pdf->output());
-          
-          $content = "Hola esto es una prueba";
-
-          $subjects = "Ventas Hardaware Collection";
-          $to = "jacob.mendozaha@gmail.com";
-
-  
-          $copia = 'diego05vidales@gmail.com';
-          
-
-          $attachment = [ 'storage/'.'Cotizacion_'.$num_cotizacion.'.pdf',];
-
-          Mail::to($to)->cc($copia)->send(new EnvioFlux($subjects, $content,$attachment));
-*/
 
                  $data = array(
                    'ids'==1,                  
@@ -617,14 +487,8 @@ class cotizadorController extends AppBaseController
 
         if(!in_array($request->id_catalogo, $catalog)){
 
-          db::update('call actualiza_item('.$request->id.')');
-
-         
-          
-          $producto = db::select("select * from  productos where item = '".$datos->item."' and ifnull(if(sufijo='-',0,sufijo),0)  = '".$datos->sufijo."'");
-
-            if(sizeof($producto)>0){
-
+              db::update('call actualiza_item('.$request->id.')');
+              $producto = db::select("select * from  productos where item = '".$datos->item."' and ifnull(if(sufijo='-',0,sufijo),0)  = '".$datos->sufijo."'");
 
             if(sizeof($producto)>0){
 
@@ -683,11 +547,7 @@ class cotizadorController extends AppBaseController
                 }else{
                   $accion = 0;
                 }
-                // }else if($request->id_catalogo==9){
-                //     $accion = $producto->dep9_accion;
-                // }else if($request->id_catalogo==10){
-                //     $accion = $producto->dep10_libre_accion;
-                // }
+               
                 
                 items_productos::where('id',$request->id)
                                 ->update(['idfab'=> str_replace('xxx', $request->color, $producto->codigo_sistema),
@@ -711,15 +571,15 @@ class cotizadorController extends AppBaseController
                     $alerta = 0;
                 }
                 $producto = $producto_padre;
-          }else{
-            db::update('call proceso_idfab('.$datos->id_detalle.')');
-            $det = items_productos::where('id',$request->id)->get();
-            $det = $det[0];
-            
-            $producto = productos::where('id',$det->id_producto)->get();
-            $producto = $producto[0];
-            $alerta = 1;
-          }
+              }else{
+                db::update('call proceso_idfab('.$datos->id_detalle.')');
+                $det = items_productos::where('id',$request->id)->get();
+                $det = $det[0];
+                
+                $producto = productos::where('id',$det->id_producto)->get();
+                $producto = $producto[0];
+                $alerta = 1;
+              }
 
 
           $dependencias = items_productos::where('id_detalle',$datos->id_detalle)->orderby('id_catalogo')->get();
@@ -810,20 +670,6 @@ class cotizadorController extends AppBaseController
           cotizador::where('id',$num_cotizacion)
                   ->update(['cliente'=>$request->clientes,
                             'lista_precio'=>$lista]);
-
-                  /**
-
-                  SELECT d.*, case ct.lista_precio when 1 then lp1 
-                      when 2 then lp2
-                      when 3 then lp3
-                      when 4 then lp4 END AS factor 
-FROM cotizacion_detalle d
-INNER JOIN cotizacions ct ON ct.id = d.id_cotizacion
-INNER JOIN productos p ON p.id = d.item
-INNER JOIN fabricantes_costos c ON c.id_fabricante = p.fabricante
-WHERE d.id = 264
-
-*/
 
         }else{
           $proyectos = proyectos::where('estatus',1)->get();
@@ -983,7 +829,7 @@ WHERE d.id = 264
     }
 
 
-
+/**
 
      function baja_cotiza_pdf(Request $request){
 
@@ -1024,11 +870,11 @@ WHERE d.id = 264
       $data=$data[0];
       $tipo = $request->id_tipo;
 
-      //return view('cotizador.pdf',compact('cot','productos2','data','tipo','cotizacion'));
       $pdf = \PDF::loadView('cotizador.pdf',compact('cot','productos2','data','tipo','cotizacion'))->setPaper('A4','portrait');
       return  $pdf->download('Cotizacion_'.$num_cotizacion.'.pdf');
     }
 
+*/
     function enviar_cotizacion(Request $request){
       $num_cotizacion = $request->session()->get('num_cotizacion');
 
@@ -1065,28 +911,6 @@ WHERE d.id = 264
           }else{
             $tipo = 1;
           }
-
-
-
-            
-/**
-
-          $pdf = \PDF::loadView('cotizador.pdf',compact('cot','productos2','data','tipo'))->setPaper('A4','portrait');
-          Storage::put('Cotizacion_'.$num_cotizacion.'.pdf', $pdf->output());
-          
-          $content = "Hola esto es una prueba";
-
-          $subjects = "Ventas Hardaware Collection";
-          $to = "jacob.mendozaha@gmail.com";
-
-  
-          $copia = 'diego05vidales@gmail.com';
-          
-
-          $attachment = [ 'storage/'.'Cotizacion_'.$num_cotizacion.'.pdf',];
-
-          Mail::to($to)->cc($copia)->send(new EnvioFlux($subjects, $content,$attachment));
-*/
 
 
                  $data = array(
@@ -1128,17 +952,16 @@ WHERE d.id = 264
 
      return 1;
     }
-
+/**
     function revive_cotizacion($id_cotizacion, Request $request){
       $request->session()->put('num_cotizacion',$id_cotizacion);
       return redirect()->route('cotizador.index');      
     }
-
+*/
 
    
 
-     function  elimina_cot(Request $request){
-
+     function elimina_cotizacion(Request $request){
        DB::table('cotizacions')->delete($request['id']);
         $cotizaciones = db::select("CALL listado_cotizacion()");
         $options = view('cotizador.lista',compact('cotizaciones'))->render();
@@ -1172,7 +995,92 @@ WHERE d.id = 264
 
       return json_encode($options);
     }
+
+    function baja_cotiza_pdf(Request $request){
+
+
+        $filtro = new cotizador_detalle;
+        $num_cotizacion = $request->session()->get('num_cotizacion');
+        
+        $cot = db::table('cotizacions as c')
+                  ->leftjoin('proyectos as p','p.id','c.proyecto')
+                  ->leftjoin('cliente_participantes as cp','cp.id','c.cliente')
+                  ->leftjoin('tbl_clientes as tc','tc.id_cliente','cp.id_cliente')
+                  ->where('c.id',$num_cotizacion)
+                  ->selectraw('c.id_hijo,c.flete,p.nombre AS proyecto,cp.*,tc.empresa,c.id AS id_cot,c.created_at, c.iva_usa , c.descuento_usa, c.notas,descuento_mx,iva_mx, descuento_mod, iva_mod')
+                  ->get();
+        $cotizacion=$cot[0];
+        $productos = db::select(
+          "SELECT d.*, ifnull(inv.inv1,0) as inv1,c.id_hijo,  ifnull(inv.inv2,0) as inv2, c.estatus, p.id as idproducto, p.codigo_sistema, p.costo_1, i.item as item_nom, s.selector, sum_lp, sum_phc, sum_pvc, p.info, p.sufijo, '' as foto,
+                            dp.finish_1, dp.finish_2,  dp.finish_3, dp.finish_4, dp.style_1,dp.style_2,dp.style_3
+                            FROM cotizacion_detalle AS d
+                            inner join cotizacions c on c.id = d.id_cotizacion
+                            INNER JOIN productos as p on p.id = d.item
+                            INNER JOIN items  AS i on i.id = p.id_item
+                            LEFT JOIN sub_baldwins AS s on s.id = p.backset
+                            LEFT JOIN formulas AS f on f.id = p.calculo_codigo
+                            LEFT JOIN (
+                                        SELECT id_detalle,sum(lp * ctd) as sum_lp, sum(phc * ctd) as sum_phc, sum(pvc * ctd) as sum_pvc
+                                        FROM items_productos
+                                        WHERE id_cotizacion = ' .$num_cotizacion. '
+                                        AND accion = 1
+                                        GROUP BY id_detalle 
+                                    ) dt ON dt.id_detalle = d.id
+                            left join tbl_inventarios inv on inv.id_producto = d.item
+                            left join tbl_datos_productos dp on dp.id_detalle = d.id  
+                            WHERE d.id_cotizacion = " .$num_cotizacion. "
+                            order by d.mod_cantidad"  
+
+
+
+                                );
+  
+      $data= DB::select("SELECT * FROM tbl_datos_generales");
+      $data=$data[0];
+      $tipo = $request->id_tipo;
+
+      $tipo_doc="";
+
+
+        if($tipo==1){
+            
+            $tipo_doc='Producto';
+            $Insta="USD";
+            $idhc="Producto";
+            $descripcion_mtk=1;
+
+        }else if($tipo==3){
+            $tipo_doc='Instalacion';
+            $Insta="MX";
+            $idhc="Inst";
+            $descripcion_mtk=1;
+
+        }elseif($tipo==4){
+            $tipo_doc='Modificacion';
+            $Insta="USD";
+            $idhc="Mod";
+            $descripcion_mtk=1;
+
+        }elseif($tipo==5){
+            $tipo_doc='Producto y Modificacion';
+            $Insta="USD";
+            $idhc="Mod";
+            $descripcion_mtk=0;
+        }else{
+
+            $tipo_doc='Producto';
+            $Insta="USD";
+            $idhc="Producto";
+            $descripcion_mtk=1;
+        }
+
+        $estatus=0;
+
+        //return View('cotizador.pdf',compact('cotizacion','productos','data','tipo','tipo_doc','Insta','idhc','descripcion_mtk','estatus'));
+      $pdf = \PDF::loadView('cotizador.pdf',compact('cotizacion','productos','data','tipo','tipo_doc','Insta','idhc','descripcion_mtk','estatus'))->setPaper('A4','portrait');
+      return  $pdf->download('Cotizacion_'.$num_cotizacion.'.pdf');
+    }
     
 
 }
-}
+//}

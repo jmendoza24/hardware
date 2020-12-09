@@ -1,4 +1,5 @@
-<table class="table table-striped table-bordered zero-configuration responsive" id="tablac">
+
+<table class="table table-striped table-bordered cotizaciones responsive" style="font-size: 12px;" id="tablac">
     <thead>
         <tr style="background: #5C8293; color: white;">
             <th>Cotización</th>
@@ -9,6 +10,8 @@
             <th>Total MXN</th>
             <th></th>
             <th>Correo</th>
+            <td></td>
+            <td></td>
         </tr>
     </thead>
     <tbody>
@@ -28,6 +31,8 @@
                     </div>
                 </td>
                 <td>{{$c->correo}}</td>
+                <td>@if($c->id_hijo != '') {{$c->id_hijo}} @else {{ $c->id}} @endif</td>
+                <td>{{ $c->ver}}</td>
             </tr>
         @endforeach
     </tbody>
