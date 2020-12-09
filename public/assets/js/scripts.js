@@ -31,6 +31,58 @@ function busca_estado(campo){
     $("#municipio_select").hide();
   }
 }
+    
+
+function cambia_oc(id){
+
+    $.confirm({
+            title: 'Hardware collection',
+            content: 'Estas seguro deseas convertir esta cotización a OC?',
+            type:'orange',
+            buttons: {
+                confirmar: function () {
+                  $.ajax({
+                      data: {"id":id},
+                      url: '/api/v1/cambia_oc',
+                      dataType: 'json',
+                      type:  'get',
+                      success:  function (response) { 
+                      }
+                  });
+                                  window.location.href = 'cotizaciones_oc';
+
+                },
+                cancelar: function () {}
+              } 
+          });
+}
+
+
+function cambia_oc2(id){
+
+    $.confirm({
+            title: 'Hardware collection',
+            content: 'Estas seguro deseas convertir esta OC a cotización ?',
+            type:'orange',
+            buttons: {
+                confirmar: function () {
+                  $.ajax({
+                      data: {"id":id},
+                      url: '/api/v1/oc_cambia2',
+                      dataType: 'json',
+                      type:  'get',
+                      success:  function (response) { 
+                      }
+                  });
+                           window.location.href = 'cotizaciones_lista';
+
+                },
+                cancelar: function () {}
+              } 
+          });
+}
+
+
 
 function get_municipios(estado,municipio){
   var id_estado = $("#"+estado).val();

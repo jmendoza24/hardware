@@ -25,6 +25,8 @@
                 <td style="text-align: right">${{ number_format($c->total_mx,2)}}</td>
                 <td>
                     <div class="btn-group">
+                        <a class="btn btn-sm  btn_gris" onclick="cambia_oc({{ $c->id}})"><i class="fa fa-window-maximize"></i></a> &nbsp;
+
                         <a class="btn btn-sm btn-outline-primary btn_azul" href="{{ route('cotizador.revive',['id_cotizacion'=>$c->id])}}"><i class="fa fa-window-maximize"></i></a> &nbsp;
                         <span class="btn btn-sm btn-outline-danger btn_rojo" onclick="eliminar_cotizacion({{ $c->id}})"><i class="fa fa-trash"></i></span>&nbsp;
                         <span class="btn btn-sm btn-outline-success" onclick="duplica_cotizacion({{ $c->id}})"><i class="fa fa-plus"></i></span>
@@ -38,3 +40,13 @@
     </tbody>
       
   </table>
+
+
+
+
+
+
+
+
+
+
