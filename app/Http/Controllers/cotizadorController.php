@@ -560,14 +560,15 @@ class cotizadorController extends AppBaseController
                               'descuento_mod'=>$request->descuento_mod ==''? 0 : str_replace('%', '', $request->descuento_mod),
                               'iva_mx'=> $request->iva_mx == '' ? 0 : $request->iva_mx,
                               'iva_usa'=> $request->iva_usa == '' ? 0 : $request->iva_usa,
-                              'iva_mod'=> $request->iva_mod == '' ? 0 : $request->iva_mod]);
+                              'iva_mod'=> $request->iva_mod == '' ? 0 : $request->iva_mod,
+                              'flete'=>$request->flete  == '' ? 0 : str_replace(',', '', $request->flete)]);
 
         $filtro->id_cotizacion = $num_cotizacion;
         $productos = $filtro->detalle_cotizacion($filtro);
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0];
-
-        $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion'))->render();
+        $estatus = 0;
+        $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion','estatus'))->render();
 
         return json_encode($options); 
     }
