@@ -9,7 +9,7 @@
             <th>Total USD</th>
             <th>Total MXN</th>
             <th></th>
-            <th>Correo</th>
+            <!--<th>Correo</th>--->
             <td></td>
             <td></td>
         </tr>
@@ -29,10 +29,10 @@
 
                         <a class="btn btn-sm btn-outline-primary btn_azul" href="{{ route('cotizador.revive',['id_cotizacion'=>$c->id])}}"><i class="fa fa-window-maximize"></i></a> &nbsp;
                         <span class="btn btn-sm btn-outline-danger btn_rojo" onclick="eliminar_cotizacion({{ $c->id}})"><i class="fa fa-trash"></i></span>&nbsp;
-                        <span class="btn btn-sm btn-outline-success" onclick="duplica_cotizacion({{ $c->id}})"><i class="fa fa-plus"></i></span>
+                        <span class="btn btn-sm btn-outline-success" onclick="duplica_cotizacion({{ $c->id_hijo}})"><i class="fa fa-plus"></i></span>
                     </div>
                 </td>
-                <td>{{$c->correo}}</td>
+                <!--<td>{{$c->correo}}</td>--->
                 <td>@if($c->id_hijo != '') {{$c->id_hijo}} @else {{ $c->id}} @endif</td>
                 <td>{{ $c->ver}}</td>
             </tr>

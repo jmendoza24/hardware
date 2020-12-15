@@ -12,7 +12,10 @@
 <!---- small row-border-->
 	<table class="table table-striped" style="font-size: 11px;" id="" border="0">
 		<tr style="border-top: 3px solid white; background:white;">
-			<td colspan="<?php echo e($estatus == 1 ? 12:10); ?>"><span class="badge badge-primary">Cotización <?php echo e($cotizacion->id_hijo != '' ? $cotizacion->id_hijo . '.'. $cotizacion->ver : $cotizacion->id); ?></span></td>
+			<td colspan=""><span class="badge badge-primary">Cotización <?php echo e($cotizacion->id_hijo != '' ? $cotizacion->id_hijo . '.'. $cotizacion->ver : $cotizacion->id); ?></span></td>
+			<td colspan="<?php echo e($estatus == 1 ? 11:9); ?>">
+				<input type="text" name="" class="form-control" placeholder="Buscar productos...">
+			</td>
 			<td colspan="7" style="background: #67A957;" class="text-center white"><b>Producto USD:</b></td>
 			<td colspan="3" style="background: #67A957; border-left: 3px solid white;" class="text-center white"><b>Modificación USD:</b></td>
 			<td colspan="3" style="background: #67A957; border-left: 3px solid white;" class="text-center white"><b>Instalación MXN:</b></td>
@@ -51,10 +54,9 @@
 			<td>
 				<span class="pull-right btn-group">
 					<span class="btn btn-sm btn-outline-danger" style="cursor: pointer;" onclick="elimina_producto(<?php echo e($p->id); ?>)"><i class="fa fa-trash"></i></span> &nbsp;
-					<span class="btn btn-sm btn-outline-primary" data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer; font-size: 12px; border-right: 1px solid white;" onclick="agregar_dependencia(<?php echo e($p->idproducto); ?>,<?php echo e($p->id); ?>)"><i class="fa fa-info"></i> <b><?php echo e($p->info); ?></b></span>&nbsp;
+					<span class="btn btn-sm btn-outline-primary" data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer; font-size: 12px;" onclick="agregar_dependencia(<?php echo e($p->idproducto); ?>,<?php echo e($p->id); ?>)"><i class="fa fa-info"></i> <b><?php echo e($p->info); ?></b></span>&nbsp;
 					<span class="btn btn-sm btn-outline-success" onclick="agrega_producto(<?php echo e($p->idproducto); ?>)"><i class="fa fa-plus"></i></span>&nbsp;
-
-					<span  class="btn btn-sm btn-outline-success"><i class="fa fa-camera" aria-hidden="true"></i></span>
+					<span  class="btn btn-sm btn-outline-success"  data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer;" onclick="ver_imagen(<?php echo e($p->id_item); ?>)"><i class="fa fa-camera" aria-hidden="true"></i></span>
 				</span>
 			</td>
 			<!--<td style="text-align: left; font-weight: bold;">
@@ -88,8 +90,8 @@
 						  $finish_3 = $p->finish_3 !='' ? explode(',',($p->finish_3)) : array();
 						  $finish_4 = $p->finish_4 !='' ? explode(',',($p->finish_4)) : array();
 					 ?>
-					<select class="form-control form-control-sm" id="det_finish" style="width: 100px;" onchange="guarda_detalle(<?php echo e($p->id); ?>)">
-						<option value="">Seleccione...</option>
+					<select class="form-control form-control-sm" id="det_finish" style="width: 60px;" onchange="guarda_detalle(<?php echo e($p->id); ?>)">
+						<option value="">...</option>
 							<?php $__currentLoopData = $finish_1; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $f1): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 								<option value="<?php echo e($f1); ?>" <?php echo e($f1==$p->finish?'selected':''); ?>><?php echo e($f1); ?></option>
 							<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -112,32 +114,10 @@
 			  $style_1 = $p->style_1 !='' ? explode(',',($p->style_1)) : array();
 			  $style_2 = $p->style_2 !='' ? explode(',',($p->style_2)) : array();
 			  $style_3 = $p->style_3 !='' ? explode(',',($p->style_3)) : array();
-			  /**
-			  $ext_trim = $info_adic->ext_trim !='' ? explode(',',($info_adic->ext_trim)) : array();
-			  $int_escutch =  $info_adic->int_escutch !='' ? explode(',',($info_adic->int_escutch)) : array();
-			  $knob_lever =  $info_adic->knob_lever !='' ? explode(',',($info_adic->knob_lever)) : array();
-			  $spindle =  $info_adic->spindle !='' ? explode(',',($info_adic->spindle)) : array();
-			  
-			  if(count($ext_trim)==1){
-			  	$ext_trim1 = $ext_trim[0] !='' ? explode('.',($ext_trim[0])) : array();
-			  }
-
-			  if(count($int_escutch)==1){
-			  	$int_escutch1 = $int_escutch[0] !='' ? explode('.',($int_escutch[0])) : array();
-			  }
-
-			  if(count($knob_lever)==1){
-			  	$knob_lever1 = $knob_lever[0] !='' ? explode('.',($knob_lever[0])) : array();
-			  }
-
-			  if(count($spindle)==1){
-			  	$spindle1 = $spindle[0] !='' ? explode('.',($spindle[0])) : array();
-			  }
-			  */
 
 			?>
-			<select class="form-control form-control-sm" id="det_style" style="width: 100px;" onchange="guarda_detalle(<?php echo e($p->id); ?>)">
-				<option value="">Seleccione..</option>
+			<select class="form-control form-control-sm" id="det_style" style="width: 60px;" onchange="guarda_detalle(<?php echo e($p->id); ?>)">
+				<option value="">...</option>
 				<?php $__currentLoopData = $style_1; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s1): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 					<option value="<?php echo e($s1); ?>" <?php echo e($s1==$p->style?'selected':''); ?>><?php echo e($s1); ?></option>
 				<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -149,12 +129,12 @@
 				<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 			</select>
 			<?php endif; ?>
-
+ 
 			</td>
 			<td>
 				<?php if($p->info == 5 || $p->info == 7 && $p->info != 6 ): ?>
-				<select id="handing" class="form-control form-control-sm" style="width: 100px;" onchange="guarda_detalle(<?php echo e($p->id); ?>)">
-					<option value="">Seleccione...</option>
+				<select id="handing" class="form-control form-control-sm" style="width: 60px;" onchange="guarda_detalle(<?php echo e($p->id); ?>)">
+					<option value="">...</option>
 					<option value="LH" <?php echo e($p->handing=='LH'?'selected':''); ?>>LH</option>
 					<option value="RH" <?php echo e($p->handing=='RH'?'selected':''); ?>>RH</option>
 				</select>

@@ -9,7 +9,7 @@
             <th>Total USD</th>
             <th>Total MXN</th>
             <th></th>
-            <th>Correo</th>
+            <!--<th>Correo</th>--->
             <td></td>
             <td></td>
         </tr>
@@ -25,16 +25,29 @@
                 <td style="text-align: right">$<?php echo e(number_format($c->total_mx,2)); ?></td>
                 <td>
                     <div class="btn-group">
+                        <a class="btn btn-sm  btn_gris" onclick="cambia_oc(<?php echo e($c->id); ?>)"><i class="fa fa-window-maximize"></i></a> &nbsp;
+
                         <a class="btn btn-sm btn-outline-primary btn_azul" href="<?php echo e(route('cotizador.revive',['id_cotizacion'=>$c->id])); ?>"><i class="fa fa-window-maximize"></i></a> &nbsp;
                         <span class="btn btn-sm btn-outline-danger btn_rojo" onclick="eliminar_cotizacion(<?php echo e($c->id); ?>)"><i class="fa fa-trash"></i></span>&nbsp;
-                        <span class="btn btn-sm btn-outline-success" onclick="duplica_cotizacion(<?php echo e($c->id); ?>)"><i class="fa fa-plus"></i></span>
+                        <span class="btn btn-sm btn-outline-success" onclick="duplica_cotizacion(<?php echo e($c->id_hijo); ?>)"><i class="fa fa-plus"></i></span>
                     </div>
                 </td>
-                <td><?php echo e($c->correo); ?></td>
+                <!--<td><?php echo e($c->correo); ?></td>--->
                 <td><?php if($c->id_hijo != ''): ?> <?php echo e($c->id_hijo); ?> <?php else: ?> <?php echo e($c->id); ?> <?php endif; ?></td>
                 <td><?php echo e($c->ver); ?></td>
             </tr>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </tbody>
       
-  </table><?php /**PATH C:\wamp64\www\laravel\hardware\resources\views/cotizador/cotizaciones.blade.php ENDPATH**/ ?>
+  </table>
+
+
+
+
+
+
+
+
+
+
+<?php /**PATH C:\wamp64\www\laravel\hardware\resources\views/cotizador/cotizaciones.blade.php ENDPATH**/ ?>

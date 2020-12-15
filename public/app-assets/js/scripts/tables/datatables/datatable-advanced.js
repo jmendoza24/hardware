@@ -28,11 +28,11 @@ $(document).ready(function() {
     $('.cotizaciones').DataTable( {
             columnDefs: [ 
             {
-                targets: [ 8 ],
+                targets: [ 7 ],
                 "visible": false,
                 orderData: [ 0, 1 ]
             }, {
-                targets: [ 9 ],
+                targets: [ 8 ],
                 "visible": false,
                 orderData: [ 1, 0 ]
             }]

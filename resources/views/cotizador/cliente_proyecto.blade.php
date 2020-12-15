@@ -37,11 +37,10 @@
         <select class="form-control form-control-sm col-md-8" id="id_tipo" style="margin-top: 4px;">
             <option value="">Seleccione...</option>
             
-            <option value="1">PDF Producto</option>
-            <option value="2">PDF Instalación</option>
-            <option value="4">PDF Modificación</option>
-            <option value="3">PDF Producto y Modificación</option>
-
+            <option value="1">Producto</option>
+            <option value="4">Modificación</option>
+            <option value="3">Producto y Modificación</option>
+            <option value="2">Instalación</option>
         </select>
     </div>
     <div class="col text-right" style="margin-top: 10px;">

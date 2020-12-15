@@ -119,12 +119,14 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 
 	Route::get('buscar_producto', 'productosController@buscar_producto');
 	Route::get('duplica_cotizacion', 'cotizadorController@duplica_cotizacion');
+	Route::get('enviar_cotizacion', 'cotizadorController@enviar_cotizacion');
 	Route::get('enviar_cotizacion2', 'cotizadorController@enviar_cotizacion2');
 
 	Route::get('finaliza_pedido', 'tbl_oc_fabController@finaliza_pedido');
 
 	Route::get('ver_pedidos', 'tbl_oc_fabController@ver_pedidos');
 	Route::get('estatus_pedido2', 'tbl_oc_fabController@estatus_pedido2');
+	Route::get('ver_imagen', 'cotizadorController@ver_imagen');
 });
 
 

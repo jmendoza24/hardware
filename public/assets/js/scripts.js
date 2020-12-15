@@ -1096,7 +1096,7 @@ var parameters = {
                 confirmar: function () {
                   $.ajax({
                           data: parameters,
-                          url: '/api/v1/elimina_cot',
+                          url: '/api/v1/elimina_cotizacion',
                           dataType: 'json',
                           type:  'get',
                           success:  function (response) {  
@@ -1263,4 +1263,16 @@ function duplica_cotizacion(id_cotizacion){
 
         }
     });    
+}
+
+function ver_imagen(id_item){
+  $.ajax({
+        data: {'id_item':id_item},
+        url: '/api/v1/ver_imagen',
+        dataType: 'json',
+        type:  'get',
+        success:  function (response){  
+            $("#contenido").html(response);
+        }
+    });   
 }
