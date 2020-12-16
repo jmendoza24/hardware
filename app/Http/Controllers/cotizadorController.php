@@ -1057,54 +1057,11 @@ class cotizadorController extends AppBaseController
     }
 
     function duplica_cotizacion(Request $request){
-      $cotizaciones = db::select("CALL listado_cotizacion()");
+      
       
       db::update('CALL proceso_duplica_cotizacion('.$request->id_cotizacion.')');
-
-      $nueva_cotiza = db::select('SELECT MAX(id) as id FROM cotizacions WHERE id_hijo = '.$request->id_cotizacion);
-      $nueva_cotiza = $nueva_cotiza[0]->id;
-      $nuevos_prod = cotizador_detalle::where('id_cotizacion',$nueva_cotiza)->get();
       
-      foreach($nuevos_prod as $pro){
-        //dd('call proceso_informacion_producto('.$pro->item.','.$pro->id.')');
-          db::update('call proceso_informacion_producto('.$pro->item.','.$pro->id.')');
-
-          $produc = productos::where('id',$pro->item)->get();
-          $produc = $produc[0];
-
-          if($produc->info==3){
-            db::update('call proceso_idfab('.$id.')');
-          }
-
-          $cotizacion = cotizador::where('id',$nueva_cotiza)->get();
-          $cotizacion = $cotizacion[0]; 
-
-          if($produc->fabricante == 76 || $produc->fabricante == 77  ){
-          $params =  array($produc->info,$nueva_cotiza,$produc->id,$pro->id);
-          db::update('call procesos_inserta_elementos(?,?,?,?)',$params); 
-
-          cotizador_detalle::where('id',$pro->id)
-                            ->update(['id_fab'=>$produc->codigo_sistema]);
-
-          }else{
-          $lista = $cotizacion->lista_precio ==null ? 1 : $cotizacion->lista_precio;
-          
-          $factor = db::select("SELECT factor_hc,lp".$lista." as lista FROM fabricantes_costos where id_fabricante=".$produc->fabricante);
-          $factor = $factor[0];
-
-          //dd($produc->costo_1 * (1- $factor->factor_hc));
-          
-          cotizador_detalle::where('id',$pro->id)
-                            ->update(['pvc'=>$produc->costo_1 * $factor->lista,
-                                      'lp'=>$produc->costo_1,
-                                      'phc' =>$produc->costo_1 * (1- $factor->factor_hc),
-                                      'id_fab'=>$produc->codigo_sistema]);
-        }
-        
-
-
-      }
-
+      $cotizaciones = db::select("CALL listado_cotizacion()");
       $options =   view('cotizador.cotizaciones',compact('cotizaciones'))->render();
 
       return json_encode($options);

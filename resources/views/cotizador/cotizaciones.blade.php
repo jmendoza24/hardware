@@ -21,7 +21,7 @@
                 <td>{{$c->nombre}}</td>
                 <td>{{$c->contacto}}</td>
                 <td>{{$c->telefono}}</td>
-                <td style="text-align: right">${{ number_format($c->total_usa,2)}}</td>
+                <td style="text-align: right">${{ number_format($c->gran_total,2)}}</td>
                 <td style="text-align: right">${{ number_format($c->total_mx,2)}}</td>
                 <td>
                     <div class="btn-group">

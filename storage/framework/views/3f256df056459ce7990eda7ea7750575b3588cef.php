@@ -21,7 +21,7 @@
                 <td><?php echo e($c->nombre); ?></td>
                 <td><?php echo e($c->contacto); ?></td>
                 <td><?php echo e($c->telefono); ?></td>
-                <td style="text-align: right">$<?php echo e(number_format($c->total_usa,2)); ?></td>
+                <td style="text-align: right">$<?php echo e(number_format($c->gran_total,2)); ?></td>
                 <td style="text-align: right">$<?php echo e(number_format($c->total_mx,2)); ?></td>
                 <td>
                     <div class="btn-group">
