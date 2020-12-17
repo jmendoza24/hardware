@@ -69,7 +69,7 @@ $a[12] = "Diciembre";
         {{$p->door_t}}
       </td>
       <td>
-        {{ $p->descripcion_mtk}}
+        {{ $p->descripcion}}
       </td>
       <td style="text-align: center;">
         {{$p->cantidad}}
@@ -262,7 +262,7 @@ $a[12] = "Diciembre";
         {{$p->door_t}}
       </td>
       <td>
-        {{ $p->descripcion_mtk}}
+        {{ $p->descripcion}}
       </td>
       <td style="text-align: center;">
         {{$p->cantidad}}
@@ -385,7 +385,7 @@ $a[12] = "Diciembre";
       <td>
         {{$p->door_t}}
       </td>
-      <td>{{$p->descripcion_mtk}}</td>
+      <td>{{$p->descripcion}}</td>
       <td style="text-align: center;">{{ $p->mod_cantidad }}</td>
       <td style="text-align: right;">${{ number_format($p->mod_precio_unit,2) }}</td>
       <td style="text-align: right;">${{ number_format($p->mod_precio_unit * $p->mod_cantidad,2) }}</td>

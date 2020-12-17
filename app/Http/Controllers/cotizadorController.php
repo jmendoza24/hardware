@@ -70,7 +70,6 @@ class cotizadorController extends AppBaseController
 
      function baja_cotiza_pdf(Request $request){
 
-
         $filtro = new cotizador_detalle;
         $num_cotizacion = $request->session()->get('num_cotizacion');
         
@@ -404,9 +403,13 @@ class cotizadorController extends AppBaseController
         
         $id = cotizador_detalle::insertGetId(['id_cotizacion'=>$num_cotizacion,
                                               'item'=>$request->producto]);
+
         $filtro->id_cotizacion = $num_cotizacion;
         $produc = productos::where('id',$request->producto)->get();
         $produc = $produc[0];
+
+        cotizador_detalle::where('id',$id)
+              ->update('descripcion'=>$produc->descripcion_mtk);
 
         db::update('call proceso_informacion_producto('.$produc->id.','.$id.')');
 
