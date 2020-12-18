@@ -409,7 +409,7 @@ class cotizadorController extends AppBaseController
         $produc = $produc[0];
 
         cotizador_detalle::where('id',$id)
-              ->update('descripcion'=>$produc->descripcion_mtk);
+              ->update(['descripcion'=>$produc->descripcion_mtk]);
 
         db::update('call proceso_informacion_producto('.$produc->id.','.$id.')');
 

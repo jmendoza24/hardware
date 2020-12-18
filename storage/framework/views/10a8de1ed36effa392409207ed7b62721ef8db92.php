@@ -16,7 +16,7 @@ $a[12] = "Diciembre";
      <tr style="width: 100%;" >
         <td style="background-color: #000000; text-align: center; "><img src="<?php echo e(url('app-assets/images/logo_completo.jpg')); ?>" style="width: 150px;"></td>
         <td style="background-color: #5C8293; "><label style="font-family:sans-serif; font-size: 11px; ">Calzada San Pedro # 108<br>San Pedro Garza García, NL, México, 66220<br>+52 (81) 8378 0601 <br/> info@hardwarecollection.mx</label></td>
-        <td style="background-color: #5C8293; font-size: 14px; text-align: right; "><?php echo e(date("d",strtotime(substr($cotizacion->created_at,0,10))) . ' de '. $a[date("m",strtotime(substr($cotizacion->created_at,0,10)))] . ' de '.date("Y",strtotime(substr($cotizacion->created_at,0,10)))); ?><br> <label style=""> Cotización #<?php echo e($cotizacion->idcotizacion); ?></label><br>  <label><b><?php echo e($tipo_doc); ?></b></label></td>
+        <td style="background-color: #5C8293; font-size: 14px; text-align: right; "><?php echo e(date("d",strtotime(substr($cotizacion->created_at,0,10))) . ' de '. $a[date("m",strtotime(substr($cotizacion->created_at,0,10)))] . ' de '.date("Y",strtotime(substr($cotizacion->created_at,0,10)))); ?><br> <label style=""> Cotización #<?php echo e($cotizacion->id_hijo); ?> <?php echo e($cotizacion->ver > 0 ? '.'.$cotizacion->ver:''); ?></label><br>  <label><b><?php echo e($tipo_doc); ?></b></label></td>
      </tr>
      <tr style="background: #D2D2D2; color:#5C8293; font-size: 11px; padding-top: 3px;">
         <td>Proyecto: <?php echo e($cotizacion->proyecto); ?><br> Participante: <?php echo e($cotizacion->contacto); ?><br>Empresa: <?php echo e($cotizacion->empresa); ?></td>
@@ -73,7 +73,7 @@ $a[12] = "Diciembre";
 
       </td>
       <td>
-        <?php echo e($p->descripcion_mtk); ?>
+        <?php echo e($p->descripcion); ?>
 
       </td>
       <td style="text-align: center;">
@@ -277,7 +277,7 @@ $a[12] = "Diciembre";
 
       </td>
       <td>
-        <?php echo e($p->descripcion_mtk); ?>
+        <?php echo e($p->descripcion); ?>
 
       </td>
       <td style="text-align: center;">
@@ -408,7 +408,7 @@ $a[12] = "Diciembre";
         <?php echo e($p->door_t); ?>
 
       </td>
-      <td><?php echo e($p->descripcion_mtk); ?></td>
+      <td><?php echo e($p->descripcion); ?></td>
       <td style="text-align: center;"><?php echo e($p->mod_cantidad); ?></td>
       <td style="text-align: right;">$<?php echo e(number_format($p->mod_precio_unit,2)); ?></td>
       <td style="text-align: right;">$<?php echo e(number_format($p->mod_precio_unit * $p->mod_cantidad,2)); ?></td>
