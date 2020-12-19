@@ -466,7 +466,7 @@ class cotizadorController extends AppBaseController
     function guardar_descuentos(Request $request){
      $filtro = new cotizador_detalle;
         $num_cotizacion = $request->session()->get('num_cotizacion');
-
+        
         cotizador::where('id',$num_cotizacion)
                     ->update(['descuento_mx'=> $request->descuento_mx ==''? 0 : str_replace('%', '', $request->descuento_mx),
                               'descuento_usa'=>$request->descuento_usa ==''? 0 : str_replace('%', '', $request->descuento_usa),
@@ -479,8 +479,8 @@ class cotizadorController extends AppBaseController
         $productos = $filtro->detalle_cotizacion($filtro);
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0];
-
-        $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion'))->render();
+        $estatus = 0;
+        $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion','estatus'))->render();
 
         return json_encode($options); 
     }

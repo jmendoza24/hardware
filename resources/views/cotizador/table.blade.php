@@ -53,7 +53,7 @@
 					<span class="btn btn-sm btn-outline-danger" style="cursor: pointer;" onclick="elimina_producto({{$p->id}})"><i class="fa fa-trash"></i></span> &nbsp;
 					<span class="btn btn-sm btn-outline-primary" data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer; font-size: 12px; border-right: 1px solid white;" onclick="agregar_dependencia({{$p->idproducto}},{{$p->id}})"><i class="fa fa-info"></i> <b>{{$p->info}}</b></span>&nbsp;
 					<span class="btn btn-sm btn-outline-success" onclick="agrega_producto({{ $p->idproducto}})"><i class="fa fa-plus"></i></span>&nbsp;
-					<span  class="btn btn-sm btn-outline-success">@if($fotos->foto != '')<a href="/storage/{{$fotos->foto }}" target="_blank"><i class="fa fa-camera" aria-hidden="true"></i></a> @endif</span>
+					<span  class="btn btn-sm btn-outline-success"><a href="/storage/{{$p->foto }}" target="_blank"><i class="fa fa-camera" aria-hidden="true"></i></a> </span>
 				</span>
 			</td>
 			<!--<td style="text-align: left; font-weight: bold;">
