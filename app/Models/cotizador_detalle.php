@@ -14,8 +14,10 @@ class cotizador_detalle extends Model
     function detalle_cotizacion($cotizacion){
 
 
+
         return db::select("SELECT d.*, ifnull(inv.inv1,0) as inv1,  ifnull(inv.inv2,0) as inv2, c.estatus, p.id as idproducto, p.codigo_sistema, p.costo_1, i.item as item_nom, s.selector, dt.sum_lp, dt.sum_phc, dt.sum_pvc, p.info, p.sufijo, '' as foto,
                             dp.finish_1, dp.finish_2,  dp.finish_3, dp.finish_4, dp.style_1,dp.style_2,dp.style_3, p.id_item
+
                             FROM cotizacion_detalle AS d
                             inner join cotizacions c on c.id = d.id_cotizacion
                             INNER JOIN productos as p on p.id = d.item
@@ -34,6 +36,14 @@ class cotizador_detalle extends Model
                             WHERE d.id_cotizacion = " .$cotizacion->id_cotizacion ."
                             order by d.id");
 
+
+    }
+
+    function filtros(){
+
+                return db::select("SELECT i.id,i.item,p.descripcion
+                FROM items i 
+                inner JOIN productos p ON p.id_item =i.id");
 
     }
 }

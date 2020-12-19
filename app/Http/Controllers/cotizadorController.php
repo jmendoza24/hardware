@@ -356,7 +356,10 @@ class cotizadorController extends AppBaseController
 
         $estatus = sizeof($productos)> 0 ? $productos[0]->estatus :0;
         $fabricantes  = fabricantes::orderby('fabricante')->get();
-        return view('cotizador.index',compact('fabricantes','num_cotizacion','productos','cotizacion','proyectos','clientes','tipo','estatus','info_adic'));
+
+                $filtros_select = $filtro->filtros();
+
+        return view('cotizador.index',compact('filtros_select','fabricantes','num_cotizacion','productos','cotizacion','proyectos','clientes','tipo','estatus','info_adic'));
 
     }
 
@@ -387,9 +390,9 @@ class cotizadorController extends AppBaseController
               $fotos = array('foto'=>'imagen-no-disponible.png');
               $fotos = (object)$fotos;
            }         
-        // dd($fotos);
-        $existe = 0;
-        $options = view('cotizador.detalle',compact('fotos','producto','items','existe'))->render();
+       
+        $options = view('cotizador.detalle',compact('fotos','producto','items'))->render();
+
 
         return json_encode($options);
     
@@ -444,9 +447,9 @@ class cotizadorController extends AppBaseController
         }
 
         $productos = $filtro->detalle_cotizacion($filtro);   
-
-
         $estatus = sizeof($productos)> 0 ? $productos[0]->estatus :0;
+
+
 
         $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion','estatus'))->render();
 
@@ -565,7 +568,7 @@ class cotizadorController extends AppBaseController
     function guardar_descuentos(Request $request){
      $filtro = new cotizador_detalle;
         $num_cotizacion = $request->session()->get('num_cotizacion');
-
+        
         cotizador::where('id',$num_cotizacion)
                     ->update(['descuento_mx'=> $request->descuento_mx ==''? 0 : str_replace('%', '', $request->descuento_mx),
                               'descuento_usa'=>$request->descuento_usa ==''? 0 : str_replace('%', '', $request->descuento_usa),
