@@ -67,8 +67,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('enviadas', 'cotizadorController@enviadas')->name('enviadas');
 
 	
-
-	
 });
 
 	
@@ -104,15 +102,14 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('confirmar_eliminar', 'productosController@confirmar_eliminar');
 	Route::get('guarda_detalle', 'cotizadorController@guarda_detalle');
 	Route::get('guarda_comentarios', 'proyectosController@guarda_comentarios');
-	Route::get('/baja_cotiza_pdf', 'cotizadorController@baja_cotiza_pdf');
+	Route::get('baja_cotiza_pdf', 'cotizadorController@baja_cotiza_pdf');
 	Route::get('guarda_generales', 'CatalogosController@guarda_generales');
 	Route::get('/nuevo_dibujo', 'productosController@nuevo_dibujo');	
 	Route::POST('/ajaxupload', 'tbl_fotos_productosController@store')->name('ajaxupload');
 	Route::get('actualiza_fotos', 'tbl_fotos_productosController@actualiza_fotos');
 	Route::get('borra_foto', 'tbl_fotos_productosController@destroy');
 	Route::get('revive_cotizacion/{id_cotizacion}', 'cotizadorController@revive_cotizacion')->name('cotizador.revive');
-	Route::get('elimina_cot', 'cotizadorController@elimina_cot');
-	Route::get('actualiza_cots', 'cotizadorController@actualiza_cots');
+	Route::get('elimina_cotizacion', 'cotizadorController@elimina_cotizacion');	
 	Route::get('guarda_cot_not', 'cotizadorController@guarda_cot_not');
 	Route::get('enviar_produccion', 'productosController@enviar_produccion');
 
@@ -122,17 +119,14 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 
 	Route::get('buscar_producto', 'productosController@buscar_producto');
 	Route::get('duplica_cotizacion', 'cotizadorController@duplica_cotizacion');
-
-
+	Route::get('enviar_cotizacion', 'cotizadorController@enviar_cotizacion');
 	Route::get('enviar_cotizacion2', 'cotizadorController@enviar_cotizacion2');
 
 	Route::get('finaliza_pedido', 'tbl_oc_fabController@finaliza_pedido');
 
 	Route::get('ver_pedidos', 'tbl_oc_fabController@ver_pedidos');
 	Route::get('estatus_pedido2', 'tbl_oc_fabController@estatus_pedido2');
-
-
-
+	Route::get('ver_imagen', 'cotizadorController@ver_imagen');
 });
 
 

@@ -56,7 +56,6 @@
 					<span class="btn btn-sm btn-outline-danger" style="cursor: pointer;" onclick="elimina_producto(<?php echo e($p->id); ?>)"><i class="fa fa-trash"></i></span> &nbsp;
 					<span class="btn btn-sm btn-outline-primary" data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer; font-size: 12px;" onclick="agregar_dependencia(<?php echo e($p->idproducto); ?>,<?php echo e($p->id); ?>)"><i class="fa fa-info"></i> <b><?php echo e($p->info); ?></b></span>&nbsp;
 					<span class="btn btn-sm btn-outline-success" onclick="agrega_producto(<?php echo e($p->idproducto); ?>)"><i class="fa fa-plus"></i></span>&nbsp;
-
 					<span  class="btn btn-sm btn-outline-success"  data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer;" onclick="ver_imagen(<?php echo e($p->id_item); ?>)"><i class="fa fa-camera" aria-hidden="true"></i></span>
 				</span>
 			</td>
@@ -261,4 +260,4 @@
 			<td colspan="3">USD: $<?php echo e(number_format($desc_usa + (($desc_usa * $cotizacion->iva_usa)/100) + $desc_mod + (($desc_mod * $cotizacion->iva_mod)/100) + $cotizacion->flete ,2)); ?></td>
 			<td colspan="3" style="border-left: 3px solid white;" >+MXN: $<?php echo e(number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)); ?></td>
 		</tr>
-	</table><?php /**PATH C:\xampp\htdocs\laravel\hardware\resources\views/cotizador/table.blade.php ENDPATH**/ ?>
+	</table><?php /**PATH C:\wamp64\www\laravel\hardware\resources\views/cotizador/table.blade.php ENDPATH**/ ?>

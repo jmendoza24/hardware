@@ -31,6 +31,58 @@ function busca_estado(campo){
     $("#municipio_select").hide();
   }
 }
+    
+
+function cambia_oc(id){
+
+    $.confirm({
+            title: 'Hardware collection',
+            content: 'Estas seguro deseas convertir esta cotización a OC?',
+            type:'orange',
+            buttons: {
+                confirmar: function () {
+                  $.ajax({
+                      data: {"id":id},
+                      url: '/api/v1/cambia_oc',
+                      dataType: 'json',
+                      type:  'get',
+                      success:  function (response) { 
+                      }
+                  });
+                                  window.location.href = 'cotizaciones_oc';
+
+                },
+                cancelar: function () {}
+              } 
+          });
+}
+
+
+function cambia_oc2(id){
+
+    $.confirm({
+            title: 'Hardware collection',
+            content: 'Estas seguro deseas convertir esta OC a cotización ?',
+            type:'orange',
+            buttons: {
+                confirmar: function () {
+                  $.ajax({
+                      data: {"id":id},
+                      url: '/api/v1/oc_cambia2',
+                      dataType: 'json',
+                      type:  'get',
+                      success:  function (response) { 
+                      }
+                  });
+                           window.location.href = 'cotizaciones_lista';
+
+                },
+                cancelar: function () {}
+              } 
+          });
+}
+
+
 
 function get_municipios(estado,municipio){
   var id_estado = $("#"+estado).val();
@@ -199,6 +251,10 @@ function guarda_catalogo(catalogo,id,tipo,nom_table){
     $.alert("Llene todos los campos");
   }else{
    var formData = new FormData($("#catalogos_forma")[0]);
+
+   if(catalogo ==11){
+    $.blockUI({ message: 'Proccesing, please wait.' }); 
+   }
    $.ajax({
             url:"/api/v1/guarda_catalogo",
             type: 'POST',
@@ -211,12 +267,19 @@ function guarda_catalogo(catalogo,id,tipo,nom_table){
             success: function(respuesta){
               if(catalogo == 18 && id == 0){
                 $('#tabla_catalogos').html(respuesta);
+<<<<<<< HEAD
               }else if(catalogo == 18 && id > 0){
                 $('#catalogo_'+nom_table).html(respuesta);
               }else{
                 $('#tabla_catalogos').html(respuesta);
               }
                 
+=======
+                if(catalogo ==11){
+                  setTimeout($.unblockUI, 2000);
+                  window.location.href = 'productos_masivo';
+                }
+>>>>>>> 1d498b8ad006dfbcdc6312ecbacbe10cb68d64c8
                 $('.file-export').DataTable({
                       dom: 'Bfrtip',
                       "paging": false,
@@ -1043,7 +1106,11 @@ var parameters = {
                 confirmar: function () {
                   $.ajax({
                           data: parameters,
+<<<<<<< HEAD
                           url: '/api/v1/elimina_cot',
+=======
+                          url: '/api/v1/elimina_cotizacion',
+>>>>>>> 1d498b8ad006dfbcdc6312ecbacbe10cb68d64c8
                           dataType: 'json',
                           type:  'get',
                           success:  function (response) {  
@@ -1107,14 +1174,30 @@ function enviar_produccion(){
             text: 'Confirmar',
             btnClass: 'btn-blue',
             action: function(){
+<<<<<<< HEAD
+=======
+              $.blockUI({ message: 'Proccesing, please wait.' }); 
+>>>>>>> 1d498b8ad006dfbcdc6312ecbacbe10cb68d64c8
               $.ajax({
                     data: '',
                     url: '/api/v1/enviar_produccion',
                     dataType: 'json',
                     type:  'get',
                     success:  function (response){  
+<<<<<<< HEAD
                       $.alert('Los productos se enviaron a produccion correctamente');
                     }
+=======
+                      setTimeout($.unblockUI, 2000);
+                      $.alert('Los productos se enviaron a produccion correctamente');
+                      window.location.href = 'productos_masivo';
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                      $.alert('Proceso finalizado');
+                        setTimeout($.unblockUI, 2000);
+                        window.location.href = 'productos_masivo';
+                    } 
+>>>>>>> 1d498b8ad006dfbcdc6312ecbacbe10cb68d64c8
                 });
             }
         },
@@ -1124,4 +1207,61 @@ function enviar_produccion(){
 });
 
   
+<<<<<<< HEAD
+=======
+}
+
+function busca_producto(num){
+ $.ajax({
+        data: {'numero':num,'fabricantes':$("#fabricantes").val()},
+        url: '/api/v1/buscar_producto',
+        dataType: 'json',
+        type:  'get',
+        success:  function (response){  
+            $("#conteos").html(response.options2);
+            $("#productos").html(response.options);
+            $(".scroll-vertical").dataTable({"scrollY":        "500px",
+                                            "scrollCollapse": true,
+                                            "paging":false})
+        }
+    });   
+}
+
+function duplica_cotizacion(id_cotizacion){
+ $.ajax({
+        data: {'id_cotizacion':id_cotizacion},
+        url: '/api/v1/duplica_cotizacion',
+        dataType: 'json',
+        type:  'get',
+        success:  function (response){  
+          $("#cotiza_table").html(response); 
+            $('.cotizaciones').DataTable( {
+                  columnDefs: [ 
+                  {
+                      targets: [ 7 ],
+                      "visible": false,
+                      orderData: [ 0, 1 ]
+                  }, {
+                      targets: [ 8 ],
+                      "visible": false,
+                      orderData: [ 1, 0 ]
+                  }]
+              } );
+
+
+        }
+    });    
+}
+
+function ver_imagen(id_item){
+  $.ajax({
+        data: {'id_item':id_item},
+        url: '/api/v1/ver_imagen',
+        dataType: 'json',
+        type:  'get',
+        success:  function (response){  
+            $("#contenido").html(response);
+        }
+    });   
+>>>>>>> 1d498b8ad006dfbcdc6312ecbacbe10cb68d64c8
 }

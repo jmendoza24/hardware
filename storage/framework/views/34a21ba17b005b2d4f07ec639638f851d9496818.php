@@ -36,8 +36,11 @@
         <label class="col-md-3" style="padding-top: 4px;">Tipo:</label>
         <select class="form-control form-control-sm col-md-8" id="id_tipo" style="margin-top: 4px;">
             <option value="">Seleccione...</option>
-            <option value="1">Sencilla</option>
-            <option value="2">Completa</option>
+            
+            <option value="1">Producto</option>
+            <option value="4">Modificación</option>
+            <option value="3">Producto y Modificación</option>
+            <option value="2">Instalación</option>
         </select>
     </div>
     <div class="col text-right" style="margin-top: 10px;">

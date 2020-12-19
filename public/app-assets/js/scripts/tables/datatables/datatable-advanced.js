@@ -25,6 +25,18 @@ $(document).ready(function() {
     /***************************************
      *        js of column rendering        *
      ***************************************/
+    $('.cotizaciones').DataTable( {
+            columnDefs: [ 
+            {
+                targets: [ 7 ],
+                "visible": false,
+                orderData: [ 0, 1 ]
+            }, {
+                targets: [ 8 ],
+                "visible": false,
+                orderData: [ 1, 0 ]
+            }]
+        } );
 
     $('.column-rendering').DataTable({
         "columnDefs": [{
