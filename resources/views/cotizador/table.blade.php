@@ -14,7 +14,13 @@
 		<tr style="border-top: 3px solid white; background:white;">
 			<td colspan=""><span class="badge badge-primary">Cotización {{ $cotizacion->id_hijo != '' ? $cotizacion->id_hijo . '.'. $cotizacion->ver : $cotizacion->id}}</span></td>
 			<td colspan="{{ $estatus == 1 ? 11:9}}">
-				<input type="text" name="" class="form-control" placeholder="Buscar productos...">
+				<select id="sp" class="form-control select2"  onchange="cacha()" style="width: 100%" >
+					<option value="0">Buscar productos...</option>
+						@foreach($filtros_select as $s)
+							<option   value="{{$s->id}}" >{{$s->item}}{{' - '}}{{$s->descripcion}}</option>
+						@endforeach
+				
+				</select>
 			</td>
 			<td colspan="7" style="background: #67A957;" class="text-center white"><b>Producto USD:</b></td>
 			<td colspan="3" style="background: #67A957; border-left: 3px solid white;" class="text-center white"><b>Modificación USD:</b></td>

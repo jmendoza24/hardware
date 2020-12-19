@@ -14,7 +14,13 @@
 		<tr style="border-top: 3px solid white; background:white;">
 			<td colspan=""><span class="badge badge-primary">Cotización <?php echo e($cotizacion->id_hijo != '' ? $cotizacion->id_hijo . '.'. $cotizacion->ver : $cotizacion->id); ?></span></td>
 			<td colspan="<?php echo e($estatus == 1 ? 11:9); ?>">
-				<input type="text" name="" class="form-control" placeholder="Buscar productos...">
+				<select id="sp" class="form-control select2"  onchange="cacha()" style="width: 100%" >
+					<option value="0">Buscar productos...</option>
+						<?php $__currentLoopData = $filtros_select; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+							<option   value="<?php echo e($s->id); ?>" ><?php echo e($s->item); ?><?php echo e(' - '); ?><?php echo e($s->descripcion); ?></option>
+						<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+				
+				</select>
 			</td>
 			<td colspan="7" style="background: #67A957;" class="text-center white"><b>Producto USD:</b></td>
 			<td colspan="3" style="background: #67A957; border-left: 3px solid white;" class="text-center white"><b>Modificación USD:</b></td>

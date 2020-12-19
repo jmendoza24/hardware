@@ -356,7 +356,10 @@ class cotizadorController extends AppBaseController
 
         $estatus = sizeof($productos)> 0 ? $productos[0]->estatus :0;
         $fabricantes  = fabricantes::orderby('fabricante')->get();
-        return view('cotizador.index',compact('fabricantes','num_cotizacion','productos','cotizacion','proyectos','clientes','tipo','estatus','info_adic'));
+
+                $filtros_select = $filtro->filtros();
+
+        return view('cotizador.index',compact('filtros_select','fabricantes','num_cotizacion','productos','cotizacion','proyectos','clientes','tipo','estatus','info_adic'));
 
     }
 
@@ -388,7 +391,7 @@ class cotizadorController extends AppBaseController
               $fotos = (object)$fotos;
            }         
         // dd($fotos);
-        $options = view('cotizador.detalle',compact('fotos','producto','items','existe'))->render();
+        $options = view('cotizador.detalle',compact('fotos','producto','items'))->render();
 
         return json_encode($options);
     
@@ -443,9 +446,9 @@ class cotizadorController extends AppBaseController
         }
 
         $productos = $filtro->detalle_cotizacion($filtro);   
-
-
         $estatus = sizeof($productos)> 0 ? $productos[0]->estatus :0;
+
+
 
         $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion','estatus'))->render();
 

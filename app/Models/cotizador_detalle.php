@@ -38,4 +38,12 @@ class cotizador_detalle extends Model
 
 
     }
+
+    function filtros(){
+
+                return db::select("SELECT i.id,i.item,p.descripcion
+                FROM items i 
+                inner JOIN productos p ON p.id_item =i.id");
+
+    }
 }
