@@ -34,6 +34,7 @@
            
           </ul>
         </li> 
+        <!--
         <li class=" nav-item"><a href="/"><i class="ft-server"></i><span class="menu-title" data-i18n="">OC</span></a>
           <ul class="menu-content">
             <li class="<?php echo e(Request::is('cotizaciones_oc*') ? 'active' : ''); ?>"><a href="<?php echo route('cotizador.oc'); ?>"><span class="menu-title" data-i18n="">OC Clientes</span></a></li>
@@ -52,7 +53,7 @@
           </ul>
         </li> 
 
-     
+     --->
           </ul>
         </li>        
       </ul>

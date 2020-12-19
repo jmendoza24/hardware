@@ -388,6 +388,7 @@ class cotizadorController extends AppBaseController
               $fotos = (object)$fotos;
            }         
         // dd($fotos);
+        $existe = 0;
         $options = view('cotizador.detalle',compact('fotos','producto','items','existe'))->render();
 
         return json_encode($options);

@@ -113,6 +113,7 @@ class productosController extends AppBaseController
                             'int_escutcheon_dep2_accion'=>'',
                             'cylinder_dep5'=>'',
                             'mortise_lock_dep6'=>'',
+                            'mortise'=>'',
                             'info'=>'',
                             'dep_spindle'=>'',
                             'dep_extension'=>'',
@@ -135,7 +136,9 @@ class productosController extends AppBaseController
                             'dep_adaptor_accion'=>'',
                             'dep_spindle_accion'=>'',
                             'dep_extension_accion'=>'',
-                            'dependencias'=>''
+                            'dependencias'=>'',
+                            'fastener'=>'',
+                            'wheel'=>''
                         );
 
         $productos = (object)$productos;
