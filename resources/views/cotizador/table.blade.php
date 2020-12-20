@@ -58,7 +58,7 @@
 		@foreach($productos as $p)
 		<tr>
 			<td>
-				<span class="pull-right btn-group">
+				<span class="btn-group">
 					<span class="btn btn-sm btn-outline-danger" style="cursor: pointer;" onclick="elimina_producto({{$p->id}})"><i class="fa fa-trash"></i></span> &nbsp;
 					<span class="btn btn-sm btn-outline-primary" data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer; font-size: 12px;" onclick="agregar_dependencia({{$p->idproducto}},{{$p->id}})"><i class="fa fa-info"></i> <b>{{$p->info}}</b></span>&nbsp;
 					<span class="btn btn-sm btn-outline-success" onclick="agrega_producto({{ $p->idproducto}})"><i class="fa fa-plus"></i></span>&nbsp;

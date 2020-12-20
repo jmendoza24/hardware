@@ -43,7 +43,8 @@ class cotizador_detalle extends Model
 
                 return db::select("SELECT i.id,i.item,p.descripcion
                 FROM items i 
-                inner JOIN productos p ON p.id_item =i.id");
+                inner JOIN productos p ON p.id_item =i.id
+                and p.item != '' ");
 
     }
 }

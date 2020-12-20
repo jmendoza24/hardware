@@ -160,7 +160,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
   @yield('scripts')
 </body>
 </html>
-<div class="modal fade" id="primary" tabindex="-1" role="dialog" aria-labelledby="myModalLabel8" aria-hidden="true">
+<div class="modal fade" id="primary" tabindex="-1" data-backdrop="false" role="dialog" aria-labelledby="myModalLabel8" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document" id="modal_primary">
     <div class="modal-content">
       <div class="modal-header white" style=" background: #38445a  !important;">

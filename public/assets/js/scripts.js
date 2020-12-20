@@ -21,10 +21,11 @@
 function cacha(){
 
 $('#primary').modal('show'); // abrir
-
+$("#primary").removeClass('modal-backdrop')
 
   var id=$("#sp").val();
   detalle_producto(id);
+  $(".select2").select2();
 }
 
 function busca_estado(campo){
@@ -605,6 +606,7 @@ function detalle_producto (producto){
           type:  'get',
           success:  function (response) {  
             $("#contenido").html(response);
+            $(".select2").select2();
             $("#modal_primary").removeClass("modal-xl");
             
             $('.modal-dialog').draggable({handle: ".modal-header"});
@@ -625,6 +627,7 @@ function agrega_producto(producto){
             }else{
               $("#cotiza_table").html(response);
               $("#primary").modal('hide');
+              $(".select2").select2();
             }
             
           }
@@ -673,6 +676,7 @@ function elimina_producto(producto){
                                         max:99,
                                         mask: "99%",
                                     });
+                          $(".select2").select2();
                         }
                     }); 
                 },
@@ -739,6 +743,7 @@ function eliminar_clientes(id_proyecto, id){
 function guarda_info_cotizacion(id){
   var parameters = {'id':id,
                     'posicion':$("#posicion_"+id).val(),
+                    'descripcion':$("#descripcion_"+id).val(),
                     'bks':$("#bks_"+id).val(),
                     'door_t':$("#doort_"+id).val(),
                     'cantidad':$("#pro_cant_"+id).val(),
@@ -754,6 +759,7 @@ function guarda_info_cotizacion(id){
         type:  'get',
         success:  function (response){  
             $("#cotiza_table").html(response);
+            $(".select2").select2();
             $('.cantidad-mask').inputmask({ 
                         groupSeparator: ".",
                         alias: "numeric",
@@ -799,6 +805,7 @@ function guardar_descuentos(){
         type:  'get',
         success:  function (response){  
             $("#cotiza_table").html(response);
+            $(".select2").select2();
             $('.cantidad-mask').inputmask({ 
                         groupSeparator: ".",
                         alias: "numeric",
@@ -1000,6 +1007,7 @@ function guarda_detalle(id_detalle){
             console.log(response);
             $("#detalle_head").html(response.options);
             $("#cotiza_table").html(response.options2);
+            $(".select2").select2();
           }
       }); 
 }
