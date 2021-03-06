@@ -13,7 +13,7 @@
     @foreach($fabricantes as $fabricantes)
         <tr>
             <td>{{ $fabricantes->id_fabricante}}</td>
-            <td>{!! $fabricantes->abrev !!}</td>
+            <td>[{{ $fabricantes->id_fabricante}}] {!! $fabricantes->abrev !!}</td>
             <td>{!! $fabricantes->contacto !!}</td>
             <td>{!! $fabricantes->correo !!}</td>
             <td>{!! $fabricantes->telefono_dir !!}</td>

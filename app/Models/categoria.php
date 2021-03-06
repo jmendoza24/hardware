@@ -26,7 +26,8 @@ class categoria extends Model
 
     public $fillable = [
         'fabricante',
-        'categoria'
+        'categoria',
+        'abrev'
     ];
 
     /**
@@ -37,7 +38,8 @@ class categoria extends Model
     protected $casts = [
         'id' => 'integer',
         'fabricante' => 'integer',
-        'categoria' => 'string'
+        'categoria' => 'string',
+        'abrev' => 'string'
     ];
 
     /**
@@ -55,7 +57,7 @@ class categoria extends Model
                 ->join('catalogos as ca','ca.id','f.catalogo')
                 ->join('tbl_fabricantes as fa','ca.fabricante','id_fabricante')
                 ->where('c.familia',$filtro->familia)
-                ->selectraw('c.id, c.categoria, f.familia,f.catalogo,fa.id_fabricante,f.id as id_familia')
+                ->selectraw('c.id, c.abrev, c.categoria, f.familia,f.catalogo,fa.id_fabricante,f.id as id_familia')
                 ->get();
     }
     

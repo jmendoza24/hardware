@@ -30,6 +30,8 @@ use Response;
 use View;
 use DB;
 
+set_time_limit(0);
+
 class catalogosController extends AppBaseController
 {
     /** @var  catalogosRepository */
@@ -103,7 +105,8 @@ class catalogosController extends AppBaseController
             if($request->tipo==1){
                 $catalogos = array('id'=>0,
                                    'fabricante'=>$request->fabricante,
-                                   'catalogo'=>'');
+                                   'catalogo'=>'',
+                                   'abrev'=>'');
                 $catalogos = (object)$catalogos;
             }else if($request->tipo==2){
                 $catalogos = catalogos::where('id',$request->id)->get();
@@ -208,7 +211,7 @@ class catalogosController extends AppBaseController
                 }else if($selectores->fabricante==76){
                   $variable=array(1=>'DC', 2=>'MORTISE', 3=>'FMM1', 4=>'STEM', 5=>'FMM2', 6=>'HANDLE', 7=>'FMM3', 8=>'WHEEL', 9=>'FASTENER', 10=>'STYLE', 11=>'FINISH-EMK');
                 }else if($selectores->id_fabricante==0){
-                    $variable=array(1=>'BACKSET');
+                    $variable=array(1=>'BACKSET',2=>'HANDING');
                 }
 
                 $variable  = (object)$variable;
@@ -243,7 +246,7 @@ class catalogosController extends AppBaseController
                 }else if($selectores->fabricante==76){
                   $variable=array(1=>'DC', 2=>'MORTISE', 3=>'FMM1', 4=>'STEM', 5=>'FMM2', 6=>'HANDLE', 7=>'FMM3', 8=>'WHEEL', 9=>'FASTENER', 10=>'STYLE', 11=>'FINISH-EMK');
                 }else if($selectores->id_fabricante==0){
-                    $variable=array(1=>'BACKSET');
+                    $variable=array(1=>'BACKSET',2=>'HANDING');
                 }
                 
             }
@@ -295,7 +298,7 @@ class catalogosController extends AppBaseController
         }else if($request->catalogo ==11){
             $options =  view('productos.show')->render();
         }else if($request->catalogo ==12){
-          $variable=array(1=>'BACKSET');
+          $variable=array(1=>'BACKSET',2=>'HANDING');
           $variable  = (object)$variable;
 
             if($request->tipo==1){
@@ -323,7 +326,7 @@ class catalogosController extends AppBaseController
                 }else if($selectores->fabricante==76){
                   $variable=array(1=>'DC', 2=>'MORTISE', 3=>'FMM1', 4=>'STEM', 5=>'FMM2', 6=>'HANDLE', 7=>'FMM3', 8=>'WHEEL', 9=>'FASTENER', 10=>'STYLE', 11=>'FINISH-EMK');
                 }else if($selectores->id_fabricante==0){
-                    $variable=array(1=>'BACKSET');
+                    $variable=array(1=>'BACKSET',2=>'HANDING');
                 }
 
             }
@@ -410,10 +413,12 @@ class catalogosController extends AppBaseController
             if($existe>0){
                 catalogos::where('id',$request->id)
                         ->update(['fabricante'=>$request->fabricante,
-                                  'catalogo'=>$request->catalogo]);
+                                  'catalogo'=>$request->catalogo,
+                                  'abrev'=>$request->abrev]);
             }else{
                 catalogos::insert(['fabricante'=>$request->fabricante,
-                                  'catalogo'=>$request->catalogo]);
+                                  'catalogo'=>$request->catalogo,
+                                  'abrev'=>$request->abrev]);
             }
             
             $catalogos = new catalogos;
@@ -440,7 +445,8 @@ class catalogosController extends AppBaseController
             if($existe>0){
                 categoria::where('id',$request->id)
                         ->update(['familia'=>$request->familia,
-                                  'categoria'=>$request->categoria]);
+                                  'categoria'=>$request->categoria
+                                ]);
             }else{
                 categoria::insert(['familia'=>$request->familia,
                                   'categoria'=>$request->categoria]);
@@ -507,7 +513,7 @@ class catalogosController extends AppBaseController
             }else if($request->fabricante==76){
               $variable=array(1=>'DC', 2=>'MORTISE', 3=>'FMM1', 4=>'STEM', 5=>'FMM2', 6=>'HANDLE', 7=>'FMM3', 8=>'WHEEL', 9=>'FASTENER', 10=>'STYLE', 11=>'FINISH-EMK');
             }else if($request->id_fabricante==0){
-                    $variable=array(1=>'BACKSET');
+                    $variable=array(1=>'BACKSET',2=>'HANDING');
             }
 
             $variable  = (object)$variable;  
@@ -627,7 +633,7 @@ class catalogosController extends AppBaseController
                                           'turn_knob8_accion'=>$line[61]==''?null:$line[61],
                                           'dep9'=>$line[62],
                                           'dep9_accion'=>$line[63]==''?null:$line[63],
-                                          'dep10_libre'=>$line[64],
+                                          'dep10_libre'=>$line[64], 
                                           'dep10_libre_accion'=>$line[65]==''?null:$line[65],
                                           'dep11_libre'=>$line[66],
                                           'dep11_libre_accion'=>$line[67]==''?null:$line[67],
@@ -642,11 +648,13 @@ class catalogosController extends AppBaseController
                                           'dep_spindle'=>$line[76],
                                           'dep_spindle_accion'=>$line[77]==''?null:$line[77],
                                           'dep_extension'=>$line[78],
-                                          'dep_extension_accion'=>$line[79]==''?null:$line[79]
+                                          'dep_extension_accion'=>$line[79]==''?null:$line[79],
+                                          'info'=>$line[80]==''?null:$line[80],
+                                          'latch'=>$line[81]==''?null:$line[81]
                                         ]);  
             }
 
-            $productos = productos_temporal::get();
+            $productos = db::select('call procesos_masivo()');
             $options =  view('productos.table_masivo',compact('productos'))->render();
         }else if($request->id_catalogo==13){
             $existe = tipo_cliente::where('id',$request->id)->count();
@@ -763,7 +771,7 @@ class catalogosController extends AppBaseController
             }else if($id->fabricante==76){
               $variable=array(1=>'DC', 2=>'MORTISE', 3=>'FMM1', 4=>'STEM', 5=>'FMM2', 6=>'HANDLE', 7=>'FMM3', 8=>'WHEEL', 9=>'FASTENER', 10=>'STYLE', 11=>'FINISH-EMK');
             }else if($id->id_fabricante==0){
-                $variable=array(1=>'BACKSET');
+                $variable=array(1=>'BACKSET',2=>'HANDING');
             }
 
             $variable = (object)$variable;

@@ -222,7 +222,7 @@ $(document).ready(function() {
         "columnDefs": [
             {
                 "targets": [ 0 ],
-                "visible": false
+                "visible": true
             }
         ],
         buttons: [

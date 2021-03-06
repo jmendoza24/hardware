@@ -62,7 +62,7 @@ class Sub_baldwinController extends AppBaseController
         $subBaldwins = $subBaldwins->lista_subbaldwin(0);
         $titulo = 'Selectores';
         $cata = 12;
-        $variable=array(1=>'BACKSET');
+        $variable=array(1=>'BACKSET','HANDING');
 
         $variable  = (object)$variable;
         return view('sub_baldwins.index',compact('subBaldwins','titulo','cata','variable'));

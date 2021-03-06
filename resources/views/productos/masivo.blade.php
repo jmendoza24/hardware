@@ -11,13 +11,13 @@
     </div>
     </div>
     <br>
-    <div class="col-md-12" style="overflow-x: scroll;">
+    <div class="col-md-12" style="overflow-x: scroll;" id="tabla_catalogos">
      @include('productos.table_masivo')
     </div>
 @endsection
 @section('script')
 <script type="text/javascript">
-  $("#productos")..dataTable( {
+  $("#productos").dataTable( {
     "paging": false
     } );
 </script>

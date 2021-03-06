@@ -12,12 +12,15 @@
 		@endforeach
 	</select>
 	</div>
-
 	
 	<!-- Catalogo Field -->
 	<div class="form-group col-sm-12">
 	    {!! Form::label('catalogo', 'Catalogo:') !!}
 	    <input type="text" required="" name="catalogo" class="form-control" id="catalogo" value="{{$catalogos->catalogo}}">
+	</div>
+	<div class="form-group col-sm-12">
+	    {!! Form::label('categoria', 'Abrev:') !!}
+	    <input type="text" required="" name="abrev" class="form-control" id="abrev" value="{{$catalogos->abrev}}">
 	</div>
 	<hr>
 	<div class="form-group col-sm-12">

@@ -1,21 +1,53 @@
-
-
+<input type="hidden" id="id_info" value="<?php echo e($producto->info); ?>">
 <table class="table small table-striped table-bordered">
 	<tr>
-		<td colspan="4" style="text-align: right;"></td>
-		<td class="gris_tabla"> IdFab: </td>
+		<td colspan="<?php if($producto->info == 7 || $producto->info == 4): ?> 2 <?php else: ?> 4 <?php endif; ?>" style="text-align: right;"></td>
+		<?php if($producto->info == 7 || $producto->info == 4): ?>
+		<td class="gris_tabla">
+			<?php 
+				$det_grupo = $detalle->det_grupo !='' ? explode(',',($detalle->det_grupo)) : array();
+				$f_grupo = $detalle->f_grupo !='' ? explode(',',($detalle->f_grupo)) : array();
+			?>
+			<select class="form-control form-control-sm" title="DT" id="dt_g" onchange="guarda_detalle(<?php echo e($info_adic->id_detalle); ?>)">
+				<option value="">DET</option>
+				<?php $__currentLoopData = $det_grupo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+					<option value="<?php echo e($d); ?>" <?php echo e($detalle->det == $d? 'selected': ''); ?>><?php echo e($d); ?></option>
+				<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+			</select>
+		</td>
+		<td style="width: 200px;" class="gris_tabla">
+			<div class="row">
+				<?php if($producto->info != 4): ?>
+				<div class="col-md-5">
+					<select class="form-control form-control-sm" style="width: 80px;" title="F" id="f_g" onchange="guarda_detalle(<?php echo e($info_adic->id_detalle); ?>)">
+					<option value="">Mortise</option>
+					<?php $__currentLoopData = $f_grupo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $f): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+						<option value="<?php echo e($f); ?>" <?php echo e($detalle->f == $f? 'selected': ''); ?>><?php echo e($f); ?></option>
+					<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+					</select>
+				</div>
+				<?php endif; ?>
+				<?php if($producto->latch_ext == 1): ?>
+					<div class="col-md-5"><label><input type="checkbox" id="latch_ext" <?php echo e($detalle->latch==1 ? 'checked' :''); ?> style="margin-top: 5px;" onclick="guarda_detalle(<?php echo e($info_adic->id_detalle); ?>)" > Latch </label></div>
+				<?php endif; ?>
+			</div>
+		</td>
+		<?php endif; ?>
+		<td class="gris_tabla"> SKU: </td>
 		<td>
-			<?php if($producto->info == 5): ?>
 			<?php echo e($detalle->id_fab); ?>
 
-			<?php else: ?>
-			<?php echo e(str_replace('xxx', $info_adic->finish,  $producto->codigo_sistema)); ?>
-
-			<?php endif; ?>
 		</td>
+		<?php if($producto->info == 5): ?>
+		<?php ($cant = sizeof($dependencias) > 0 ? $dependencias[0]->ctd : 1); ?>
+		<td style="text-align:right; width: 9%;">$<?php echo e(number_format($detalle->lp,2)); ?></td>
+		<td style="text-align:right; width: 9%;">$<?php echo e(number_format($detalle->phc/$cant,2)); ?></td>
+		<td style="text-align:right; width: 9%;">$<?php echo e(number_format($detalle->pvc/$cant,2)); ?></td>
+		<?php else: ?> 
 		<td style="text-align:right; width: 9%;">$<?php echo e(number_format($detalle->lp,2)); ?></td>
 		<td style="text-align:right; width: 9%;">$<?php echo e(number_format($detalle->phc,2)); ?></td>
 		<td style="text-align:right; width: 9%;">$<?php echo e(number_format($detalle->pvc,2)); ?></td>
+		<?php endif; ?>
 	</tr>
 	<tr>
 		<td class="gris_tabla">Fabricante:</td>
@@ -31,26 +63,13 @@
 		<td><?php echo e($informacion->categoria); ?></td>
 		<td class="gris_tabla">Finish:</td>
 		<td>
-			<?php $finish_1 = $info_adic->finish_1 !='' ? explode(',',($info_adic->finish_1)) : array();
-				  $finish_2 = $info_adic->finish_2 !='' ? explode(',',($info_adic->finish_2)) : array();
-				  $finish_3 = $info_adic->finish_3 !='' ? explode(',',($info_adic->finish_3)) : array();
-				  $finish_4 = $info_adic->finish_4 !='' ? explode(',',($info_adic->finish_4)) : array();
-			 ?>
-			<select class="form-control form-control-sm" id="det_finish" style="width: 100px;" onchange="guarda_detalle(<?php echo e($info_adic->id_detalle); ?>)">
-				<option value="">Seleccione...</option>
-					<?php $__currentLoopData = $finish_1; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $f1): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-						<option value="<?php echo e($f1); ?>" <?php echo e($f1==$info_adic->finish?'selected':''); ?>><?php echo e($f1); ?></option>
-					<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-						<?php $__currentLoopData = $finish_2; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $f2): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-						<option value="<?php echo e($f2); ?>" <?php echo e($f2==$info_adic->finish?'selected':''); ?>><?php echo e($f2); ?></option>
-						<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-						<?php $__currentLoopData = $finish_3; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $f3): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-						<option value="<?php echo e($f3); ?>" <?php echo e($f3==$info_adic->finish?'selected':''); ?>><?php echo e($f3); ?></option>
-						<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-					<?php $__currentLoopData = $finish_4; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $f4): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-					<option value="<?php echo e($f4); ?>" <?php echo e($f4==$info_adic->finish?'selected':''); ?>><?php echo e($f4); ?></option>
-					<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-			</select>
+			 <?php if($producto->info== 1 || $producto->info == 2): ?>
+			 	<label style="font-size: 13px;"> <input type="checkbox" id="finish_all" onchange="actualiza_finish(<?php echo e($detalle->id); ?>,<?php echo e($detalle->id_cotizacion); ?>,'<?php echo e($info_adic->finish); ?>')" > <b><?php echo e($info_adic->finish); ?></b></label>
+			 	<?php else: ?>
+			 	<?php echo e($detalle->finish); ?>
+
+			 <?php endif; ?>
+			 
 		</td>
 		<td class="gris_tabla">Nota: </td>
 		<td><?php echo e($producto->nota); ?></td>
@@ -61,7 +80,7 @@
 		<?php # $sufijo = $info_adic->sufijo !='' ? explode(',',($info_adic->sufijo)) : array();?>
 		<td class="gris_tabla">Sufijo:</td>
 		<td>
-			<?php echo e($info_adic->sufijo); ?>
+			<?php echo e($detalle->sufijo); ?>
 
 		</td>
 		<td class="gris_tabla">Foto:</td>
@@ -70,19 +89,10 @@
 	<tr>
 		<td class="gris_tabla">Diseño:</td>
 		<td><?php echo e($informacion->disenio); ?></td>
-		<td class="gris_tabla">Handing</td>
+		<td class="gris_tabla">Handing:</td>
 		<td>
-			<?php if($producto->info == 5): ?>
-			<select id="handing" class="form-control form-control-sm" style="width: 100px;" onchange="guarda_detalle(<?php echo e($info_adic->id_detalle); ?>)">
-				<option value="">Seleccione...</option>
-				<option value="LH" <?php echo e($detalle->handing=='LH'?'selected':''); ?>>LH</option>
-				<option value="RH" <?php echo e($detalle->handing=='RH'?'selected':''); ?>>RH</option>
-			</select>
-			<?php else: ?>
-			<input type="hidden" id="handing" value="<?php echo e($info_adic->handing); ?>">
-			<?php echo e($info_adic->handing); ?>
+			<?php echo e($detalle->handing); ?>
 
-			<?php endif; ?>
 		</td>
 		<td class="gris_tabla">Descripción:</td>
 		<td><?php echo e($producto->descripcion); ?></td>
@@ -90,14 +100,11 @@
 	<tr>
 		<td class="gris_tabla">Descripción:</td>
 		<td></td>
-		<td class="gris_tabla">Style</td>
+		<td class="gris_tabla">Style:</td>
 		<td>
-			<?php if($producto->info != 5): ?>
+			<?php if($producto->info != 5 && $producto->info != 7): ?>
 			<?php 
-			  $style_1 = $info_adic->style_1 !='' ? explode(',',($info_adic->style_1)) : array();
-			  $style_2 = $info_adic->style_2 !='' ? explode(',',($info_adic->style_2)) : array();
-			  $style_3 = $info_adic->style_3 !='' ? explode(',',($info_adic->style_3)) : array();
-			  
+			
 			  $ext_trim = $info_adic->ext_trim !='' ? explode(',',($info_adic->ext_trim)) : array();
 			  $int_escutch =  $info_adic->int_escutch !='' ? explode(',',($info_adic->int_escutch)) : array();
 			  $knob_lever =  $info_adic->knob_lever !='' ? explode(',',($info_adic->knob_lever)) : array();
@@ -120,19 +127,10 @@
 			  }
 
 			?>
-			<select class="form-control form-control-sm" id="det_style" style="width: 100px;" onchange="guarda_detalle(<?php echo e($info_adic->id_detalle); ?>)">
-				<option value="">Seleccione..</option>
-				<?php $__currentLoopData = $style_1; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s1): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-					<option value="<?php echo e($s1); ?>" <?php echo e($s1==$info_adic->style?'selected':''); ?>><?php echo e($s1); ?></option>
-				<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-				<?php $__currentLoopData = $style_2; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s2): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-				<option value="<?php echo e($s2); ?>" <?php echo e($s2==$info_adic->style?'selected':''); ?>><?php echo e($s2); ?></option>
-				<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-				<?php $__currentLoopData = $style_3; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s3): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-				<option value="<?php echo e($s3); ?>" <?php echo e($s3==$info_adic->style?'selected':''); ?>><?php echo e($s3); ?></option>
-				<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-			</select>
+			
 			<?php endif; ?>
+			<?php echo e($detalle->style); ?>
+
 		</td>
 		<td colspan="2" style="background: #5C8293; border-left: 1px solid #5C8293; color: white; text-align: right; ">
 			<span class="pull-left"><?php 

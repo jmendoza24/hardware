@@ -11,7 +11,7 @@
     @foreach($formulas as $formulas)
         <tr>
             <td>{{ $formulas->id}}</td>
-            <td>{!! $formulas->nom_catalogo !!}</td>
+            <td>[{{ $formulas->id}}] {!! $formulas->nom_catalogo !!}</td>
             <td>{!! $formulas->formula !!}</td>
             <td></td>
         </tr>

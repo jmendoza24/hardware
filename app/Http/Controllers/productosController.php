@@ -45,18 +45,25 @@ class productosController extends AppBaseController
      *
      * @return Response
      */
-    public function index(Request $request)
-    {
-        $productos = db::select('SELECT p.id,p.item, p.descripcion, f.abrev, p.sufijo, p.codigo_sistema, f.fabricante, c.catalogo, fa.familia, ca.categoria, s.subcategoria, p.pagina
-                                FROM productos p
-                                LEFT JOIN tbl_fabricantes f ON f.id_fabricante = p.fabricante
-                                LEFT JOIN catalogos c ON c.id = p.catalogo
-                                LEFT JOIN familias fa ON fa.id = p.familia
-                                LEFT JOIN categorias ca ON ca.id = p.categoria
-                                LEFT JOIN subcategorias s ON s.id = p.subcategoria');
+    public function index(Request $request){
+        $producto = new productos;
+        $producto->fabricante = 0;
+        $producto->min =  0;
+        $producto->max =  500;
+        $init = 1;
+        $fab = 0;
 
-        return view('productos.index')
-            ->with('productos', $productos);
+        $productos = array();
+
+        $fabricantes = db::select('select distinct f.*
+                                   FROM productos p
+                                   inner JOIN tbl_fabricantes f ON f.id_fabricante = p.fabricante
+                                   order by fabricante');
+
+        $conteo = 0;
+
+
+        return view('productos.index',compact('productos','fabricantes','conteo','init','fab'));
     }
 
     /**
@@ -138,7 +145,8 @@ class productosController extends AppBaseController
                             'dep_extension_accion'=>'',
                             'dependencias'=>'',
                             'fastener'=>'',
-                            'wheel'=>''
+                            'wheel'=>'',
+                            'latch_ext'=>''
                         );
 
         $productos = (object)$productos;
@@ -399,6 +407,49 @@ class productosController extends AppBaseController
     function enviar_produccion(){
         db::update('call enviar_produccion()');
         return 1;
+
+    }
+
+    function buscar_producto(Request $request){
+        $fab = $request->fab;
+
+        if($request->item != ''){
+            $productos =  db::select("SELECT p.id,p.item, p.descripcion, f.abrev, p.sufijo, p.codigo_sistema, f.fabricante, c.catalogo, fa.familia, ca.categoria, s.subcategoria, p.pagina
+                                        FROM productos p
+                                        LEFT JOIN tbl_fabricantes f ON f.id_fabricante = p.fabricante
+                                        LEFT JOIN catalogos c ON c.id = p.catalogo
+                                        LEFT JOIN familias fa ON fa.id = p.familia
+                                        LEFT JOIN categorias ca ON ca.id = p.categoria
+                                        LEFT JOIN subcategorias s ON s.id = p.subcategoria
+                                        where item like '%".$request->item."%'");
+            $conteo  = 0;
+            $init = 1;
+
+        }else{
+            $producto = new productos;
+            $producto->fabricante = $request->fabricante;
+            if($request->num == 0){
+                $producto->min =   0;
+                $producto->max =  500;
+                $init = 1;
+            }else{
+                $producto->min =   ($request->num * 500) - 500 ;
+                $producto->max =  500 * $request->num;    
+                $init = $request->num;
+            }
+            
+            $productos = $producto->lista_productos($producto);
+
+            $fabricantes = db::select('select distinct f.*
+                                       FROM productos p
+                                       inner JOIN tbl_fabricantes f ON f.id_fabricante = p.fabricante
+                                       order by fabricante');
+
+            $conteo = ceil(productos::where('fabricante',$request->fabricante)->count() / 500);
+        }
+
+        $options =  view('productos.table',compact('productos','conteo','init','fab'))->render();
+        return json_encode($options);
 
     }
 }

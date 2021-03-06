@@ -1,4 +1,4 @@
-<table class="table table-striped  table-bordered setting-defaults" id="productos-table">
+<table class="table table-striped  table-bordered setting-defaults" id="productos">
         <thead>
             <tr class="gris_tabla">
                 <th>Fabricante</th>

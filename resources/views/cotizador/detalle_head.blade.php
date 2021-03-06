@@ -1,19 +1,52 @@
-
-
+<input type="hidden" id="id_info" value="{{$producto->info}}">
 <table class="table small table-striped table-bordered">
 	<tr>
-		<td colspan="4" style="text-align: right;"></td>
-		<td class="gris_tabla"> IdFab: </td>
-		<td>
-			@if($producto->info == 5)
-			{{ $detalle->id_fab}}
-			@else
-			{{ str_replace('xxx', $info_adic->finish,  $producto->codigo_sistema)}}
-			@endif
+		<td colspan="@if($producto->info == 7 || $producto->info == 4) 2 @else 4 @endif" style="text-align: right;"></td>
+		@if($producto->info == 7 || $producto->info == 4)
+		<td class="gris_tabla">
+			<?php 
+				$det_grupo = $detalle->det_grupo !='' ? explode(',',($detalle->det_grupo)) : array();
+				$f_grupo = $detalle->f_grupo !='' ? explode(',',($detalle->f_grupo)) : array();
+			?>
+			<select class="form-control form-control-sm" title="DT" id="dt_g" onchange="guarda_detalle({{$info_adic->id_detalle}})">
+				<option value="">DET</option>
+				@foreach($det_grupo as $d)
+					<option value="{{$d}}" {{ $detalle->det == $d? 'selected': ''}}>{{$d}}</option>
+				@endforeach
+			</select>
 		</td>
+		<td style="width: 200px;" class="gris_tabla">
+			<div class="row">
+				@if($producto->info != 4)
+				<div class="col-md-5">
+					<select class="form-control form-control-sm" style="width: 80px;" title="F" id="f_g" onchange="guarda_detalle({{$info_adic->id_detalle}})">
+					<option value="">Mortise</option>
+					@foreach($f_grupo as $f)
+						<option value="{{$f}}" {{ $detalle->f == $f? 'selected': ''}}>{{$f}}</option>
+					@endforeach
+					</select>
+				</div>
+				@endif
+				@if($producto->latch_ext == 1)
+					<div class="col-md-5"><label><input type="checkbox" id="latch_ext" {{ $detalle->latch==1 ? 'checked' :''}} style="margin-top: 5px;" onclick="guarda_detalle({{$info_adic->id_detalle}})" > Latch </label></div>
+				@endif
+			</div>
+		</td>
+		@endif
+		<td class="gris_tabla"> SKU: </td>
+		<td>
+			{{ $detalle->id_fab}}
+		</td>
+		@if($producto->info == 5)
+		@php($cant = sizeof($dependencias) > 0 ? $dependencias[0]->ctd : 1)
+		<td style="text-align:right; width: 9%;">${{ number_format($detalle->lp,2)}}</td>
+		<td style="text-align:right; width: 9%;">${{ number_format($detalle->phc/$cant,2)}}</td>
+		<td style="text-align:right; width: 9%;">${{ number_format($detalle->pvc/$cant,2)}}</td>
+		@else 
 		<td style="text-align:right; width: 9%;">${{ number_format($detalle->lp,2)}}</td>
 		<td style="text-align:right; width: 9%;">${{ number_format($detalle->phc,2)}}</td>
 		<td style="text-align:right; width: 9%;">${{ number_format($detalle->pvc,2)}}</td>
+		@endif
 	</tr>
 	<tr>
 		<td class="gris_tabla">Fabricante:</td>
@@ -29,26 +62,12 @@
 		<td>{{ $informacion->categoria}}</td>
 		<td class="gris_tabla">Finish:</td>
 		<td>
-			<?php $finish_1 = $info_adic->finish_1 !='' ? explode(',',($info_adic->finish_1)) : array();
-				  $finish_2 = $info_adic->finish_2 !='' ? explode(',',($info_adic->finish_2)) : array();
-				  $finish_3 = $info_adic->finish_3 !='' ? explode(',',($info_adic->finish_3)) : array();
-				  $finish_4 = $info_adic->finish_4 !='' ? explode(',',($info_adic->finish_4)) : array();
-			 ?>
-			<select class="form-control form-control-sm" id="det_finish" style="width: 100px;" onchange="guarda_detalle({{$info_adic->id_detalle}})">
-				<option value="">Seleccione...</option>
-					@foreach($finish_1 as $f1)
-						<option value="{{$f1}}" {{$f1==$info_adic->finish?'selected':''}}>{{$f1}}</option>
-					@endforeach
-						@foreach($finish_2 as $f2)
-						<option value="{{$f2}}" {{$f2==$info_adic->finish?'selected':''}}>{{$f2}}</option>
-						@endforeach
-						@foreach($finish_3 as $f3)
-						<option value="{{$f3}}" {{$f3==$info_adic->finish?'selected':''}}>{{$f3}}</option>
-						@endforeach
-					@foreach($finish_4 as $f4)
-					<option value="{{$f4}}" {{$f4==$info_adic->finish?'selected':''}}>{{$f4}}</option>
-					@endforeach
-			</select>
+			 @if($producto->info== 1 || $producto->info == 2)
+			 	<label style="font-size: 13px;"> <input type="checkbox" id="finish_all" onchange="actualiza_finish({{$detalle->id}},{{$detalle->id_cotizacion}},'{{$info_adic->finish}}')" > <b>{{$info_adic->finish}}</b></label>
+			 	@else
+			 	{{ $detalle->finish}}
+			 @endif
+			 
 		</td>
 		<td class="gris_tabla">Nota: </td>
 		<td>{{$producto->nota}}</td>
@@ -59,7 +78,7 @@
 		<?php # $sufijo = $info_adic->sufijo !='' ? explode(',',($info_adic->sufijo)) : array();?>
 		<td class="gris_tabla">Sufijo:</td>
 		<td>
-			{{$info_adic->sufijo}}
+			{{$detalle->sufijo}}
 		</td>
 		<td class="gris_tabla">Foto:</td>
 		<td>@if($fotos->foto != '')<a href="/storage/{{$fotos->foto }}" target="_blank">Ver Foto</a>@else Sin fotos @endif</td>
@@ -67,18 +86,9 @@
 	<tr>
 		<td class="gris_tabla">Diseño:</td>
 		<td>{{ $informacion->disenio}}</td>
-		<td class="gris_tabla">Handing</td>
+		<td class="gris_tabla">Handing:</td>
 		<td>
-			@if($producto->info == 5)
-			<select id="handing" class="form-control form-control-sm" style="width: 100px;" onchange="guarda_detalle({{$info_adic->id_detalle}})">
-				<option value="">Seleccione...</option>
-				<option value="LH" {{$detalle->handing=='LH'?'selected':''}}>LH</option>
-				<option value="RH" {{$detalle->handing=='RH'?'selected':''}}>RH</option>
-			</select>
-			@else
-			<input type="hidden" id="handing" value="{{ $info_adic->handing}}">
-			{{ $info_adic->handing}}
-			@endif
+			{{ $detalle->handing}}
 		</td>
 		<td class="gris_tabla">Descripción:</td>
 		<td>{{$producto->descripcion}}</td>
@@ -86,14 +96,11 @@
 	<tr>
 		<td class="gris_tabla">Descripción:</td>
 		<td></td>
-		<td class="gris_tabla">Style</td>
+		<td class="gris_tabla">Style:</td>
 		<td>
-			@if($producto->info != 5)
+			@if($producto->info != 5 && $producto->info != 7)
 			<?php 
-			  $style_1 = $info_adic->style_1 !='' ? explode(',',($info_adic->style_1)) : array();
-			  $style_2 = $info_adic->style_2 !='' ? explode(',',($info_adic->style_2)) : array();
-			  $style_3 = $info_adic->style_3 !='' ? explode(',',($info_adic->style_3)) : array();
-			  
+			
 			  $ext_trim = $info_adic->ext_trim !='' ? explode(',',($info_adic->ext_trim)) : array();
 			  $int_escutch =  $info_adic->int_escutch !='' ? explode(',',($info_adic->int_escutch)) : array();
 			  $knob_lever =  $info_adic->knob_lever !='' ? explode(',',($info_adic->knob_lever)) : array();
@@ -116,19 +123,9 @@
 			  }
 
 			?>
-			<select class="form-control form-control-sm" id="det_style" style="width: 100px;" onchange="guarda_detalle({{$info_adic->id_detalle}})">
-				<option value="">Seleccione..</option>
-				@foreach($style_1 as $s1)
-					<option value="{{$s1}}" {{$s1==$info_adic->style?'selected':''}}>{{$s1}}</option>
-				@endforeach
-				@foreach($style_2 as $s2)
-				<option value="{{$s2}}" {{$s2==$info_adic->style?'selected':''}}>{{$s2}}</option>
-				@endforeach
-				@foreach($style_3 as $s3)
-				<option value="{{$s3}}" {{$s3==$info_adic->style?'selected':''}}>{{$s3}}</option>
-				@endforeach
-			</select>
+			
 			@endif
+			{{ $detalle->style}}
 		</td>
 		<td colspan="2" style="background: #5C8293; border-left: 1px solid #5C8293; color: white; text-align: right; ">
 			<span class="pull-left"><?php 

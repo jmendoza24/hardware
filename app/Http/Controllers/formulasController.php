@@ -31,8 +31,8 @@ class formulasController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $formulas = db::table('catalogos as c')
-                        ->join('formulas as f','c.id','f.catalogo')
+        $formulas = db::table('formulas as f')
+                        ->leftjoin('catalogos as c','c.id','f.catalogo')
                         ->selectraw('f.*,c.catalogo as nom_catalogo')
                         ->get();
                         

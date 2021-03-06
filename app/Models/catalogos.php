@@ -70,7 +70,7 @@ class catalogos extends Model
     function lista_catalogo(){
         return db::table('catalogos as c')
                 ->join('tbl_fabricantes as f','f.id_fabricante','c.fabricante')
-                ->selectraw('c.id, c.catalogo, f.fabricante, id_fabricante')
+                ->selectraw('c.id, c.catalogo, f.fabricante, id_fabricante, c.abrev')
                 ->get();
     }
 

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use DB;
 /**
  * Class productos
  * @package App\Models
@@ -154,7 +154,8 @@ class productos extends Model
         'dep_spindle',
         'dep_spindle_accion',
         'dep_extension',
-        'dep_extension_accion'
+        'dep_extension_accion',
+        'latch_ext'
     ];
 
     /**
@@ -246,7 +247,8 @@ class productos extends Model
         'dep_spindle' => 'string',
         'dep_spindle_accion' => 'integer',
         'dep_extension' => 'string',
-        'dep_extension_accion' => 'integer'
+        'dep_extension_accion' => 'integer',
+        'latch_ext'=>'integer'
     ];
 
     /**
@@ -257,5 +259,17 @@ class productos extends Model
     public static $rules = [
     ];
 
+    function lista_productos($filtros){
+        
+        return db::select("SELECT p.id,p.item, p.descripcion, f.abrev, p.sufijo, p.codigo_sistema, f.fabricante, c.catalogo, fa.familia, ca.categoria, s.subcategoria, p.pagina
+                                FROM productos p
+                                LEFT JOIN tbl_fabricantes f ON f.id_fabricante = p.fabricante
+                                LEFT JOIN catalogos c ON c.id = p.catalogo
+                                LEFT JOIN familias fa ON fa.id = p.familia
+                                LEFT JOIN categorias ca ON ca.id = p.categoria
+                                LEFT JOIN subcategorias s ON s.id = p.subcategoria
+                                where p.fabricante = ".$filtros->fabricante."
+                                limit ".$filtros->min.", ".$filtros->max);
+    }
     
 }

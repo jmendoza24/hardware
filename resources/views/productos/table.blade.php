@@ -1,4 +1,10 @@
-<table class="table table-striped responsive  table-bordered scroll-vertical" id="productos-table">
+<hr>
+<div class="col-md-12 text-right">
+    @for($i = 1; $i<= $conteo; $i++)
+        <span class="btn btn-{{ $i!= $init ? 'outline-' : ''}}primary btn-sm" onclick="buscar_producto({{$i}})">{{$i}}</span>
+    @endfor
+</div>
+<table class="table table-striped table-bordered responsive scroll-vertical" id="productos-table">
         <thead>
             <tr class="gris_tabla">
                 <th></th>

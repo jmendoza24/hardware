@@ -283,6 +283,14 @@
             @endforeach
         </select>
     </div>
+    <div class="form-group col-sm-6">
+        {!! Form::label('finish', 'LATCH:') !!}
+        <select class="form-control" name="latch_ext">
+            <option value="">Seleccione...</option>
+            <option value="1" {{ $productos->latch_ext==1 ? 'selected':''}}>Si</option>
+            <option value="0" {{ $productos->latch_ext==0 ? 'selected':''}}>No</option>
+        </select>
+    </div>
 </div>
 
 <div class="row" id="seccion_bwh" style="{{ $productos->fabricante!=77 ? 'display:none':''}}">
@@ -469,8 +477,11 @@
         {!! Form::label('handing', 'Handing:') !!}
         <select class="form-control" name="handing" id="handing">
             <option value="">Seleccione una opcion</option>
-            <option value="LH" {{$productos->handing=='LH'?'selected':''}}>LH</option>
-            <option value="RH" {{$productos->handing=='RH'?'selected':''}}>RH</option>
+            @foreach($sub_baldwins as $s)
+                @if($s->variable==2 and $s->fabricante==0)
+                <option value="{{$s->id}}" {{$productos->handing==$s->id?'selected':''}}>{{$s->subcatalogo}}</option>
+                @endif
+            @endforeach
         </select>
     </div>
 

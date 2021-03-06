@@ -18,7 +18,8 @@ class categoriaRepository extends BaseRepository
      */
     protected $fieldSearchable = [
         'fabricante',
-        'categoria'
+        'categoria',
+        'abrev'
     ];
 
     /**

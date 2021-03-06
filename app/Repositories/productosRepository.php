@@ -98,7 +98,8 @@ class productosRepository extends BaseRepository
         'dep_spindle',
         'dep_spindle_accion',
         'dep_extension',
-        'dep_extension_accion'
+        'dep_extension_accion',
+        'latch_ext'
     ];
 
     /**
