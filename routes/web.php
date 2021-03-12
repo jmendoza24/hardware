@@ -129,7 +129,10 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('ver_imagen', 'cotizadorController@ver_imagen');
 	Route::get('actualiza_finish', 'cotizadorController@actualiza_finish');
 	Route::get('buscar_producto', 'productosController@buscar_producto');
-
+	Route::get('configura_abatimiento', 'cotizadorController@configura_abatimiento');
+	Route::get('guarda_abatimiento', 'cotizadorController@guarda_abatimiento');
+	Route::get('enviar_abatimiento', 'cotizadorController@enviar_abatimiento');
+	
 	
 });
 

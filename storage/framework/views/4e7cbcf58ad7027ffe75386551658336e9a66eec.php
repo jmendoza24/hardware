@@ -422,18 +422,6 @@
         </select>
     </div>
     <div class="form-group col-sm-6">
-        <?php echo Form::label('style_1', 'FINISH INT:'); ?>
-
-        <select class="form-control" name="finish_int">
-            <option value="">Seleccione...</option>
-            <?php $__currentLoopData = $sub_baldwins; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <?php if($s->variable==49 and $s->fabricante==77): ?>
-                <option value="<?php echo e($s->id); ?>" <?php echo e($productos->finish_int==$s->id?'selected':''); ?>><?php echo e($s->subcatalogo); ?></option>
-                <?php endif; ?>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        </select>
-    </div>
-    <div class="form-group col-sm-6">
         <?php echo Form::label('style_1', 'DT:'); ?>
 
         <select class="form-control" name="dt">
@@ -443,9 +431,6 @@
             <option value="THN">THN</option>
         </select>
     </div>
-</div>
-<h4 class="form-section"></h4>
-<div class="row">
     <!-- Finish Det 1 Field -->
     <div class="form-group col-sm-6">
         <?php echo Form::label('finish_det_1', 'DC1 BWH:'); ?>
@@ -512,6 +497,19 @@
             <option value="0" <?php echo e($productos->dependencias==0?'selected':''); ?>>No</option>
         </select>
     </div>
+    <div class="form-group col-sm-6">
+        <?php echo Form::label('style_1', 'FINISH INT:'); ?>
+
+        <select class="form-control" name="finish_int">
+            <option value="">Seleccione...</option>
+            <?php $__currentLoopData = $sub_baldwins; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if($s->variable==49 and $s->fabricante==77): ?>
+                <option value="<?php echo e($s->id); ?>" <?php echo e($productos->finish_int==$s->id?'selected':''); ?>><?php echo e($s->subcatalogo); ?></option>
+                <?php endif; ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </select>
+    </div>
+
 </div>
 <h4 class="form-section"></h4>
 <div class="row">

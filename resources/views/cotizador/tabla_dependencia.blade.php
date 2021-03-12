@@ -1,5 +1,5 @@
 <div class="col-md-12">
-	@if($producto->info == 1 or $producto->info ==2 )
+	@if($producto->info == 1 or $producto->info ==2 or $producto->info == 8)
 	<table class="table table-striped padding-table table-bordered">
 		<tr>
 			<td colspan="7"> </td>
@@ -40,7 +40,7 @@
 				<?php
 				 	$items = $d->elemento !='' ? explode(',',($d->elemento)) : array();
 				?> 
-				@if($d->id_catalogo == 12 || $d->id_catalogo == 18)
+				@if($d->id_catalogo == 12 || $d->id_catalogo == 18 || $d->id_catalogo == 30 || $d->id_catalogo == 31)
 				<input type="text" id="item_{{$d->id_catalogo}}" style="width: 100px;" class="form-control form-control-sm" value="{{ $d->item_seleccionado}}" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}})">
 				@else
 					<select class="form-control form-control-sm" id="item_{{$d->id_catalogo}}" style="width: 100px;" onchange="muestra_sufijo_ext({{$d->id_catalogo}}); guarda_datos({{$d->id}},{{$d->id_catalogo}});">
@@ -97,7 +97,7 @@
 			<td>{{$d->descripcion}}</td>
 			<td style="text-align: right;">${{ number_format($d->lp,2)}}</td>
 			<td>
-				<input type="text" id="cantidad_{{$d->id_catalogo}}" class="form-control form-control-sm p_unit-mask text-right" style="width:80px" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}})" value="{{$d->ctd}}">
+				<input type="text" id="cantidad_{{$d->id_catalogo}}" class="form-control form-control-sm cantidad-mask text-right" style="width:80px" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}})" value="{{$d->ctd}}">
 			</td>
 			<td style="text-align: right;">
 				<label id="{{$d->id_catalogo}}">{{number_format($d->lp * $d->ctd,2)}}</label>
@@ -140,7 +140,7 @@
 		</tr>
 		@endforeach
 	</table>
-	@elseif($producto->info ==7 || $producto->info ==4)
+	@elseif($producto->info ==7 || $producto->info ==4 || $producto->info ==6 || $producto->info ==3)
 	<table class="table table-striped padding-table table-bordered" style="width: 20%;">
 		@foreach($dependencias as $d) 
 		<tr>

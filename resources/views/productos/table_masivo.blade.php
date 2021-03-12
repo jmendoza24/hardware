@@ -50,6 +50,7 @@
                 <th>Exterior Tim Dep 1</th>
                 <th>Exterior Tim 1 Accion</th>
                 <th>Int Escutcheon Dep 2</th>
+                <th>Info</th>
             </tr>
         </thead>
         <tbody>
@@ -104,6 +105,7 @@
                 <td>{!! $productos->exterior_tim_dep_1 !!}</td>
                 <td>{!! $productos->exterior_tim_1_accion !!}</td>
                 <td>{!! $productos->int_escutcheon_dep_2 !!}</td>
+                <td>{{  $productos->info}}</td>
             </tr>
         @endforeach
         </tbody>

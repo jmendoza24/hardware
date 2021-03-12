@@ -77,7 +77,7 @@ textarea{resize: none;
          color: white;
 
     }
-    .btn_azul{
+    .btn_azul, .badge-primary{
          background-color: #5C8293  !important;
          color: white;
     }
@@ -155,4 +155,9 @@ textarea{resize: none;
 
 .main-menu.menu-dark .navigation > li.open > a{
   color: #5C8293  !important
+}
+
+select2-container--classic .select2-results__options .select2-results__option[aria-selected=true], .select2-container--default .select2-results__options .select2-results__option[aria-selected=true] {
+    background-color: #D2D2D2 !important;
+    color: #FFFFFF !important;
 }

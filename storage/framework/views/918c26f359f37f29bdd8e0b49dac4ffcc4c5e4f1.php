@@ -29,7 +29,7 @@
         <li class=" nav-item <?php echo e(Request::is('productos*') ? 'active' : ''); ?>"><a href="<?php echo route('productos.index'); ?>"><i class="ft-align-justify"></i><span class="menu-title" data-i18n="">Productos</span></a></li>        
         <li class=" nav-item"><a href="/"><i class="ft-server"></i><span class="menu-title" data-i18n="">Cotizaciones</span></a>
           <ul class="menu-content">
-            <li class="<?php echo e(Request::is('cotizador*') ? 'active' : ''); ?>"><a href="<?php echo route('cotizador.index'); ?>"><span class="menu-title" data-i18n="">Cotizaciones</span></a></li>
+            <li class="<?php echo e(Request::is('cotizador*') ? 'active' : ''); ?>"><a href="<?php echo route('cotizador.index'); ?>"><span class="menu-title" data-i18n="">Cotizador</span></a></li>
             <li class="<?php echo e(Request::is('cotizaciones_lista*') ? 'active' : ''); ?>"><a href="<?php echo route('cotizador.lista'); ?>"><span class="menu-title" data-i18n="">Histórico</span></a></li>
            
           </ul>

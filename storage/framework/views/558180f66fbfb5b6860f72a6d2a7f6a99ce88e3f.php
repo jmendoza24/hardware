@@ -13,7 +13,7 @@
 	<table class="table table-striped" style="font-size: 11px;" id="" border="0">
 		<tr style="border-top: 3px solid white; background:white;">
 			<td colspan="<?php echo e($estatus == 1 ? 13:11); ?>">
-				<span><span class="badge badge-primary" style="text-align: left;">Cotización <?php echo e($cotizacion->id_hijo != '' ? $cotizacion->id_hijo . '.'. $cotizacion->ver : $cotizacion->id); ?></span>
+				<span><span class="badge badge-primary" style="text-align: left; font-size: 14px;"><?php echo e($cotizacion->id_hijo != '' ? $cotizacion->id_hijo . '.'. $cotizacion->ver : $cotizacion->id); ?></span>
 				<select id="sp" class="form-control select2 pull-right"  onchange="cacha()" style="width: 80%" >
 					<option value="0">Buscar productos...</option>
 						<?php $__currentLoopData = $filtros_select; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -22,11 +22,11 @@
 				</select>
 				</span>
 			</td>
-			<td colspan="7" style="background: #67A957;" class="text-center white"><b>Producto USD:</b></td>
-			<td colspan="3" style="background: #67A957; border-left: 3px solid white;" class="text-center white"><b>Modificación USD:</b></td>
-			<td colspan="3" style="background: #67A957; border-left: 3px solid white;" class="text-center white"><b>Instalación MXN:</b></td>
+			<td colspan="7" class="text-center gris_tabla"><b>Producto USD:</b></td>
+			<td colspan="3" style="border-left: 3px solid white;" class="text-center gris_tabla"><b>Modificación USD:</b></td>
+			<td colspan="3" style="border-left: 3px solid white;" class="text-center gris_tabla"><b>Instalación MXN:</b></td>
 		</tr>
-		<tr style=" border:2px solid #67A957;  color: white; background:#67A957; text-align: center; ">
+		<tr style=" border:2px solid #D2D2D2; text-align: center; " class="gris_tabla">
 			<td></td>
 			<!--<td>Item</td>-->
 			<td>Abrev</td>
@@ -69,14 +69,6 @@
 						<span  class="btn btn-sm btn-outline-success"  data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer;" onclick="ver_imagen(<?php echo e($p->id_item); ?>)"><i class="fa fa-camera" aria-hidden="true"></i></span>        
                     </div>
                  </div>
-
-				<!--<span class="btn-group">
-					<span class="btn btn-sm btn-outline-danger" style="cursor: pointer;" onclick="elimina_producto(<?php echo e($p->id); ?>)"><i class="fa fa-trash"></i></span> &nbsp;
-					<span class="btn btn-sm btn-outline-primary" data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer; font-size: 12px;" onclick="agregar_dependencia(<?php echo e($p->idproducto); ?>,<?php echo e($p->id); ?>)"><i class="fa fa-info"></i> <b><?php echo e($p->info); ?></b></span>&nbsp;
-					<span class="btn btn-sm btn-outline-success" onclick="agrega_producto(<?php echo e($p->idproducto); ?>)"><i class="fa fa-plus"></i></span>&nbsp;
-
-					<span  class="btn btn-sm btn-outline-success"  data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer;" onclick="ver_imagen(<?php echo e($p->id_item); ?>)"><i class="fa fa-camera" aria-hidden="true"></i></span>
-				</span>--->
 			</td>
 			<!--<td style="text-align: left; font-weight: bold;">
 				<?php echo e($p->item_nom); ?>
@@ -121,7 +113,7 @@
 								<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 							<?php $__currentLoopData = $finish_4; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $f4): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 							<option value="<?php echo e($f4); ?>" <?php echo e($f4==$p->finish?'selected':''); ?>><?php echo e($f4); ?></option>
-							<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+							<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> 
 					</select>
 			</td>
 			<td><?php echo e($p->sufijo); ?></td>
@@ -150,6 +142,7 @@
 			</td>
 			<td>
 				<?php ($selectores_hand = explode(',',$p->list_handing)); ?>
+				<?php if($p->info != 6): ?>
 				<select id="handing_<?php echo e($p->id); ?>" class="form-control form-control-sm" style="width: 50px;" onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)">
 					<option value="">...</option>
 					<?php if(sizeof($selectores_hand)>0): ?>
@@ -158,9 +151,19 @@
 						<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 					<?php endif; ?>
 				</select>
+				<?php endif; ?>
 			</td>
 			<td>
+				<?php if($p->info != 3): ?>
 				<input type="text" name="doort_<?php echo e($p->id); ?>" id="doort_<?php echo e($p->id); ?>"  style="width: 60px;" value="<?php echo e($p->door_t); ?>" class="form-control form-control-sm" min="1" onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)">
+				<?php else: ?>
+				<select name="doort_<?php echo e($p->id); ?>" id="doort_<?php echo e($p->id); ?>"  style="width: 60px;" value="<?php echo e($p->door_t); ?>" class="form-control form-control-sm"  onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)">
+					<option value="">...</option>	
+					<option value="STD">STD</option>
+					<option value="THN">THN</option>
+					<option value="THK">THK</option>
+				</select>
+				<?php endif; ?>
 			</td>
 			<td class="text-right">$<?php echo e(number_format($p->lp + $p->sum_lp,2)); ?></td>
 			<td class="text-right">$<?php echo e(number_format($p->phc + $p->sum_phc,2)); ?></td>
@@ -193,14 +196,14 @@
 		<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 		<tr>
 			<td colspan="<?php echo e($estatus == 1 ? 16:14); ?>" class="color" rowspan="6"></td>
-			<td colspan="2" style="background:#67A957; color: white; ">Subtotal:</td>
+			<td colspan="2" class="gris_tabla">Subtotal:</td>
 			<td colspan="2" class="text-right">$<?php echo e(number_format($subtotal_dl,2)); ?></td>
 			<td colspan="3" class="text-right" style="border-left: 3px solid white;">$<?php echo e(number_format($subtotal_dl_1,2)); ?></td>
 			<td></td>
 			<td colspan="3" class="text-right">$<?php echo e(number_format($subtotal_ps,2)); ?></td>
 		</tr>
 		<tr>
-			<td style="background:#67A957; color: white;" colspan="2">Descuento:</td>
+			<td class="gris_tabla" colspan="2">Descuento:</td>
 			<td class="text-right" ><input type="text" id="descuento_usa" class="form-control form-control-sm desc-mask" style="width: 55px;" value="<?php echo e($cotizacion->descuento_usa); ?>" onchange="guardar_descuentos()"></td>
 			<td class="text-right">
 				<span style="color: red;">-$<?php echo e(number_format(($subtotal_dl * $cotizacion->descuento_usa)/100,2)); ?></span><br>
@@ -226,14 +229,14 @@
 		</tr>
 		<?php ($fletes = $cotizacion->flete); ?>
 		<tr>
-			<td class="text-left white" style="background:#67A957;" colspan="2">Flete:</td>
+			<td class="text-left gris_tabla"  colspan="2">Flete:</td>
 			<td style=" border-left: 3px solid white; text-align: right;"  colspan="2">
 				<input type="text" id="flete" class="form-control form-control-sm p_unit-mask text-right" style="width: 100px; float: right;" value="<?php echo e(number_format($cotizacion->flete,2)); ?>" onchange="guardar_descuentos()">
 			</td>
 			<td style=" border-left: 3px solid white;" class="text-right  white" colspan="6"></td>
 		</tr>
 		<tr>
-			<td style="background:#67A957; color: white; " colspan="2">IVA:</td>
+			<td class="gris_tabla" colspan="2">IVA:</td>
 			<td >
 				<select class="form-control form-control-sm" id="iva_usa" style="width: 55px;" onchange="guardar_descuentos()">
 					<option value="0" <?php echo e($cotizacion->iva_usa==0?'selected':''); ?>>0</option>
@@ -267,13 +270,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="text-left white" style="background:#67A957;" colspan="2">Total:</td>
-			<td style="background:#67A957;" class="white text-right" colspan="2" > $<?php echo e(number_format($desc_usa + $iva_desc,2)); ?></td>
-			<td style="background:#67A957; border-left: 3px solid white;"  class="white text-right" colspan="3"> $<?php echo e(number_format($desc_mod + (($desc_mod * $cotizacion->iva_mod)/100),2)); ?></td>
-			<td  style="background:#67A957;border-left: 3px solid white;" class="text-right  white" colspan="3"> $<?php echo e(number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)); ?></td>
+			<td class="text-left gris_tabla"  colspan="2">Total:</td>
+			<td class="white text-right" colspan="2" > $<?php echo e(number_format($desc_usa + $iva_desc,2)); ?></td>
+			<td style="border-left: 3px solid white;"  class="white text-right" colspan="3"> $<?php echo e(number_format($desc_mod + (($desc_mod * $cotizacion->iva_mod)/100),2)); ?></td>
+			<td  style="border-left: 3px solid white;" class="text-right  white" colspan="3"> $<?php echo e(number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)); ?></td>
 		</tr>
-		<tr style="background:#5C8293; color: white;" class="text-right">
-			<td colspan="4"  >Gran Total:</td>
+		<tr  style="background:#5C8293; color: white;" class="text-right">
+			<td colspan="4">Gran Total:</td>
 			<td colspan="3">USD: $<?php echo e(number_format($desc_usa + $iva_desc + $desc_mod + (($desc_mod * $cotizacion->iva_mod)/100) + $cotizacion->flete ,2)); ?></td>
 			<td colspan="3" style="border-left: 3px solid white;" >+MXN: $<?php echo e(number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)); ?></td>
 		</tr>

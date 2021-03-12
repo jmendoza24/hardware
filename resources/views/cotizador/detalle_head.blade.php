@@ -1,8 +1,8 @@
 <input type="hidden" id="id_info" value="{{$producto->info}}">
 <table class="table small table-striped table-bordered">
 	<tr>
-		<td colspan="@if($producto->info == 7 || $producto->info == 4) 2 @else 4 @endif" style="text-align: right;"></td>
-		@if($producto->info == 7 || $producto->info == 4)
+		<td colspan="@if($producto->info == 7 || $producto->info == 4 || $producto->info == 6) 2 @else 4 @endif" style="text-align: left;"><span class="badge badge-primary" style="font-size: 14px;"> {{$producto->info}} </span></td>
+		@if($producto->info == 7 || $producto->info == 4 || $producto->info == 6)
 		<td class="gris_tabla">
 			<?php 
 				$det_grupo = $detalle->det_grupo !='' ? explode(',',($detalle->det_grupo)) : array();
@@ -17,7 +17,7 @@
 		</td>
 		<td style="width: 200px;" class="gris_tabla">
 			<div class="row">
-				@if($producto->info != 4)
+				@if($producto->info != 4 and $producto->info != 6)
 				<div class="col-md-5">
 					<select class="form-control form-control-sm" style="width: 80px;" title="F" id="f_g" onchange="guarda_detalle({{$info_adic->id_detalle}})">
 					<option value="">Mortise</option>
@@ -38,10 +38,11 @@
 			{{ $detalle->id_fab}}
 		</td>
 		@if($producto->info == 5)
-		@php($cant = sizeof($dependencias) > 0 ? $dependencias[0]->ctd : 1)
-		<td style="text-align:right; width: 9%;">${{ number_format($detalle->lp,2)}}</td>
-		<td style="text-align:right; width: 9%;">${{ number_format($detalle->phc/$cant,2)}}</td>
-		<td style="text-align:right; width: 9%;">${{ number_format($detalle->pvc/$cant,2)}}</td>
+
+		@php($cant = sizeof($dependencias) > 0 ? ($dependencias[0]->ctd == 0 ? 1 : $dependencias[0]->ctd) : 1)
+		<td style="text-align:right; width: 9%;">${{ number_format($detalle->lp/($detalle->phc == 0 ? 1 : $cant),2)}}</td>
+		<td style="text-align:right; width: 9%;">${{ number_format($detalle->phc/($detalle->phc == 0 ? 1 : $cant),2)}}</td>
+		<td style="text-align:right; width: 9%;">${{ number_format($detalle->pvc/($detalle->pvc == 0 ? 1 : $cant),2)}}</td>
 		@else 
 		<td style="text-align:right; width: 9%;">${{ number_format($detalle->lp,2)}}</td>
 		<td style="text-align:right; width: 9%;">${{ number_format($detalle->phc,2)}}</td>

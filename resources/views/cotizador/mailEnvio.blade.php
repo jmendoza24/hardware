@@ -1,3 +1,7 @@
+@if($data->tipo==2)
 <div class="col-md-12" id="cotiza_table">
-hola mundo
+	{{$data->mensaje}}
 </div>
+@else
+Hola mundo
+@endif

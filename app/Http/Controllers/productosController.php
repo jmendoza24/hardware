@@ -183,7 +183,7 @@ class productosController extends AppBaseController
                             where p.id = '.$last_id);
         }
 
-        db::update('call proceso_crear_formula('.$categoria.','.$last_id.')');
+        //db::update('call proceso_crear_formula('.$categoria.','.$last_id.')');
 
         Flash::success('Productos saved successfully');
 
@@ -219,6 +219,7 @@ class productosController extends AppBaseController
      */
     public function edit($id){   
         $productos = $this->productosRepository->find($id);
+        dd($productos);
 
         $fabricantes = Fabricantes::get();
         $catalogos      = catalogos::where('fabricante',$productos->fabricante)->get();
@@ -313,7 +314,7 @@ class productosController extends AppBaseController
                             where p.id = '.$id);
         }
         
-        db::update('call proceso_crear_formula('.$categoria.','.$id.')');
+        //db::update('call proceso_crear_formula('.$categoria.','.$id.')');
 
         
 

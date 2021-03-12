@@ -129,14 +129,18 @@ function get_municipios(estado,municipio){
 
    
     
-function baja_cotiza_pdf(id_cotizacion){
+function baja_cotiza_pdf(id_cotizacion,tipo){
 
       var id_tipo = $("#id_tipo").val();
       if(id_tipo ==''){
-        id_tipo = 1;
+         id_tipo = 1;
+        }
+        
+      if(tipo != ''){
+        id_tipo = tipo;
       }
       
-      window.open('/api/v1/baja_cotiza_pdf?id_cotizacion='+id_cotizacion+'&id_tipo='+id_tipo,'_blank');
+      window.open('/api/v1/baja_cotiza_pdf?id_cotizacion='+id_cotizacion+'&id_tipo='+id_tipo,'_top');
 
       } 
 
@@ -708,6 +712,7 @@ function elimina_producto(producto){
 }
 
 function agregar_dependencia(item,id){
+  $.blockUI({ message: 'Generando vista. Espere...' }); 
    $.ajax({
         data: {'item':item,'id':id},
         url: '/api/v1/agregar_dependencia',
@@ -740,8 +745,25 @@ function agregar_dependencia(item,id){
                                         clearMaskOnLostFocus: !1,
                                         max:9999999
                                     });
+            $('.cantidad-mask').inputmask({ 
+                        groupSeparator: ".",
+                        alias: "numeric",
+                        placeholder: "0",
+                        autoGroup: !0,
+                        digits: 0,
+                        digitsOptional: !1,
+                        clearMaskOnLostFocus: !1,
+                        max:9999
+                    });
 
             $("#footer_primary").hide();
+            setTimeout($.unblockUI, 1000);
+        },error(a,b,c){
+          $("#contenido").html('<div class="alert alert-warning" role="alert">'
+            + 'Ocurrio un error. Favor de contactar a Salvador.</div>');
+          $("#modal_primary").removeClass("modal-xl");
+          $('.modal-dialog').draggable({handle: ".modal-header"});
+          $("#footer_primary").hide();
         }
     }); 
 }
@@ -1202,54 +1224,18 @@ function duplica_cotizacion(id_cotizacion){
         type:  'get',
         success:  function (response){  
           $("#cotiza_table").html(response);
-          $('.zero-configuration').DataTable({
-                                      "language": {
-                                          "decimal": ",",
-                                          "thousands": ".",
-                                          "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                                          "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                                          "infoPostFix": "",
-                                          "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                                          "loadingRecords": "Cargando...",
-                                          "lengthMenu": "Mostrar _MENU_ registros",
-                                          "paginate": {
-                                              "first": "Primero",
-                                              "last": "Último",
-                                              "next": "Siguiente",
-                                              "previous": "Anterior"
-                                          },
-                                          "processing": "Procesando...",
-                                          "search": "Buscar:",
-                                          "searchPlaceholder": "Término de búsqueda",
-                                          "zeroRecords": "No se encontraron resultados",
-                                          "emptyTable": "Ningún dato disponible en esta tabla",
-                                          "aria": {
-                                              "sortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                                              "sortDescending": ": Activar para ordenar la columna de manera descendente"
-                                          },
-                                          //only works for built-in buttons, not for custom buttons
-                                          "buttons": {
-                                              "create": "Nuevo",
-                                              "edit": "Cambiar",
-                                              "remove": "Borrar",
-                                              "copy": "Copiar",
-                                              "csv": "fichero CSV",
-                                              "excel": "tabla Excel",
-                                              "pdf": "documento PDF",
-                                              "print": "Imprimir",
-                                              "colvis": "Visibilidad columnas",
-                                              "collection": "Colección",
-                                              "upload": "Seleccione fichero...."
-                                          },
-                                          "select": {
-                                              "rows": {
-                                                  _: '%d filas seleccionadas',
-                                                  0: 'clic fila para seleccionar',
-                                                  1: 'una fila seleccionada'
-                                              }
-                                          }
-                                      }            
-                                  });
+          $('.cotizaciones').DataTable( {
+            columnDefs: [ 
+            {
+                targets: [ 7 ],
+                "visible": false,
+                orderData: [ 0, 1 ]
+            }, {
+                targets: [ 8 ],
+                "visible": false,
+                orderData: [ 1, 0 ]
+            }]
+        } );
 
 
         }
@@ -1323,4 +1309,59 @@ function buscar_producto(num){
 
         }
     });
+}
+
+function configura_abatimiento(id_cotizacion, tipo){
+  $.ajax({
+        data: {id_cotizacion:id_cotizacion, 'tipo':tipo},
+        url: '/api/v1/configura_abatimiento',
+        dataType: 'json',
+        type:  'get',
+        success:  function (response){  
+          $("#modal_primary").removeClass("modal-xl");
+          $("#modal_primary").addClass("modal-lg");
+          $('.modal-dialog').draggable({handle: ".modal-header"});
+          $("#footer_primary").hide();
+          $("#contenido").html(response);
+        }
+    });
+}
+
+function guarda_abatimiento(id,id_cotizacion){
+   var val = $("input[name='p_"+id+"']:checked").val();
+
+  var parameters = {'id':id,
+                    'id_cotizacion':id_cotizacion,
+                    'puerta':$("#puerta_"+id).val(),
+                    'valor':val
+                  }
+  $.ajax({
+        data: parameters,
+        url: '/api/v1/guarda_abatimiento',
+        dataType: 'json',
+        type:  'get',
+        success:  function (response){  
+          $("#modal_primary").removeClass("modal-xl");
+          $("#modal_primary").addClass("modal-lg");
+          $('.modal-dialog').draggable({handle: ".modal-header"});
+          $("#footer_primary").hide();
+          $("#contenido").html(response);
+        }
+    });
+}
+
+function enviar_abatimiento(id_cotizacion){
+  if($("#correo").val()!= ''){
+    $.ajax({
+        data: {id_cotizacion:id_cotizacion},
+        url: '/api/v1/enviar_abatimiento',
+        dataType: 'json',
+        type:  'get',
+        success:  function (response){  
+          alert(response);
+        }
+    });
+  }else {
+    $.alert("Ingrese un correo");
+  }
 }

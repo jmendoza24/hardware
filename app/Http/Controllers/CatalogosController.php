@@ -650,7 +650,8 @@ class catalogosController extends AppBaseController
                                           'dep_extension'=>$line[78],
                                           'dep_extension_accion'=>$line[79]==''?null:$line[79],
                                           'info'=>$line[80]==''?null:$line[80],
-                                          'latch'=>$line[81]==''?null:$line[81]
+                                          'latch_ext'=>$line[81]==''?null:$line[81],
+                                          'finish_int'=>$line[82]==''?null:$line[82]
                                         ]);  
             }
 

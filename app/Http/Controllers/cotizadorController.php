@@ -12,6 +12,7 @@ use App\Models\disenio;
 use App\Models\Sub_baldwin;
 use App\Models\sufijos; 
 use App\Models\item;
+use App\Models\Abatimientos;
 use App\Models\productos_temporal;
 use App\Mail\EnvioFlux;
 use App\Models\cotizador_detalle;
@@ -57,11 +58,7 @@ class cotizadorController extends AppBaseController
     }
 
     public function oc_cambia(Request $request){
-
-
-          cotizador::where('id',$request['id'])->update(['estatus'=>1]);
-
-
+      cotizador::where('id',$request['id'])->update(['estatus'=>1]);
     }
 
 
@@ -71,7 +68,7 @@ class cotizadorController extends AppBaseController
      function baja_cotiza_pdf(Request $request){
 
         $filtro = new cotizador_detalle;
-        $num_cotizacion = $request->session()->get('num_cotizacion');
+        $num_cotizacion = $request->id_cotizacion; //$request->session()->get('num_cotizacion');
         
        $cot = db::table('cotizacions as c')
                   ->leftjoin('proyectos as p','p.id','c.proyecto')
@@ -134,37 +131,37 @@ class cotizadorController extends AppBaseController
 
         if($tipo==1){
             
-            $tipo_doc='Producto';
+            $tipo_doc='PRODUCTO';
             $Insta="USD";
             $idhc="Producto";
             $descripcion_mtk=1;
 
         }else if($tipo==2){
-            $tipo_doc= utf8_encode('Instalación');
+            $tipo_doc= 'INSTALACION';
             $Insta="MX";
             $idhc="Inst";
             $descripcion_mtk=1;
 
         }elseif($tipo==4){
-            $tipo_doc= utf8_encode('Modificación');
+            $tipo_doc= 'MODIFICACION';
             $Insta="USD";
             $idhc="Mod";
             $descripcion_mtk=1;
 
         }elseif($tipo==3){
-            $tipo_doc= utf8_encode('Producto y Modificación');
+            $tipo_doc= 'PRODUCTO Y MODIFICACION';
             $Insta="USD";
             $idhc="Mod";
             $descripcion_mtk=0;
         }else{
 
-            $tipo_doc='Producto';
+            $tipo_doc='PRODUCTO';
             $Insta="USD"; 
             $idhc="Producto";
             $descripcion_mtk=1;
         }
 
-        $estatus=0;
+        $estatus = 0;
 
      //return View('cotizador.pdf',compact('cotizacion','productos','data','tipo','tipo_doc','Insta','idhc','descripcion_mtk','estatus'));
       $pdf = \PDF::loadView('cotizador.pdf',compact('cotizacion','productos','data','tipo','tipo_doc','Insta','idhc','descripcion_mtk','estatus'))->setPaper('A4','portrait');
@@ -411,9 +408,9 @@ class cotizadorController extends AppBaseController
 
         $filtro->id_cotizacion = $num_cotizacion;
         $produc = productos::where('id',$request->producto)->get();
-        $produc = $produc[0];
+        $produc = $produc[0]; 
         
-        if($produc->info==7 || $produc->info==4){
+        if($produc->info==7 || $produc->info==4 || $produc->info==6 || $produc->info==8){
           $det = Sub_baldwin::where('id',$produc->selector_mtk)->get();
           $f = Sub_baldwin::where('id',$produc->mortise)->get();
           $style  = Sub_baldwin::where('id',$produc->style)->get();
@@ -430,7 +427,7 @@ class cotizadorController extends AppBaseController
 
           if(sizeof($style)>0){
             cotizador_detalle::where('id',$id)
-              ->update(['style'=>$style[0]->selector]); 
+              ->update(['style_sel'=>$style[0]->selector]); 
           }
         }
 
@@ -582,7 +579,10 @@ class cotizadorController extends AppBaseController
           }
 
         }else{
-          //$lista = $cotizacion->lista_precio ==null ? 1 : $cotizacion->lista_precio;
+          
+            $params =  array($produc->info,$num_cotizacion,$request->producto,$id);
+            db::update('call procesos_inserta_elementos(?,?,?,?)',$params); 
+          
           
           $factor = db::select("SELECT factor_hc,lp".$lista." as lista FROM fabricantes_costos where id_fabricante=".$produc->fabricante);
           $factor = $factor[0];
@@ -597,7 +597,7 @@ class cotizadorController extends AppBaseController
         }
 
         $productos = $filtro->detalle_cotizacion($filtro);   
-        $estatus = sizeof($productos)> 0 ? $productos[0]->estatus :0;
+        $estatus = $cotizacion->estatus == '' ? 0 : $cotizacion->estatus;
 
         $filtros_select = $filtro->filtros();
 
@@ -617,7 +617,7 @@ class cotizadorController extends AppBaseController
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0];  
 
-        $estatus = 0;
+        $estatus = $cotizacion->estatus == '' ? 0 : $cotizacion->estatus;
         $filtros_select = $filtro->filtros();
         $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion','estatus','filtros_select'))->render();
 
@@ -626,7 +626,7 @@ class cotizadorController extends AppBaseController
 
     function agregar_dependencia(Request $request){
         $num_cotizacion = $request->session()->get('num_cotizacion');
-
+        
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0];
         $item = $request->item;
@@ -713,7 +713,7 @@ class cotizadorController extends AppBaseController
         $productos = $filtro->detalle_cotizacion($filtro);
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0];
-        $estatus = 0;
+        $estatus = $cotizacion->estatus == '' ? 0 : $cotizacion->estatus;
         $filtros_select = $filtro->filtros();
 
         $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion','estatus','filtros_select'))->render();
@@ -738,7 +738,7 @@ class cotizadorController extends AppBaseController
         $productos = $filtro->detalle_cotizacion($filtro);
         $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0];
-        $estatus = 0;
+        $estatus = $cotizacion->estatus == '' ? 0 : $cotizacion->estatus;
         $filtros_select = $filtro->filtros();
 
         $options = view('cotizador.table',compact('productos','cotizacion','num_cotizacion','estatus','filtros_select'))->render();
@@ -767,7 +767,7 @@ class cotizadorController extends AppBaseController
           $color = '';
         }
         
-        $catalog = array(19,20,21,22,23,24,25,26,27,49,50,51,52,53);
+        $catalog = array(19,20,21,22,23,24,25,26,27,36,37,49,50,51,52,53);
 
         items_productos::where('id',$request->id)
                         ->update(['item'=>$item[0],
@@ -779,12 +779,11 @@ class cotizadorController extends AppBaseController
 
         $datos = $datos[0];
 
-        if(!in_array($request->id_catalogo, $catalog)){
-          
-              db::update('call actualiza_item('.$request->id.')');
 
-              $producto = db::select("select * from  productos where item = '".$datos->item."' and ifnull(if(sufijo='-',0,sufijo),0)  = '".$datos->sufijo."'");
-              
+        if(!in_array($request->id_catalogo, $catalog)){
+              db::update('call actualiza_item('.$request->id.')');
+              $producto = db::select("select * from  productos where item = '".$datos->item."' and ifnull(if(sufijo='-',0,If(sufijo = '',0,sufijo)),0)  = '".$datos->sufijo."'");
+            
             if(sizeof($producto)>0){
                     $producto = $producto[0];
                     items_productos::where('id',$request->id)
@@ -808,13 +807,16 @@ class cotizadorController extends AppBaseController
                         }else if($costo==0){
                             $costo = in_array($color,explode(',', $datos->colores_4)) ? $producto->costo_4 :0;
                         }
+                    }else if($producto->fabricante == 76 || $producto->info == 8){
+                      $costo = $producto->costo_1;
+                    }else{
+                      $costo = $producto->costo_1;
                     }
-
 
                     $producto_padre = productos::where('id',$datos->id_producto)->get();
                     $producto_padre = $producto_padre[0];
 
-                    $arr = array(9,10,11,12,18);
+                    $arr = array(9,10,11,12,18,28,29,30,31);
 
                     if($request->id_catalogo==1){
                         $accion = $producto_padre->exterior_tim_1_accion;
@@ -832,8 +834,6 @@ class cotizadorController extends AppBaseController
                         $accion = $producto_padre->blocking_dep7_accion;
                     }else if($request->id_catalogo==8){
                         $accion = $producto_padre->turn_knob8_accion;
-                    }else if($request->id_catalogo==12){
-                        $accion = 1;
                     }else if($request->id_catalogo==13){
                         $accion = $producto_padre->dep_rossetes_accion;
                     }else if($request->id_catalogo==14){
@@ -850,7 +850,7 @@ class cotizadorController extends AppBaseController
                       $accion = 0;
                     }
 
-                
+                  
                     items_productos::where('id',$request->id)
                                 ->update(['idfab'=> str_replace('xxx', $color, $producto->codigo_sistema),
                                           'descripcion'=>$producto->descripcion,
@@ -908,7 +908,7 @@ class cotizadorController extends AppBaseController
 
                 cotizador_detalle::where('id',$datos->id_detalle)
                                   ->update(['pvc'=>$phc / $factor->lista,
-                                            'lp'=>$lp,
+                                            'lp'=>$lp * $request->cantidad,
                                             'phc' =>$phc,
                                             'id_fab'=>$producto->codigo_sistema,
                                             'sufijo'=>$sufijo]);
@@ -986,7 +986,7 @@ class cotizadorController extends AppBaseController
             $suma_dependencias = (object)$suma_dependencias;
           }
           
-          $estatus = 0;
+          $estatus = $cotizacion->estatus == '' ? 0 : $cotizacion->estatus;
           $informacion = informacion_productos::where('id_item',$producto->id_item)->get();
           $informacion = $informacion[0];
           $filtro->id_cotizacion = $num_cotizacion;
@@ -1098,7 +1098,8 @@ class cotizadorController extends AppBaseController
         cotizador_detalle::where('id',$request->id_detalle)
                         ->update(['latch'=>$request->latch_ext,
                                   'det'=> $request->dt_g == '-' ? '' : $request->dt_g,
-                                  'f'=>$request->f_g]); 
+                                  'f'=>$request->f_g,
+                                  'finish'=>$request->finish]); 
                         //'handing'=>$request->handing,
         /* Asignar precios */
 
@@ -1131,8 +1132,8 @@ class cotizadorController extends AppBaseController
                 }else if($costo==0){
                     $costo = in_array($request->finish,explode(',', $info_adic->finish_4)) ? $producto->costo_4 :0;
                 }
-          }else if($producto->fabricante == 76 and $producto->info == 7 or $producto->info == 5 or $producto->info == 4){
-            $dterminantes  = array('EMP', 'C', 'BTB');
+          }else if($producto->fabricante == 76 and $producto->info == 7 or $producto->info == 5 or $producto->info == 4 or $producto->info == 6){
+            $dterminantes  = array('EMP', 'C', 'BTB','BB');
 
             if(in_array($request->dt_g, $dterminantes)){
               $costo = $producto->costo_2;
@@ -1218,13 +1219,13 @@ class cotizadorController extends AppBaseController
         
         $filtros_select = $filtro->filtros();
 
-        $estatus  = 0;
+        $estatus = $cotizacion->estatus == '' ? 0 : $cotizacion->estatus;
         $options = view('cotizador.detalle_head',compact('estatus','informacion','info_adic','producto','fotos','detalle','suma_dependencias','cotizacion'))->render();
         
         $productos = $filtro->detalle_cotizacion($filtro);   
-        $cotizacion = cotizador::where('id',$num_cotizacion)->get();
+        /** $cotizacion = cotizador::where('id',$num_cotizacion)->get();
         $cotizacion = $cotizacion[0]; 
-        $estatus = 0;
+        $estatus = 0; */
         $options2 = view('cotizador.table',compact('estatus','productos','cotizacion','num_cotizacion','filtros_select'))->render();
 
         $arr = array('options'=>$options,
@@ -1449,7 +1450,7 @@ class cotizadorController extends AppBaseController
         }
         
         
-        $estatus  = 0;
+        $estatus = $cotizacion->estatus == '' ? 0 : $cotizacion->estatus;
         $options = view('cotizador.detalle_head',compact('estatus','informacion','info_adic','producto','fotos','detalle','suma_dependencias','cotizacion'))->render();
         
         $dependencias = items_productos::where('id_detalle',$request->id_detalle)->orderby('id_catalogo')->get();
@@ -1463,6 +1464,71 @@ class cotizadorController extends AppBaseController
 
   }
 
+  function configura_abatimiento(Request $request){
+    if($request->tipo ==2){
+        Abatimientos::insert(['id_cotizacion'=>$request->id_cotizacion]);
+    }else{
+      $conteo = Abatimientos::where('id_cotizacion',$request->id_cotizacion)->count();
+      if($conteo == 0){
+        Abatimientos::insert(['id_cotizacion'=>$request->id_cotizacion, 'puerta'=>'PP']);
+      }  
+    }
+
+    $cotizacion = db::table('cotizacions as c')
+                  ->leftjoin('tbl_clientes as cl', 'cl.id_cliente','c.cliente')
+                  ->where('c.id',$request->id_cotizacion)
+                  ->selectraw('c.id, cl.nombre, cl.correo, id_hijo, ver')
+                  ->first();
     
+    $abtimiento = Abatimientos::where('id_cotizacion',$request->id_cotizacion)->get();
+
+
+    $options = view('cotizador.abatimientos',compact('cotizacion','abtimiento'))->render();
+
+    return json_encode($options);
+  }
+  
+  function guarda_abatimiento(Request $request){
+    Abatimientos::where('id',$request->id)
+                ->update(['puerta'=>$request->puerta,
+                          'valor'=>$request->valor]);
+    $cotizacion = db::table('cotizacions as c')
+                  ->leftjoin('tbl_clientes as cl', 'cl.id_cliente','c.cliente')
+                  ->where('c.id',$request->id_cotizacion)
+                  ->selectraw('c.id, cl.nombre, cl.correo, id_hijo, ver')
+                  ->first();
+
+    $abtimiento = Abatimientos::where('id_cotizacion',$request->id_cotizacion)->get();
+    $options = view('cotizador.abatimientos',compact('cotizacion','abtimiento'))->render();
+
+    return json_encode($options);
+    
+  }    
+
+  function envar_abatimiento(Request $request){
+
+     $data = array(
+                   'ids'=>1  ,
+                   'tipo'=>2,
+                   'mensaje' =>"Para confirmar los abatimientos da clic en la sig liga. <br/>
+                                <a class='btn btn-primary' href='google.com'>Clic aqui.</a>"                
+                 );
+        
+
+        Mail::send('cotizador.mailEnvio',$data, function($msj) use($data){                       
+        $pdf = \PDF::loadView('cotizador.mailEnvio')->setPaper('A4','portrait');
+       
+
+        $msj->from('ventas@hardwarecollecion.mx');
+        $msj->sender('ventas@hardwarecollecion.info');
+        $msj->subject('Configuracion Abatimientos');
+        $msj->to('jacob.mendozaha@gmail.com');  
+
+        $msj->to($request->correo);     
+    }); 
+
+    return 1;
+  }
 
 }
+
