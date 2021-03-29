@@ -129,7 +129,7 @@ $a[12] = "Diciembre";
       </td>
     </tr>
     <?php endif; ?>
-    <tr style="background:#D2D2D2; color: #5C8293;" class="text-right">
+    <tr style="background:#D2D2D2; color: #5C8293; font-weight: bold;" class="text-right">
       <td colspan="8" style="background: #D2D2D2;" ></td>
       <td colspan=""  >Gran Total:</td>
       <td style="text-align: right;">USD: $<?php echo e(number_format($subtotal_dl + $iva - $desc_usa  + $cotizacion->flete ,2)); ?></td>
@@ -220,7 +220,7 @@ $a[12] = "Diciembre";
     </tr>
     <?php endif; ?>
     
-    <tr style="background:#D2D2D2; color: #5C8293;" class="text-right">
+    <tr style="background:#D2D2D2; color: #5C8293; font-weight: bold;" class="text-right">
       <td colspan="8" style="background: #D2D2D2;" ></td>
       <td colspan="" >Gran Total:</td>
       <td style="text-align: right;">MX: $<?php echo e(number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100) ,2)); ?></td>
@@ -362,7 +362,7 @@ $a[12] = "Diciembre";
       </td>
     </tr>
     <?php endif; ?>
-    <tr style="background:#D2D2D2; color: #5C8293;" class="text-right">
+    <tr style="background:#D2D2D2; color: #5C8293; font-weight: bold;" class="text-right">
       <td colspan="8" style="background: #D2D2D2;" ></td>
       <td colspan="" >Gran Total:</td>
       <td style="text-align: right;">USD: $<?php echo e(number_format( $subtotal_dl + $subtotal_dl_1 +  $cotizacion->flete - $desc  + $iva,2)); ?></td>
@@ -473,7 +473,7 @@ $a[12] = "Diciembre";
       </td>
     </tr>
     <?php endif; ?>
-    <tr style="background: #D2D2D2; color:#5C8293;" class="text-right">
+    <tr style="background: #D2D2D2; color:#5C8293; font-weight: bold;" class="text-right">
       <td colspan="8" style="background: #D2D2D2;" ></td>
       <td colspan="" >Gran Total:</td>
       <td style="text-align: right;">USD: $<?php echo e(number_format($desc_mod + $cotizacion->flete + $iva,2)); ?></td>

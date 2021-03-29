@@ -16,9 +16,11 @@ use App\Models\productos_temporal;
 use App\Models\tipo_cliente;
 use App\Models\tipo_proyecto;
 use App\Models\cotizador;
+use App\Models\proyectos_files;
 use App\Models\cliente_participantes;
 use App\Models\cotizador_detalle;
 use App\Models\Clientes;
+use App\Models\Abatimientos;
 use App\Models\tbl_fotos_productos;
 use App\Http\Requests\CreatecatalogosRequest;
 use App\Http\Requests\UpdatecatalogosRequest;
@@ -29,8 +31,10 @@ use Flash;
 use Response;
 use View;
 use DB;
+use Storage;
 
 set_time_limit(0);
+date_default_timezone_set('America/Mexico_City');
 
 class catalogosController extends AppBaseController
 {
@@ -43,7 +47,7 @@ class catalogosController extends AppBaseController
     }
 
     /**
-     * Display a listing of the catalogos.
+     * Display a listing of the catalogos. 
      *
      * @param Request $request
      *
@@ -389,7 +393,7 @@ class catalogosController extends AppBaseController
           $options =  view('cotizador.cotizacion_detalle',compact('productos','cotizacion'))->render();
         }else if($request->catalogo ==17){
           
-          if($request->tipo==1){
+          if($request->tipo==1){ 
             $imagenes = array('id'=>0,
                               'id_producto' => $request->fabricante,
                               'foto'=>'');
@@ -401,6 +405,16 @@ class catalogosController extends AppBaseController
           }
 
           $options =  view('productos.alta_imagen',compact('imagenes'))->render();
+        }else if($request->catalogo ==18){
+          
+          if($request->tipo==1){
+            $archivos = (object)array('id'=>0,'id_proyecto' => $request->catalogos);
+
+          }else if($request->tipo==2){
+            $archivos = tbl_fotos_productos::where('id',$request->id)->first();
+          }
+
+          $options =  view('proyectos.carga_archivos',compact('archivos'))->render();
         }
 
 
@@ -717,6 +731,20 @@ class catalogosController extends AppBaseController
 
            $imagenes = tbl_fotos_productos::where('id_producto',$request->id_producto)->get();
            $options = view('productos.imagenes',compact('imagenes'))->render();
+        }else if($request->id_catalogo==18){
+          $file = $request->file('archivo');
+
+          $img = Storage::url($file->store('proyectos', 'local'));
+          $imgp = strpos($img,'/storage/');
+          $nombre = substr($img, $imgp, strlen($img));  
+           
+           proyectos_files::insert(['id_proyecto'=>$request->id_proyecto,
+                                    'descripcion'=>$request->descripcion,
+                                    'tipo_file'=>$request->tipo_archivo,
+                                    'file'=>$nombre]);
+
+           $proyectos_files = proyectos_files::where('id_proyecto',$request->id_proyecto)->get();
+           $options = view('proyectos.archivos',compact('proyectos_files'))->render();
         }
 
         return $options;
@@ -820,6 +848,11 @@ class catalogosController extends AppBaseController
            
            $imagenes = tbl_fotos_productos::where('id_producto',$request->fabricante)->get();
            $options = view('productos.imagenes',compact('imagenes'))->render();
+        }else if($request->catalogo==18){
+          proyectos_files::where('id',$request->id)->delete();
+
+           $proyectos_files = proyectos_files::where('id_proyecto',$request->fabricante)->get();
+           $options = view('proyectos.archivos',compact('proyectos_files'))->render();
         }
 
 
@@ -1040,4 +1073,107 @@ class catalogosController extends AppBaseController
 
         return redirect(route('catalogos.index'));
     }
+
+    function configurador($key){
+        $ciphering = "AES-128-CTR"; 
+        $decryption_key = "Snap2021"; 
+        $options = 0;
+        $decryption_iv = '1234567891011121'; 
+
+        $id_cotizacion=openssl_decrypt ($key, $ciphering,$decryption_key, $options, $decryption_iv); 
+        $abtimiento  = Abatimientos::where('id_cotizacion',$id_cotizacion)->get();        
+        $cotizacion = db::table('cotizacions as c')
+                  ->leftjoin('cliente_participantes as cl', 'cl.id','c.cliente')
+                  ->leftjoin('proyectos as p','p.id','c.proyecto')
+                  ->where('c.id',$id_cotizacion)
+                  ->selectraw('c.id, cl.contacto, cl.correo, id_hijo, ver, id_occ, fecha, p.nombre_corto, c.abatimiento')
+                  ->first();
+        $vista = 2;
+    
+        if($cotizacion->abatimiento ==1){
+          return view('cotizador.finalizado');
+        }else{
+          return view('cotizador.config_abat',compact('id_cotizacion','abtimiento','cotizacion','vista'));  
+        }
+        
+        
+    }
+
+    function configura_abatimiento(Request $request){
+    if($request->tipo ==2){
+        Abatimientos::insert(['id_cotizacion'=>$request->id_cotizacion]);
+    }else{
+      $conteo = Abatimientos::where('id_cotizacion',$request->id_cotizacion)->count();
+      if($conteo == 0){
+        Abatimientos::insert(['id_cotizacion'=>$request->id_cotizacion, 'puerta'=>'PP']);
+      }  
+    }
+
+    $cotizacion = db::table('cotizacions as c')
+                  ->leftjoin('cliente_participantes as cl', 'cl.id','c.cliente')
+                  ->leftjoin('proyectos as p','p.id','c.proyecto')
+                  ->where('c.id',$request->id_cotizacion)
+                  ->selectraw('c.id, cl.contacto, cl.correo, id_hijo, ver, id_occ, fecha, p.nombre_corto, c.abatimiento, fecha_abatimiento,c.correo, c.nombre, email_enviado')
+                  ->first();
+    
+    $abtimiento = Abatimientos::where('id_cotizacion',$request->id_cotizacion)->get();
+
+    $vista = $request->vista;
+
+    $options = view('cotizador.abatimientos',compact('cotizacion','abtimiento','vista'))->render();
+
+
+    return json_encode($options);
+  }
+  
+  function guarda_abatimiento(Request $request){
+    Abatimientos::where('id',$request->id)
+                ->update(['puerta'=>$request->puerta,
+                          'valor'=>$request->valor,
+                          'sel'=>$request->sel]);
+    $cotizacion = db::table('cotizacions as c')
+                  ->leftjoin('cliente_participantes as cl', 'cl.id','c.cliente')
+                  ->leftjoin('proyectos as p','p.id','c.proyecto')
+                  ->where('c.id',$request->id_cotizacion)
+                  ->selectraw('c.id, cl.contacto, cl.correo, id_hijo, ver, id_occ, fecha, p.nombre_corto, c.abatimiento, fecha_abatimiento,c.correo, c.nombre')
+                  ->first();
+
+    $abtimiento = Abatimientos::where('id_cotizacion',$request->id_cotizacion)->get();
+    $vista = $request->vista;
+    $options = view('cotizador.abatimientos',compact('cotizacion','abtimiento','vista'))->render();
+
+    return json_encode($options);
+    
+  }
+
+  function confirma_abatimiento(Request $request){
+    cotizador::where('id',$request->id)
+                ->update(['nombre'=>$request->nombre,
+                          'correo'=>$request->email,
+                          'fecha_abatimiento'=>date('Y-m-d h:i:s'),
+                          'abatimiento'=>1]);
+
+    return redirect()->route('abatimiento.finalizado');
+  }
+
+  function abatimiento_finalizado(){
+     return view('cotizador.finalizado');
+  }
+
+  function elimina_elemento(Request $request){
+    Abatimientos::where('id',$request->id)->delete();
+   
+    $cotizacion = db::table('cotizacions as c')
+                  ->leftjoin('cliente_participantes as cl', 'cl.id','c.cliente')
+                  ->leftjoin('proyectos as p','p.id','c.proyecto')
+                  ->where('c.id',$request->ocf)
+                  ->selectraw('c.id, cl.contacto, cl.correo, id_hijo, ver, id_occ, fecha, p.nombre_corto, c.abatimiento, fecha_abatimiento,c.correo, c.nombre')
+                  ->first();
+
+    $abtimiento = Abatimientos::where('id_cotizacion',$request->ocf)->get();
+    $vista = $request->vista;
+    $options = view('cotizador.abatimientos',compact('cotizacion','abtimiento','vista'))->render();
+
+    return json_encode($options);
+  }
 }

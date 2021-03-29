@@ -34,14 +34,7 @@
            
           </ul>
         </li> 
-        
-        <li class=" nav-item"><a href="/"><i class="ft-check-square"></i><span class="menu-title" data-i18n="">OCC</span></a>
-          <ul class="menu-content">
-            <li class="{{ Request::is('cotizaciones_oc*') ? 'active' : '' }}"><a href="{!! route('cotizador.oc') !!}"><span class="menu-title" data-i18n="">OC Clientes</span></a></li>
-            <li class="{{ Request::is('cotizaciones_oc*') ? 'active' : '' }}"><a href="{!! route('enviadas') !!}"><span class="menu-title" data-i18n="">Envios</span></a></li>
-
-          </ul>
-        </li> 
+        <li class=" nav-item {{ Request::is('productos*') ? 'active' : '' }}"><a href="{!! route('cotizador.oc') !!}"><i class="ft-minus-square"></i><span class="menu-title" data-i18n="">OC Clientes</span></a></li>        
         <li class=" nav-item"><a href="#"><i class="ft-briefcase"></i><span class="menu-title" data-i18n="">OCF</span></a>
          <ul class="menu-content">
                 <li class="{{ Request::is('tblOcFabs*') ? 'active' : '' }}"><a href="{!! route('tblOcFabs.index') !!}"><span class="menu-title" data-i18n="">OC Fabricantes</span></a></li>

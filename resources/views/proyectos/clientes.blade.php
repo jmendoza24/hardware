@@ -33,14 +33,14 @@
                     <td>Comentario</td>
                     <td></td>
                 </tr>
-            </thead>
+            </thead> 
             <tbody>
                 @foreach($proyectos_clientes as $p)
                 <tr>
                     <td>{{ $p->empresa}}</td>
                     <td>{{ $p->contacto}}</td>
                     <td>{{ $p->telefono}}</td>
-                    <td>{{ $p->correo}}</td>
+                    <td>{{ str_replace(';', ' ',  $p->correo)}}</td>
                     <td>{{ $p->puesto}}</td>
                     <td>{{$p->comentario}}</td>
                     <td style="text-align: center;"><span class="btn btn-outline-danger btn-sm" onclick="eliminar_clientes({{$p->id_proyecto}},{{$p->id_cp}})"><i class="fa fa-trash"></i></span></td>

@@ -11,17 +11,27 @@ $a[9] = "Septiembre";
 $a[10] = "Octubre";
 $a[11] = "Noviembre";
 $a[12] = "Diciembre";
+
+$fecha = $cotizacion->id_occ > 0 ? $cotizacion->fecha : $cotizacion->created_at;
 ?>
+
+
+
 <table   style="width: 100%; font-family: sans-serif; color:white; border-collapse: collapse;">
      <tr style="width: 100%;" >
         <td style="background-color: #000000; text-align: center; "><img src="{{ url('app-assets/images/logo_completo.jpg')}}" style="width: 150px;"></td>
         <td style="background-color: #5C8293; "><label style="font-family:sans-serif; font-size: 11px; ">Calzada San Pedro # 108<br>San Pedro Garza García, NL, México, 66220<br>+52 (81) 8378 0601 <br/> info@hardwarecollection.mx</label></td>
-        <td style="background-color: #5C8293; font-size: 14px; text-align: right; ">{{ date("d",strtotime(substr($cotizacion->created_at,0,10))) . ' de '. $a[date("m",strtotime(substr($cotizacion->created_at,0,10))) * 1] . ' de '.date("Y",strtotime(substr($cotizacion->created_at,0,10)))}}<br> <label style=""> Cotización #{{$cotizacion->id_hijo}} {{ $cotizacion->ver > 0 ? '.'.$cotizacion->ver:''}}</label><br>  <label><b>{{ $tipo_doc}}</b></label></td>
+        <td style="background-color: #5C8293; font-size: 14px; text-align: right; ">{{ date("d",strtotime(substr($fecha,0,10))) . ' de '. $a[date("m",strtotime(substr($fecha,0,10))) * 1] . ' de '.date("Y",strtotime(substr($fecha,0,10)))}}<br> <label style=""> 
+         
+            Cotización #{{$cotizacion->id_hijo}} {{ $cotizacion->ver > 0 ? '.'.$cotizacion->ver:''}}
+          </label><br>
+          <label><b>{{ $tipo_doc}}</b></label></td>
      </tr>
      <tr style="background: #D2D2D2; color:#5C8293; font-size: 11px; padding-top: 3px;">
         <td>Proyecto: {{ $cotizacion->proyecto }}<br> Participante: {{ $cotizacion->contacto }}<br>Empresa: {{ $cotizacion->empresa }}</td>
         <td>Correo:  {{ str_replace(';', ' ',  $cotizacion->correo) }}<br>Teléfono: {{ $cotizacion->telefono }}<br></td>
-        <td style="text-align: right;">Cotización válida  hasta <br/> {{ date("d",strtotime($cotizacion->created_at)). ' de ' }} @if(date("m",strtotime($cotizacion->created_at)) == 12) {{ $a[1]}} @else {{$a[date("m",strtotime($cotizacion->created_at)) +1 ] }} @endif  {{' de '}} @if(date("m",strtotime($cotizacion->created_at))==12) {{date("Y",strtotime($cotizacion->created_at)) +1  }} @else {{date("Y",strtotime($cotizacion->created_at)) }} @endif
+        <td style="text-align: right; font-size: 13px; color: black;">
+          @if($cotizacion->id_occ > 0)<b> ORDEN DE COMPRA: {{ $cotizacion->id_occ}}</b> @else COTIZACION @endif <br>  Válida  hasta <br/> {{ date("d",strtotime($fecha)). ' de ' }} @if(date("m",strtotime($fecha)) == 12) {{ $a[1]}} @else {{$a[date("m",strtotime($fecha)) +1 ] }} @endif  {{' de '}} @if(date("m",strtotime($fecha))==12) {{date("Y",strtotime($fecha)) +1  }} @else {{date("Y",strtotime($fecha)) }} @endif
         </td> 
      </tr> 
 </table>
@@ -462,7 +472,7 @@ $a[12] = "Diciembre";
    <tr style="" >
       <td valign="top"> <?php echo nl2br($data->condiciones); ?></td>
       <td valign="top" style="color: black;"><b> <?php echo nl2br($cotizacion->notas); ?></b></td>
-      <td valign="top" style="display: none;"> <?php echo nl2br($data->cuentas); ?></td>
+      <td valign="top" style="">@if($cotizacion->id_occ >  0) <?php echo nl2br($data->cuentas); ?> @endif</td>
    </tr>
 </table>
 

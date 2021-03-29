@@ -31,12 +31,12 @@
             <option value="<?php echo e($c->id); ?>" <?php echo e($cotizacion->cliente==$c->id?'selected':''); ?>><?php echo e($c->contacto); ?></option>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </select> 
+        <span style="margin-left: 50px; font-size: 11px;"><?php echo e($cotizacion->c_correo != '' ? $cotizacion->c_correo :'Sin correo'); ?></span>
     </div>
     <div class="col-md-2 form-row">
-        <label class="col-md-3" style="padding-top: 4px;">Tipo:</label>
-        <select class="form-control form-control-sm col-md-8" id="id_tipo" style="margin-top: 4px;">
+        <label class="col-md-3" style="padding-top: 4px;">PDF:</label>
+        <select class="form-control form-control-sm col-md-8" id="id_tipo" style="margin-top: 4px;" onchange="baja_cotiza_pdf(<?php echo e($cotizacion->id); ?>,0)">
             <option value="">Seleccione...</option>
-            
             <option value="1">Producto</option>
             <option value="4">Modificación</option>
             <option value="3">Producto y Modificación</option>
@@ -44,7 +44,7 @@
         </select>
     </div>
     <div class="col text-right" style="margin-top: 10px;">
-        <span style="color: white" class=" btn btn-outline-primary btn_azul btn-sm" onclick="baja_cotiza_pdf(<?php echo e($cotizacion->id); ?>)">PDF</span>
+        <!--<span style="color: white" class=" btn btn-outline-primary btn_azul btn-sm" onclick="baja_cotiza_pdf(<?php echo e($cotizacion->id); ?>)">PDF</span>-->
         <!--<span class="btn btn-outline-primary btn-sm">XLS</span>--->
         <span style="color: white"  class="btn btn-outline-primary btn_azul btn-sm" onclick="enviar_cotizacion(1)">Guardar</span>
         <span style="color: white" class="btn btn-outline-primary btn_azul btn-sm" onclick="enviar_cotizacion(2)">Enviar</span>

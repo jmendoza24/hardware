@@ -1,15 +1,21 @@
 <input type="hidden" id="id_info" value="{{$producto->info}}">
 <table class="table small table-striped table-bordered">
+	<tr style="text-align: center;">
+		<td colspan="6"></td>
+		<td><b>LP</b></td>
+		<td><b>PHC</b></td>
+		<td><b>PVC</b></td>
+	</tr>
 	<tr>
-		<td colspan="@if($producto->info == 7 || $producto->info == 4 || $producto->info == 6) 2 @else 4 @endif" style="text-align: left;"><span class="badge badge-primary" style="font-size: 14px;"> {{$producto->info}} </span></td>
+		<td colspan="@if($producto->info == 7 || $producto->info == 4 || $producto->info == 6 || $producto->info == 5) 2 @else 4 @endif" style="text-align: left;"><span class="badge badge-primary" style="font-size: 14px;"> {{$producto->info}} </span></td>
 		@if($producto->info == 7 || $producto->info == 4 || $producto->info == 6)
 		<td class="gris_tabla">
 			<?php 
 				$det_grupo = $detalle->det_grupo !='' ? explode(',',($detalle->det_grupo)) : array();
 				$f_grupo = $detalle->f_grupo !='' ? explode(',',($detalle->f_grupo)) : array();
 			?>
-			<select class="form-control form-control-sm" title="DT" id="dt_g" onchange="guarda_detalle({{$info_adic->id_detalle}})">
-				<option value="">DET</option>
+			<select class="form-control form-control-sm" title="DT" id="dt_g" onchange="guarda_detalle({{$info_adic->id_detalle}})" style="width: 100px;">
+				<option value="">DC EMK</option>
 				@foreach($det_grupo as $d)
 					<option value="{{$d}}" {{ $detalle->det == $d? 'selected': ''}}>{{$d}}</option>
 				@endforeach
@@ -32,22 +38,17 @@
 				@endif
 			</div>
 		</td>
+		@elseif($producto->info ==5)
+		<td><b>NRP[<b>$5</b>]</b></td>
+		<td><input type="checkbox" id="nrp" {{ $detalle->nrp ==1 ? 'checked':''}} onchange="guarda_detalle({{$info_adic->id_detalle}})"></td>
 		@endif
 		<td class="gris_tabla"> SKU: </td>
 		<td>
 			{{ $detalle->id_fab}}
 		</td>
-		@if($producto->info == 5)
-
-		@php($cant = sizeof($dependencias) > 0 ? ($dependencias[0]->ctd == 0 ? 1 : $dependencias[0]->ctd) : 1)
-		<td style="text-align:right; width: 9%;">${{ number_format($detalle->lp/($detalle->phc == 0 ? 1 : $cant),2)}}</td>
-		<td style="text-align:right; width: 9%;">${{ number_format($detalle->phc/($detalle->phc == 0 ? 1 : $cant),2)}}</td>
-		<td style="text-align:right; width: 9%;">${{ number_format($detalle->pvc/($detalle->pvc == 0 ? 1 : $cant),2)}}</td>
-		@else 
 		<td style="text-align:right; width: 9%;">${{ number_format($detalle->lp,2)}}</td>
 		<td style="text-align:right; width: 9%;">${{ number_format($detalle->phc,2)}}</td>
 		<td style="text-align:right; width: 9%;">${{ number_format($detalle->pvc,2)}}</td>
-		@endif
 	</tr>
 	<tr>
 		<td class="gris_tabla">Fabricante:</td>
@@ -126,7 +127,7 @@
 			?>
 			
 			@endif
-			{{ $detalle->style}}
+			{{ $detalle->style_sel}}
 		</td>
 		<td colspan="2" style="background: #5C8293; border-left: 1px solid #5C8293; color: white; text-align: right; ">
 			<span class="pull-left"><?php 

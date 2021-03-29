@@ -1,0 +1,1 @@
+<h5>Envio de cotizacion</h5><?php /**PATH C:\wamp64\www\laravel\hardware\resources\views/cotizador/mailCotizacion.blade.php ENDPATH**/ ?>

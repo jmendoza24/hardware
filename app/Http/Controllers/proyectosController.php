@@ -116,7 +116,7 @@ class proyectosController extends AppBaseController
      * @return Response
      */
     public function edit($id){
-        $catalogos = new catalogos; 
+        $catalogos = new catalogos;  
         $proyecto = new proyectos; 
         $proyecto->id_proyecto = $id;
 

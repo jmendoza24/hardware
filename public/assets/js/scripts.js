@@ -1,3 +1,4 @@
+
 (function() {
   'use strict';
   window.addEventListener('load', function() {
@@ -34,11 +35,9 @@ $.ajax({
 }
 
 
-function cacha(){
-
-  var id=$("#sp").val();
+function cacha(id){
   agrega_producto(id);
-  $(".select2").select2();
+  $("#resultado").hide();
 }
  
 function busca_estado(campo){
@@ -58,7 +57,7 @@ function busca_estado(campo){
     
 
 function cambia_oc(id){
-
+ 
     $.confirm({
             title: 'Hardware collection',
             content: 'Estas seguro deseas convertir esta cotización a OC?',
@@ -71,9 +70,10 @@ function cambia_oc(id){
                       dataType: 'json',
                       type:  'get',
                       success:  function (response) { 
+                        console.log(response);
+                        window.location.href = 'cotizaciones_oc';
                       }
                   });
-                  window.location.href = 'cotizaciones_oc';
 
                 },
                 cancelar: function () {}
@@ -132,16 +132,18 @@ function get_municipios(estado,municipio){
 function baja_cotiza_pdf(id_cotizacion,tipo){
 
       var id_tipo = $("#id_tipo").val();
+      
       if(id_tipo ==''){
          id_tipo = 1;
+        }else{
+          id_tipo = $("#id_tipo").val();
         }
         
-      if(tipo != ''){
+      if(tipo > 0){
         id_tipo = tipo;
       }
-      
-      window.open('/api/v1/baja_cotiza_pdf?id_cotizacion='+id_cotizacion+'&id_tipo='+id_tipo,'_top');
 
+      window.open('/api/v1/baja_cotiza_pdf?id_cotizacion='+id_cotizacion+'&id_tipo='+id_tipo,'_top');
       } 
 
 function agrega_cliente(id_cliente){
@@ -264,8 +266,12 @@ function ver_catalogo(catalogo,id,tipo,fabricante,catalogos,familia,categoria,su
             type:  'get',
             success:  function (response) { 
                $("#contenido").html(response);
-               if(catalogo!=16 || catalogo!=17){
+               if(catalogo !=16 || catalogo!=17){
                   $("#modal_primary").removeClass("modal-xl");
+               }
+               if(catalogo ==16){
+                  $("#contenido").css("overflow-x", "scroll");
+                  $("#modal_primary").addClass("modal-xl");
                }
                //$("#modal_primary").addClass("modal-lg");
                $('.modal-dialog').draggable({handle: ".modal-header"});
@@ -803,7 +809,8 @@ function guarda_info_cotizacion(id){
                     'mod_cantidad':$("#mod_cant_"+id).val(),
                     'inst_precio_unit':$("#inst_pre_unit_"+id).val(),
                     'inst_cantidad':$("#inst_cant_"+id).val(),
-                    'handing':$("#handing_"+id).val()}
+                    'handing':$("#handing_"+id).val(),
+                    'style':$("#det_style_"+id).val()}
 
  $.ajax({
         data: parameters,
@@ -944,7 +951,7 @@ function guarda_costo(id,campo){
 
 }
 
-function guarda_datos(id,id_catalogo){
+function guarda_datos(id,id_catalogo,id_detalle){
   var parameters = {'item':$("#item_"+id_catalogo).val(),
                     'color':$("#color_"+id_catalogo).val(),
                     'sufijo':$("#sufijo_"+id_catalogo).val(),
@@ -952,7 +959,8 @@ function guarda_datos(id,id_catalogo){
                     'id':id,
                     'id_catalogo':id_catalogo,
                     'id_info':$("#id_info").val(),
-                    'lp':$("#lp_"+id_catalogo).val()}
+                    'lp':$("#lp_"+id_catalogo).val(),
+                    'id_detalle':id_detalle}
 
     if($("#item_"+id_catalogo).val() != ''){
       $.ajax({
@@ -1070,12 +1078,19 @@ function guarda_detalle(id_detalle){
       var chek = 0;
     }
 
+    if($("#nrp").is(":checked")){
+      var nrp = 1;
+    }else{
+      var nrp = 0;
+    }
+    
     var parameters = {'id_detalle':id_detalle, 
                       'finish':$("#det_finish_"+id_detalle).val(), 
                       'style':$("#det_style_"+id_detalle).val(), 
                       'latch_ext':chek,
                       'dt_g':$("#dt_g").val(),
-                      'f_g':$("#f_g").val()}
+                      'f_g':$("#f_g").val(),
+                      'nrp':nrp}
   $.ajax({
         data: parameters,
         url: '/api/v1/guarda_detalle',
@@ -1188,7 +1203,7 @@ function borra_foto(id){
           });
 }
 
-function enviar_cotizacion(tipo){
+function enviar_cotizacion(tipo){ 
  $.ajax({
         data: {'tipo':tipo},
         url: '/api/v1/enviar_cotizacion',
@@ -1224,18 +1239,18 @@ function duplica_cotizacion(id_cotizacion){
         type:  'get',
         success:  function (response){  
           $("#cotiza_table").html(response);
-          $('.cotizaciones').DataTable( {
+          $('.cotizaciones').DataTable(  {
             columnDefs: [ 
             {
-                targets: [ 7 ],
+                targets: [ 9 ],
                 "visible": false,
                 orderData: [ 0, 1 ]
             }, {
-                targets: [ 8 ],
+                targets: [ 10 ],
                 "visible": false,
                 orderData: [ 1, 0 ]
             }]
-        } );
+        }  );
 
 
         }
@@ -1311,9 +1326,9 @@ function buscar_producto(num){
     });
 }
 
-function configura_abatimiento(id_cotizacion, tipo){
+function configura_abatimiento(id_cotizacion, tipo, vista){
   $.ajax({
-        data: {id_cotizacion:id_cotizacion, 'tipo':tipo},
+        data: {id_cotizacion:id_cotizacion, 'tipo':tipo, 'vista':vista},
         url: '/api/v1/configura_abatimiento',
         dataType: 'json',
         type:  'get',
@@ -1333,7 +1348,9 @@ function guarda_abatimiento(id,id_cotizacion){
   var parameters = {'id':id,
                     'id_cotizacion':id_cotizacion,
                     'puerta':$("#puerta_"+id).val(),
-                    'valor':val
+                    'valor':val,
+                    'vista':1,
+                    'sel':$("#sel_"+id).val()
                   }
   $.ajax({
         data: parameters,
@@ -1351,17 +1368,149 @@ function guarda_abatimiento(id,id_cotizacion){
 }
 
 function enviar_abatimiento(id_cotizacion){
-  if($("#correo").val()!= ''){
+  if($("#email").val()!= ''){
     $.ajax({
-        data: {id_cotizacion:id_cotizacion},
+        data: {id_cotizacion:id_cotizacion,'email':$("#email").val()},
         url: '/api/v1/enviar_abatimiento',
         dataType: 'json',
         type:  'get',
         success:  function (response){  
-          alert(response);
+          $.alert("Correo enviado");
+          $("#primary").modal('hide');
         }
     });
   }else {
     $.alert("Ingrese un correo");
   }
+}
+
+function buscar_productos(){
+  //hacemos focus al campo de búsqueda
+        $("#sp").focus();
+                                                                                                     
+        var consulta = $("#sp").val();
+
+      //hace la búsqueda        
+      if(consulta.length >  2){
+        $("#resultado").show();
+        $.ajax({
+              type: "GET",
+              url: '/api/v1/busqueda_productos',
+              data: {consulta:consulta},
+              dataType: "html",
+              beforeSend: function(){
+              //imagen de carga
+              $("#resultado").html("<p align='center'><img src='images/cargando.gif' style='width:50px;' /></p>");
+              },
+              error: function(){
+              $.alert("Sin resultado");
+              },
+              success: function(data){                                                    
+              $("#resultado").empty();
+              if(data != ''){
+                $("#resultado").css('background','white')  
+              }else{
+                $("#resultado").empty();
+              }
+              
+              $("#resultado").append(data);                                                             
+              }
+        });  
+      }else{
+        $("#resultado").empty();
+        $("#resultado").hide();
+      }                                                               
+        
+}
+
+function muestra_abatimiento(){
+  $.dialog({
+      title: 'Hardware Collection',
+      columnClass: 'medium',
+      content: "<img src='images/puertas.jpg' style='width:100%;'>",
+  });
+}
+
+function elimina_libre(id, id_detalle){
+ $.confirm({
+            title: 'Hardware Collection',
+            content: 'Estas seguro deseas eliminar este item?',
+            type:'orange',
+            buttons: {
+                confirmar: function () {
+                  $.ajax({
+                      data: {"id":id, 'id_detalle':id_detalle},
+                      url: '/api/v1/elimina_libre',
+                      dataType: 'json',
+                      type:  'get',
+                      success:  function (response) { 
+                        $("#tabla_dependencias").html(response.options);
+                        $("#detalle_head").html(response.options2);
+                        $("#cotiza_table").html(response.options3);
+                        $('.cantidad-mask').inputmask({ 
+                                  groupSeparator: ".",
+                                  alias: "numeric",
+                                  placeholder: "0",
+                                  autoGroup: !0,
+                                  digits: 0,
+                                  digitsOptional: !1,
+                                  clearMaskOnLostFocus: !1,
+                                  max:9999
+                              });
+                      }
+                  });
+
+                },
+                cancelar: function () {}
+              } 
+          }); 
+}
+
+function elimina_elemento(id, ocf){
+ $.confirm({
+            title: 'Hardware Collection',
+            content: 'Estas seguro deseas eliminar este abatimiento?',
+            type:'orange',
+            buttons: {
+                confirmar: function () {
+                  $.ajax({
+                      data: {"id":id, 'ocf':ocf,'vista':1},
+                      url: '/api/v1/elimina_elemento',
+                      dataType: 'json',
+                      type:  'get',
+                      success:  function (response) { 
+                        $("#contenido").html(response);
+                      }
+                  });
+
+                },
+                cancelar: function () {}
+              } 
+          }); 
+}
+
+
+function configura_inventario(id_detalle){
+  $.ajax({
+          data: {id_detalle:id_detalle},
+          url: '/api/v1/configura_inventario',
+          dataType: 'json',
+          type:  'get',
+          success:  function (response) { 
+            $("#modal_primary").removeClass("modal-xl");
+            $('.modal-dialog').draggable({handle: ".modal-header"});
+            $("#footer_primary").hide();
+            $("#contenido").html(response);
+            $('.cantidad-mask').inputmask({ 
+                                  groupSeparator: ".",
+                                  alias: "numeric",
+                                  placeholder: "0",
+                                  autoGroup: !0,
+                                  digits: 0,
+                                  digitsOptional: !1,
+                                  clearMaskOnLostFocus: !1,
+                                  max:9999
+                              });
+          }
+      });
 }

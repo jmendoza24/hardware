@@ -14,9 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property integer tipo_file
  * @property string file
  */
-class proyectos_files extends Model
-{
-    use SoftDeletes;
+class proyectos_files extends Model{
 
     public $table = 'proyectos_files';
     
@@ -28,7 +26,8 @@ class proyectos_files extends Model
     public $fillable = [
         'id_proyecto',
         'tipo_file',
-        'file'
+        'file',
+        'descripcion'
     ];
 
     /**
@@ -40,7 +39,8 @@ class proyectos_files extends Model
         'id' => 'integer',
         'id_proyecto' => 'integer',
         'tipo_file' => 'integer',
-        'file' => 'string'
+        'file' => 'string',
+        'descripcion' => 'string'
     ];
 
     /**

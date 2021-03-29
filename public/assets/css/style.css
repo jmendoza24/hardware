@@ -161,3 +161,9 @@ select2-container--classic .select2-results__options .select2-results__option[ar
     background-color: #D2D2D2 !important;
     color: #FFFFFF !important;
 }
+
+.hover:hover{
+  background-color: #D2D2D2 !important;
+  color: #FFFFFF !important;
+  font-weight: bold;
+}

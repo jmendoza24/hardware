@@ -219,7 +219,7 @@ class productosController extends AppBaseController
      */
     public function edit($id){   
         $productos = $this->productosRepository->find($id);
-        dd($productos);
+        
 
         $fabricantes = Fabricantes::get();
         $catalogos      = catalogos::where('fabricante',$productos->fabricante)->get();

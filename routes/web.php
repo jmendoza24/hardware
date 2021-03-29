@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/', 'HomeController@index');
 
+Route::get('configurador/{key}', 'CatalogosController@configurador');
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::resource('clientes', 'ClientesController');
@@ -109,6 +110,7 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('actualiza_fotos', 'tbl_fotos_productosController@actualiza_fotos');
 	Route::get('borra_foto', 'tbl_fotos_productosController@destroy');
 	Route::get('revive_cotizacion/{id_cotizacion}', 'cotizadorController@revive_cotizacion')->name('cotizador.revive');
+	Route::get('regresar_cotizacion/{id_cotizacion}', 'cotizadorController@regresar_cotizacion')->name('cotizador.regresar');
 	Route::get('elimina_cotizacion', 'cotizadorController@elimina_cotizacion');	
 	Route::get('guarda_cot_not', 'cotizadorController@guarda_cot_not');
 	Route::get('enviar_produccion', 'productosController@enviar_produccion');
@@ -129,11 +131,19 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('ver_imagen', 'cotizadorController@ver_imagen');
 	Route::get('actualiza_finish', 'cotizadorController@actualiza_finish');
 	Route::get('buscar_producto', 'productosController@buscar_producto');
-	Route::get('configura_abatimiento', 'cotizadorController@configura_abatimiento');
-	Route::get('guarda_abatimiento', 'cotizadorController@guarda_abatimiento');
 	Route::get('enviar_abatimiento', 'cotizadorController@enviar_abatimiento');
+	Route::get('busqueda_productos', 'cotizadorController@busqueda_productos');
+	Route::get('elimina_libre', 'cotizadorController@elimina_libre');
+	Route::get('configura_inventario', 'cotizadorController@configura_inventario');
 	
-	
+
 });
 
+Route::group(['prefix'=>'api/v1/'], function () {
+	Route::get('configura_abatimiento', 'CatalogosController@configura_abatimiento');
+	Route::get('guarda_abatimiento', 'CatalogosController@guarda_abatimiento');
+	Route::get('elimina_elemento', 'CatalogosController@elimina_elemento');	
+});
+Route::post('guarda_confirmacion', 'CatalogosController@confirma_abatimiento')->name('guarda.abatimiento');	
+Route::get('abatimiento_finalizado', 'CatalogosController@abatimiento_finalizado')->name('abatimiento.finalizado');
 

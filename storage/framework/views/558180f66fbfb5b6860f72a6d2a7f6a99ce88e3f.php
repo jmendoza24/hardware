@@ -10,16 +10,17 @@
 	.color{border: 2px solid white; color: gray; text-align: right;}
 </style>
 <!---- small row-border-->
-	<table class="table table-striped" style="font-size: 11px;" id="" border="0">
+	<table class="table table-striped mr-1" style="font-size: 11px;" id="" border="0">
 		<tr style="border-top: 3px solid white; background:white;">
-			<td colspan="<?php echo e($estatus == 1 ? 13:11); ?>">
-				<span><span class="badge badge-primary" style="text-align: left; font-size: 14px;"><?php echo e($cotizacion->id_hijo != '' ? $cotizacion->id_hijo . '.'. $cotizacion->ver : $cotizacion->id); ?></span>
-				<select id="sp" class="form-control select2 pull-right"  onchange="cacha()" style="width: 80%" >
-					<option value="0">Buscar productos...</option>
-						<?php $__currentLoopData = $filtros_select; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-							<option   value="<?php echo e($s->id_producto); ?>" ><?php echo e($s->item); ?> - <?php echo e($s->sufijo != '' ? ' - ' .$s->sufijo :''); ?> <?php echo e($s->descripcion != '' ? ' - '.$s->descripcion : ''); ?></option>
-						<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-				</select>
+			<td colspan="9">
+				<span class="row">
+					<div class="col-md-2">
+						<span class="badge badge-primary" style="text-align: left; font-size: 14px;"><?php echo e($cotizacion->id_hijo != '' ? $cotizacion->id_hijo . '.'. $cotizacion->ver : $cotizacion->id); ?></span>
+					</div>
+					<div class="col-md-10">
+					<input type="text" id="sp" class="form-control" onkeyup="buscar_productos()">
+					<span id="resultado" style="display: none; z-index: 1; position: absolute; width: 100%; font-size: 14px; color: #84807F; padding:20px; max-height: 300px; overflow-y: scroll;"></span>
+					</div>
 				</span>
 			</td>
 			<td colspan="7" class="text-center gris_tabla"><b>Producto USD:</b></td>
@@ -42,12 +43,9 @@
 			<td>LP</td>
 			<td>PHC</td>
 			<td>PVC</td>
-			<td colspan="2">Inv I II</td>
+			<!--<td colspan="2">Inv I II</td>-->
 			<td>Ctd</td> 
-			<?php if($estatus==1): ?>
-			<td></td>
-			<td></td>
-			<?php endif; ?>
+			
 			<td>Total</td> 
 			<td style="border-left: 3px solid white;">PU</td>
 			<td>Ctd</td>
@@ -59,16 +57,19 @@
 		<?php $__currentLoopData = $productos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 		<tr>
 			<td>
-				<div class="btn-group">
+				<div class="btn-group mr-1 mb-1">
                     <button type="button" class="btn btn-icon btn-pure dropdown-toggle" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
                     <div class="dropdown-menu">
-                    	<span class="btn btn-sm btn-outline-danger" style="cursor: pointer;" onclick="elimina_producto(<?php echo e($p->id); ?>)"><i class="fa fa-trash"></i></span> &nbsp;
-						<span class="btn btn-sm btn-outline-primary" data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer; font-size: 12px;" onclick="agregar_dependencia(<?php echo e($p->idproducto); ?>,<?php echo e($p->id); ?>)"><i class="fa fa-info"></i> <b><?php echo e($p->info); ?></b></span>&nbsp;
-						<span class="btn btn-sm btn-outline-success" onclick="agrega_producto(<?php echo e($p->idproducto); ?>)"><i class="fa fa-plus"></i></span>&nbsp;
-						<span  class="btn btn-sm btn-outline-success"  data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer;" onclick="ver_imagen(<?php echo e($p->id_item); ?>)"><i class="fa fa-camera" aria-hidden="true"></i></span>        
+                    	<a class="dropdown-item" href="#" data-toggle="modal" onclick="agregar_dependencia(<?php echo e($p->idproducto); ?>,<?php echo e($p->id); ?>)" data-backdrop="false" data-target="#primary" ><i class="fa fa-info info"></i> <b>Info <?php echo e($p->info); ?></b></a>
+                    	<a class="dropdown-item" href="#" onclick="agrega_producto(<?php echo e($p->idproducto); ?>)" ><i class="fa fa-plus primary"></i> Duplicar</a>
+                    	<a class="dropdown-item" href="#" data-toggle="modal" onclick="ver_imagen(<?php echo e($p->id_item); ?>)" data-backdrop="false" data-target="#primary" ><i class="fa fa-camera success"></i> Foto</a>
+                      	<div class="dropdown-divider"></div>
+                      	<a class="dropdown-item" href="#" data-toggle="modal" data-target="#primary"  onclick="configura_inventario(<?php echo e($p->id); ?>)" ><i class="fa fa-th secondary"></i> Inventario</a>
+                      	<a class="dropdown-item" href="#" onclick="elimina_producto(<?php echo e($p->id); ?>)" ><i class="fa fa-trash danger"></i> Eliminar</a>
                     </div>
-                 </div>
+                </div>
+
 			</td>
 			<!--<td style="text-align: left; font-weight: bold;">
 				<?php echo e($p->item_nom); ?>
@@ -87,7 +88,7 @@
 			</td>
 			<td>
 				<?php ($selectores = explode(',',$p->list_backset)); ?>
-				<select id="bks_<?php echo e($p->id); ?>" class="form-control form-control-sm" style="width: 50px;" onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)">
+				<select id="bks_<?php echo e($p->id); ?>" class="form-control form-control-sm" style="width: 70px;" onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)">
 					<option value="">...</option>
 					<?php $__currentLoopData = $selectores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 					<option value="<?php echo e($s); ?>" <?php echo e($s==$p->bks?'selected':''); ?>><?php echo e($s); ?></option>
@@ -100,7 +101,8 @@
 						  $finish_3 = $p->finish_3 !='' ? explode(',',($p->finish_3)) : array();
 						  $finish_4 = $p->finish_4 !='' ? explode(',',($p->finish_4)) : array();
 					 ?>
-					<select class="form-control form-control-sm" id="det_finish_<?php echo e($p->id); ?>" style="width: 60px;" onchange="guarda_detalle(<?php echo e($p->id); ?>)">
+					 <?php if($p->info != 4): ?>
+					<select class="form-control form-control-sm" id="det_finish_<?php echo e($p->id); ?>" style="width: 80px;" onchange="guarda_detalle(<?php echo e($p->id); ?>)">
 						<option value="">...</option>
 							<?php $__currentLoopData = $finish_1; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $f1): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 								<option value="<?php echo e($f1); ?>" <?php echo e($f1==$p->finish?'selected':''); ?>><?php echo e($f1); ?></option>
@@ -115,6 +117,7 @@
 							<option value="<?php echo e($f4); ?>" <?php echo e($f4==$p->finish?'selected':''); ?>><?php echo e($f4); ?></option>
 							<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> 
 					</select>
+					<?php endif; ?>
 			</td>
 			<td><?php echo e($p->sufijo); ?></td>
 			<td>
@@ -125,7 +128,7 @@
 			  $style_3 = $p->style_3 !='' ? explode(',',($p->style_3)) : array();
 
 			?>
-			<select class="form-control form-control-sm" id="det_style_<?php echo e($p->id); ?>" style="width: 60px;" onchange="guarda_detalle(<?php echo e($p->id); ?>)">
+			<select class="form-control form-control-sm" id="det_style_<?php echo e($p->id); ?>" style="width: 80px;" onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)">
 				<option value="">...</option>
 				<?php $__currentLoopData = $style_1; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s1): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 					<option value="<?php echo e($s1); ?>" <?php echo e($s1==$p->style_sel?'selected':''); ?>><?php echo e($s1); ?></option>
@@ -143,7 +146,7 @@
 			<td>
 				<?php ($selectores_hand = explode(',',$p->list_handing)); ?>
 				<?php if($p->info != 6): ?>
-				<select id="handing_<?php echo e($p->id); ?>" class="form-control form-control-sm" style="width: 50px;" onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)">
+				<select id="handing_<?php echo e($p->id); ?>" class="form-control form-control-sm" style="width: 60px;" onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)">
 					<option value="">...</option>
 					<?php if(sizeof($selectores_hand)>0): ?>
 						<?php $__currentLoopData = $selectores_hand; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -155,7 +158,7 @@
 			</td>
 			<td>
 				<?php if($p->info != 3): ?>
-				<input type="text" name="doort_<?php echo e($p->id); ?>" id="doort_<?php echo e($p->id); ?>"  style="width: 60px;" value="<?php echo e($p->door_t); ?>" class="form-control form-control-sm" min="1" onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)">
+				<input type="text" name="doort_<?php echo e($p->id); ?>" id="doort_<?php echo e($p->id); ?>"  style="width: 80px;" value="<?php echo e($p->door_t); ?>" class="form-control form-control-sm" min="1" onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)">
 				<?php else: ?>
 				<select name="doort_<?php echo e($p->id); ?>" id="doort_<?php echo e($p->id); ?>"  style="width: 60px;" value="<?php echo e($p->door_t); ?>" class="form-control form-control-sm"  onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)">
 					<option value="">...</option>	
@@ -170,18 +173,13 @@
 			<?php ($suma_pv = $p->pvc + $p->sum_pvc); ?>
 			<td class="text-right">$<?php echo e(number_format($suma_pv,2)); ?></td>
 			
-			<td ><span class="badge badge-primary"><?php echo e($p->inv1); ?></span></td>
-			<td> <span class="badge badge-primary"><?php echo e($p->inv2); ?></span></td>
+			<!--<td ><span class="badge badge-primary"><?php echo e($p->inv1); ?></span></td>
+			<td> <span class="badge badge-primary"><?php echo e($p->inv2); ?></span></td>-->
 			<td>
 				<input type="text" id="pro_cant_<?php echo e($p->id); ?>" value="<?php echo e($p->cantidad); ?>" class="form-control form-control-sm cantidad-mask text-right"  onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)" style="width: 50px;">
 			</td>
 			
-			<?php if($p->estatus== 1): ?>
-			<td>
-				<input type="text" id="pro_cant_<?php echo e($p->id); ?>" value="<?php echo e($p->cantidad); ?>" class="form-control form-control-sm cantidad-mask text-right"  onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)" style="width: 50px;">
-			</td>
-			<td><input type="text" id="pro_cant_<?php echo e($p->id); ?>" value="<?php echo e($p->cantidad); ?>" class="form-control form-control-sm cantidad-mask text-right"  onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)" style="width: 50px;"></td>
-			<?php endif; ?> 
+			
 			<td class="text-right"> <label > $<?php echo e(number_format($suma_pv * $p->cantidad,2)); ?></label></td>
 			<td style="border-left: 3px solid white;"><input type="text" id="mod_pre_unit_<?php echo e($p->id); ?>" value="<?php echo e($p->mod_precio_unit); ?>" class="form-control form-control-sm p_unit-mask text-right" onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)" style="width: 80px;"></td>
 			<td><input type="text" id="mod_cant_<?php echo e($p->id); ?>" class="form-control form-control-sm cantidad-mask text-right" value="<?php echo e($p->mod_cantidad); ?>" onchange="guarda_info_cotizacion(<?php echo e($p->id); ?>)" style="width: 50px;"></td>
@@ -195,7 +193,7 @@
 		<?php ($subtotal_ps   += $p->inst_precio_unit * $p->inst_cantidad); ?>
 		<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 		<tr>
-			<td colspan="<?php echo e($estatus == 1 ? 16:14); ?>" class="color" rowspan="6"></td>
+			<td colspan="12" class="color" rowspan="6"></td>
 			<td colspan="2" class="gris_tabla">Subtotal:</td>
 			<td colspan="2" class="text-right">$<?php echo e(number_format($subtotal_dl,2)); ?></td>
 			<td colspan="3" class="text-right" style="border-left: 3px solid white;">$<?php echo e(number_format($subtotal_dl_1,2)); ?></td>
@@ -271,9 +269,9 @@
 		</tr>
 		<tr>
 			<td class="text-left gris_tabla"  colspan="2">Total:</td>
-			<td class="white text-right" colspan="2" > $<?php echo e(number_format($desc_usa + $iva_desc,2)); ?></td>
-			<td style="border-left: 3px solid white;"  class="white text-right" colspan="3"> $<?php echo e(number_format($desc_mod + (($desc_mod * $cotizacion->iva_mod)/100),2)); ?></td>
-			<td  style="border-left: 3px solid white;" class="text-right  white" colspan="3"> $<?php echo e(number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)); ?></td>
+			<td class="text-right" colspan="2" > $<?php echo e(number_format($desc_usa + $iva_desc,2)); ?></td>
+			<td style="border-left: 3px solid white;"  class=" text-right" colspan="3"> $<?php echo e(number_format($desc_mod + (($desc_mod * $cotizacion->iva_mod)/100),2)); ?></td>
+			<td  style="border-left: 3px solid white;" class="text-right  " colspan="3"> $<?php echo e(number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)); ?></td>
 		</tr>
 		<tr  style="background:#5C8293; color: white;" class="text-right">
 			<td colspan="4">Gran Total:</td>

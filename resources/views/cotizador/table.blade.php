@@ -10,16 +10,17 @@
 	.color{border: 2px solid white; color: gray; text-align: right;}
 </style>
 <!---- small row-border-->
-	<table class="table table-striped" style="font-size: 11px;" id="" border="0">
+	<table class="table table-striped mr-1" style="font-size: 11px;" id="" border="0">
 		<tr style="border-top: 3px solid white; background:white;">
-			<td colspan="{{ $estatus == 1 ? 13:11}}">
-				<span><span class="badge badge-primary" style="text-align: left; font-size: 14px;">{{ $cotizacion->id_hijo != '' ? $cotizacion->id_hijo . '.'. $cotizacion->ver : $cotizacion->id}}</span>
-				<select id="sp" class="form-control select2 pull-right"  onchange="cacha()" style="width: 80%" >
-					<option value="0">Buscar productos...</option>
-						@foreach($filtros_select as $s)
-							<option   value="{{$s->id_producto}}" >{{$s->item}} - {{ $s->sufijo != '' ? ' - ' .$s->sufijo :'' }} {{ $s->descripcion != '' ? ' - '.$s->descripcion : ''}}</option>
-						@endforeach
-				</select>
+			<td colspan="9">
+				<span class="row">
+					<div class="col-md-2">
+						<span class="badge badge-primary" style="text-align: left; font-size: 14px;">{{ $cotizacion->id_hijo != '' ? $cotizacion->id_hijo . '.'. $cotizacion->ver : $cotizacion->id}}</span>
+					</div>
+					<div class="col-md-10">
+					<input type="text" id="sp" class="form-control" onkeyup="buscar_productos()">
+					<span id="resultado" style="display: none; z-index: 1; position: absolute; width: 100%; font-size: 14px; color: #84807F; padding:20px; max-height: 300px; overflow-y: scroll;"></span>
+					</div>
 				</span>
 			</td>
 			<td colspan="7" class="text-center gris_tabla"><b>Producto USD:</b></td>
@@ -42,12 +43,12 @@
 			<td>LP</td>
 			<td>PHC</td>
 			<td>PVC</td>
-			<td colspan="2">Inv I II</td>
+			<!--<td colspan="2">Inv I II</td>-->
 			<td>Ctd</td> 
-			@if($estatus==1)
+			{{-- @if($estatus==1)
 			<td></td>
 			<td></td>
-			@endif
+			@endif --}}
 			<td>Total</td> 
 			<td style="border-left: 3px solid white;">PU</td>
 			<td>Ctd</td>
@@ -59,16 +60,31 @@
 		@foreach($productos as $p)
 		<tr>
 			<td>
+				<div class="btn-group mr-1 mb-1">
+                    <button type="button" class="btn btn-icon btn-pure dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
+                    <div class="dropdown-menu">
+                    	<a class="dropdown-item" href="#" data-toggle="modal" onclick="agregar_dependencia({{$p->idproducto}},{{$p->id}})" data-backdrop="false" data-target="#primary" ><i class="fa fa-info info"></i> <b>Info {{$p->info}}</b></a>
+                    	<a class="dropdown-item" href="#" onclick="agrega_producto({{ $p->idproducto}})" ><i class="fa fa-plus primary"></i> Duplicar</a>
+                    	<a class="dropdown-item" href="#" data-toggle="modal" onclick="ver_imagen({{$p->id_item}})" data-backdrop="false" data-target="#primary" ><i class="fa fa-camera success"></i> Foto</a>
+                      	<div class="dropdown-divider"></div>
+                      	<a class="dropdown-item" href="#" data-toggle="modal" data-target="#primary"  onclick="configura_inventario({{$p->id}})" ><i class="fa fa-th secondary"></i> Inventario</a>
+                      	<a class="dropdown-item" href="#" onclick="elimina_producto({{$p->id}})" ><i class="fa fa-trash danger"></i> Eliminar</a>
+                    </div>
+                </div>
+{{-- 
 				<div class="btn-group">
                     <button type="button" class="btn btn-icon btn-pure dropdown-toggle" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
                     <div class="dropdown-menu">
-                    	<span class="btn btn-sm btn-outline-danger" style="cursor: pointer;" onclick="elimina_producto({{$p->id}})"><i class="fa fa-trash"></i></span> &nbsp;
-						<span class="btn btn-sm btn-outline-primary" data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer; font-size: 12px;" onclick="agregar_dependencia({{$p->idproducto}},{{$p->id}})"><i class="fa fa-info"></i> <b>{{$p->info}}</b></span>&nbsp;
-						<span class="btn btn-sm btn-outline-success" onclick="agrega_producto({{ $p->idproducto}})"><i class="fa fa-plus"></i></span>&nbsp;
-						<span  class="btn btn-sm btn-outline-success"  data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer;" onclick="ver_imagen({{$p->id_item}})"><i class="fa fa-camera" aria-hidden="true"></i></span>        
+                    	<ul>
+                    	<li  class="dropdown-item"  onclick="elimina_producto({{$p->id}})"><span class="btn btn-sm btn-outline-danger"><i class="fa fa-trash"></i></span></li>
+						<li   class="dropdown-item" data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer; font-size: 12px;" onclick="agregar_dependencia({{$p->idproducto}},{{$p->id}})"><span class="btn btn-sm btn-outline-primary"><i class="fa fa-info"></i> <b>{{$p->info}}</b></span></li>
+						<li   class="dropdown-item" onclick="agrega_producto({{ $p->idproducto}})"><span class="btn btn-sm btn-outline-success"><i class="fa fa-plus"></i></span></li>
+						<li    class="dropdown-item"  data-toggle="modal" data-backdrop="false" data-target="#primary" style="cursor: pointer;" onclick="ver_imagen({{$p->id_item}})"><span class="btn btn-sm btn-outline-success"><i class="fa fa-camera" aria-hidden="true"></i></li>        
+						</ul>
                     </div>
-                 </div>
+                 </div> --}}
 			</td>
 			<!--<td style="text-align: left; font-weight: bold;">
 				{{$p->item_nom}}
@@ -85,7 +101,7 @@
 			</td>
 			<td>
 				@php($selectores = explode(',',$p->list_backset))
-				<select id="bks_{{$p->id}}" class="form-control form-control-sm" style="width: 50px;" onchange="guarda_info_cotizacion({{$p->id}})">
+				<select id="bks_{{$p->id}}" class="form-control form-control-sm" style="width: 70px;" onchange="guarda_info_cotizacion({{$p->id}})">
 					<option value="">...</option>
 					@foreach($selectores as $s)
 					<option value="{{$s}}" {{$s==$p->bks?'selected':''}}>{{$s}}</option>
@@ -98,7 +114,8 @@
 						  $finish_3 = $p->finish_3 !='' ? explode(',',($p->finish_3)) : array();
 						  $finish_4 = $p->finish_4 !='' ? explode(',',($p->finish_4)) : array();
 					 ?>
-					<select class="form-control form-control-sm" id="det_finish_{{$p->id}}" style="width: 60px;" onchange="guarda_detalle({{$p->id}})">
+					 @if($p->info != 4)
+					<select class="form-control form-control-sm" id="det_finish_{{$p->id}}" style="width: 80px;" onchange="guarda_detalle({{$p->id}})">
 						<option value="">...</option>
 							@foreach($finish_1 as $f1)
 								<option value="{{$f1}}" {{$f1==$p->finish?'selected':''}}>{{$f1}}</option>
@@ -113,6 +130,7 @@
 							<option value="{{$f4}}" {{$f4==$p->finish?'selected':''}}>{{$f4}}</option>
 							@endforeach 
 					</select>
+					@endif
 			</td>
 			<td>{{ $p->sufijo}}</td>
 			<td>
@@ -123,7 +141,7 @@
 			  $style_3 = $p->style_3 !='' ? explode(',',($p->style_3)) : array();
 
 			?>
-			<select class="form-control form-control-sm" id="det_style_{{$p->id}}" style="width: 60px;" onchange="guarda_detalle({{$p->id}})">
+			<select class="form-control form-control-sm" id="det_style_{{$p->id}}" style="width: 80px;" onchange="guarda_info_cotizacion({{$p->id}})">
 				<option value="">...</option>
 				@foreach($style_1 as $s1)
 					<option value="{{$s1}}" {{$s1==$p->style_sel?'selected':''}}>{{$s1}}</option>
@@ -141,7 +159,7 @@
 			<td>
 				@php($selectores_hand = explode(',',$p->list_handing))
 				@if($p->info != 6)
-				<select id="handing_{{$p->id}}" class="form-control form-control-sm" style="width: 50px;" onchange="guarda_info_cotizacion({{$p->id}})">
+				<select id="handing_{{$p->id}}" class="form-control form-control-sm" style="width: 60px;" onchange="guarda_info_cotizacion({{$p->id}})">
 					<option value="">...</option>
 					@if(sizeof($selectores_hand)>0)
 						@foreach($selectores_hand as $s)
@@ -153,7 +171,7 @@
 			</td>
 			<td>
 				@if($p->info != 3)
-				<input type="text" name="doort_{{$p->id}}" id="doort_{{$p->id}}"  style="width: 60px;" value="{{$p->door_t}}" class="form-control form-control-sm" min="1" onchange="guarda_info_cotizacion({{$p->id}})">
+				<input type="text" name="doort_{{$p->id}}" id="doort_{{$p->id}}"  style="width: 80px;" value="{{$p->door_t}}" class="form-control form-control-sm" min="1" onchange="guarda_info_cotizacion({{$p->id}})">
 				@else
 				<select name="doort_{{$p->id}}" id="doort_{{$p->id}}"  style="width: 60px;" value="{{$p->door_t}}" class="form-control form-control-sm"  onchange="guarda_info_cotizacion({{$p->id}})">
 					<option value="">...</option>	
@@ -170,18 +188,18 @@
 			{{-- <td>{{ number_format($p->lp + $p->sum_lp,2)}}</td>
 			<td>{{ number_format($p->phc + $p->sum_phc,2)}}</td>
 			<td>{{ number_format($p->pvc + $p->sum_pvc,2)}}</td> --}}
-			<td ><span class="badge badge-primary">{{ $p->inv1}}</span></td>
-			<td> <span class="badge badge-primary">{{ $p->inv2}}</span></td>
+			<!--<td ><span class="badge badge-primary">{{ $p->inv1}}</span></td>
+			<td> <span class="badge badge-primary">{{ $p->inv2}}</span></td>-->
 			<td>
 				<input type="text" id="pro_cant_{{$p->id}}" value="{{$p->cantidad}}" class="form-control form-control-sm cantidad-mask text-right"  onchange="guarda_info_cotizacion({{$p->id}})" style="width: 50px;">
 			</td>
 			
-			@if($p->estatus== 1)
+			{{-- @if($p->estatus== 1)
 			<td>
 				<input type="text" id="pro_cant_{{$p->id}}" value="{{$p->cantidad}}" class="form-control form-control-sm cantidad-mask text-right"  onchange="guarda_info_cotizacion({{$p->id}})" style="width: 50px;">
 			</td>
 			<td><input type="text" id="pro_cant_{{$p->id}}" value="{{$p->cantidad}}" class="form-control form-control-sm cantidad-mask text-right"  onchange="guarda_info_cotizacion({{$p->id}})" style="width: 50px;"></td>
-			@endif 
+			@endif  --}}
 			<td class="text-right"> <label > ${{ number_format($suma_pv * $p->cantidad,2)}}</label></td>
 			<td style="border-left: 3px solid white;"><input type="text" id="mod_pre_unit_{{$p->id}}" value="{{$p->mod_precio_unit}}" class="form-control form-control-sm p_unit-mask text-right" onchange="guarda_info_cotizacion({{$p->id}})" style="width: 80px;"></td>
 			<td><input type="text" id="mod_cant_{{$p->id}}" class="form-control form-control-sm cantidad-mask text-right" value="{{$p->mod_cantidad}}" onchange="guarda_info_cotizacion({{$p->id}})" style="width: 50px;"></td>
@@ -195,7 +213,7 @@
 		@php($subtotal_ps   += $p->inst_precio_unit * $p->inst_cantidad)
 		@endforeach
 		<tr>
-			<td colspan="{{ $estatus == 1 ? 16:14}}" class="color" rowspan="6"></td>
+			<td colspan="12" class="color" rowspan="6"></td>
 			<td colspan="2" class="gris_tabla">Subtotal:</td>
 			<td colspan="2" class="text-right">${{number_format($subtotal_dl,2)}}</td>
 			<td colspan="3" class="text-right" style="border-left: 3px solid white;">${{number_format($subtotal_dl_1,2)}}</td>
@@ -268,9 +286,9 @@
 		</tr>
 		<tr>
 			<td class="text-left gris_tabla"  colspan="2">Total:</td>
-			<td class="white text-right" colspan="2" > ${{number_format($desc_usa + $iva_desc,2)}}</td>
-			<td style="border-left: 3px solid white;"  class="white text-right" colspan="3"> ${{number_format($desc_mod + (($desc_mod * $cotizacion->iva_mod)/100),2)}}</td>
-			<td  style="border-left: 3px solid white;" class="text-right  white" colspan="3"> ${{number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)}}</td>
+			<td class="text-right" colspan="2" > ${{number_format($desc_usa + $iva_desc,2)}}</td>
+			<td style="border-left: 3px solid white;"  class=" text-right" colspan="3"> ${{number_format($desc_mod + (($desc_mod * $cotizacion->iva_mod)/100),2)}}</td>
+			<td  style="border-left: 3px solid white;" class="text-right  " colspan="3"> ${{number_format($desc_mx + (($desc_mx * $cotizacion->iva_mx)/100),2)}}</td>
 		</tr>
 		<tr  style="background:#5C8293; color: white;" class="text-right">
 			<td colspan="4">Gran Total:</td>

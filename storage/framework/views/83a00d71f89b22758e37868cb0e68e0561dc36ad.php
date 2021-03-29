@@ -8,8 +8,9 @@
         </tr>
     </thead>
     <tbody>
+    <?php ($arr = array(6,9,15,19,20)); ?>
     <?php $__currentLoopData = $formulas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $formulas): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <tr>
+        <tr style="<?php echo e(in_array($formulas->id, $arr) ? 'background: black; color:white;':''); ?>">
             <td><?php echo e($formulas->id); ?></td>
             <td>[<?php echo e($formulas->id); ?>] <?php echo $formulas->nom_catalogo; ?></td>
             <td><?php echo $formulas->formula; ?></td>

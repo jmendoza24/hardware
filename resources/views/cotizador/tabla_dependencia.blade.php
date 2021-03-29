@@ -41,9 +41,11 @@
 				 	$items = $d->elemento !='' ? explode(',',($d->elemento)) : array();
 				?> 
 				@if($d->id_catalogo == 12 || $d->id_catalogo == 18 || $d->id_catalogo == 30 || $d->id_catalogo == 31)
-				<input type="text" id="item_{{$d->id_catalogo}}" style="width: 100px;" class="form-control form-control-sm" value="{{ $d->item_seleccionado}}" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}})">
+				<input type="text" id="item_{{$d->id_catalogo}}" style="width: 80px; float: left;" class="form-control form-control-sm" value="{{ $d->item_seleccionado}}" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}},{{ $d->id_detalle}})">
+				&nbsp;
+				<span class="btn btn-sm btn-danger" style="margin-top: 2px; cursor: pointer;" onclick="elimina_libre({{$d->id}},{{ $d->id_detalle}})"><i class="fa fa-trash"></i></span>
 				@else
-					<select class="form-control form-control-sm" id="item_{{$d->id_catalogo}}" style="width: 100px;" onchange="muestra_sufijo_ext({{$d->id_catalogo}}); guarda_datos({{$d->id}},{{$d->id_catalogo}});">
+					<select class="form-control form-control-sm" id="item_{{$d->id_catalogo}}" style="width: 120px;" onchange="muestra_sufijo_ext({{$d->id_catalogo}}); guarda_datos({{$d->id}},{{$d->id_catalogo}},{{ $d->id_detalle}});">
 						<option value="">...</option>
 						@foreach($items as $t)
 						<?php $t1 = $t != '' ? explode('.',$t) : array();?>	
@@ -67,7 +69,7 @@
 						<label id="color_{{$d->id_catalogo}}">{{$d->color}}</label>
 						<input type="hidden" id="color_{{$d->id_catalogo}}" value="{{$d->color}}">
 					@elseif(in_array($d->id_catalogo, $elementos) && count($items)>0 )
-						<select class="form-control form-control-sm" id="color_{{$d->id_catalogo}}" style=" width: 90px; @if(in_array($d->id_catalogo, $elementos2)) display:none; @endif " onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}})">
+						<select class="form-control form-control-sm" id="color_{{$d->id_catalogo}}" style=" width: 90px; @if(in_array($d->id_catalogo, $elementos2)) display:none; @endif " onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}},{{ $d->id_detalle}})">
 							<option value="">Seleccione...</option>
 							@if(count($colores)>0)
 								@foreach($colores as $c)
@@ -97,40 +99,7 @@
 			<td>{{$d->descripcion}}</td>
 			<td style="text-align: right;">${{ number_format($d->lp,2)}}</td>
 			<td>
-				<input type="text" id="cantidad_{{$d->id_catalogo}}" class="form-control form-control-sm cantidad-mask text-right" style="width:80px" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}})" value="{{$d->ctd}}">
-			</td>
-			<td style="text-align: right;">
-				<label id="{{$d->id_catalogo}}">{{number_format($d->lp * $d->ctd,2)}}</label>
-			</td>
-			<td style="text-align: right;"><label id="phc_{{$d->id_catalogo}}">{{number_format($d->phc * $d->ctd,2)}}</label></td>
-			<td style="text-align: right;"><label id="lpv_{{$d->id_catalogo}}">{{number_format($d->pvc * $d->ctd,2)}}</label></td>
-		</tr>
-		@endforeach
-	</table>
-	@elseif($producto->info ==5)
-		<table class="table table-striped padding-table table-bordered">
-		<tr>
-			<td  colspan="2" class="text-right"> <b>Bisagras:  {{$detalle->cantidad}} </b></td>
-			<td class="gris_tabla">Dependencia:</td>
-			<td style="text-align: right;">${{number_format($suma_dependencias->sum_lp,2)}}</td>
-			<td style="text-align: right;">${{number_format($suma_dependencias->sum_phc,2)}}</td>
-			<td style="text-align: right;">${{number_format($suma_dependencias->sum_pvc,2)}}</td>
-		</tr>
-		<tr style="text-align: center;" class="gris_tabla">
-			<td></td>
-			<td style="width: 9%;">LP</td>
-			<td style="width: 9%;">Ctd</td>
-			<td style="width: 9%;">$/NRP</td>
-			<td style="width: 9%;">PHC</td>
-			<td style="width: 9%;">PVC</td>
-		</tr>
-		@foreach($dependencias as $d) 
-		<tr>
-			<td class="text-right">
-				{{$d->catagolo}} 
-			</td>
-			<td style="text-align: right;"><input type="text" id="lp_{{$d->id_catalogo}}" class="form-control form-control-sm p_unit-mask text-right" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}})" value="{{ number_format($d->lp,2)}}"></td><td>
-				<input type="text" id="cantidad_{{$d->id_catalogo}}" class="form-control form-control-sm cantidad-mask text-right" style="width:80px" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}})" value="{{$d->ctd}}">
+				<input type="text" id="cantidad_{{$d->id_catalogo}}" class="form-control form-control-sm cantidad-mask text-right" style="width:80px" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}},{{ $d->id_detalle}})" value="{{$d->ctd}}">
 			</td>
 			<td style="text-align: right;">
 				<label id="{{$d->id_catalogo}}">{{number_format($d->lp * $d->ctd,2)}}</label>
@@ -151,7 +120,7 @@
 				<?php
 				 	$items = $d->elemento !='' ? explode(',',($d->elemento)) : array();
 				?> 
-				<select class="form-control form-control-sm" id="item_{{$d->id_catalogo}}" style="width: 100px;" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}});">
+				<select class="form-control form-control-sm" id="item_{{$d->id_catalogo}}" style="width: 100px;" onchange="guarda_datos({{$d->id}},{{$d->id_catalogo}},{{ $d->id_detalle}});">
 					<option value="">...</option>
 					@foreach($items as $t)
 					<?php $t1 = $t != '' ? explode('.',$t) : array();?>	

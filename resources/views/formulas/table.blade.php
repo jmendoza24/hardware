@@ -8,8 +8,9 @@
         </tr>
     </thead>
     <tbody>
+    @php($arr = array(6,9,15,19))
     @foreach($formulas as $formulas)
-        <tr>
+        <tr style="{{ in_array($formulas->id, $arr) ? 'background: black; color:white;':''}}">
             <td>{{ $formulas->id}}</td>
             <td>[{{ $formulas->id}}] {!! $formulas->nom_catalogo !!}</td>
             <td>{!! $formulas->formula !!}</td>
