@@ -19,6 +19,7 @@ Auth::routes();
 Route::get('/', 'HomeController@index');
 
 Route::get('configurador/{key}', 'CatalogosController@configurador');
+
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::resource('clientes', 'ClientesController');
@@ -47,7 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('catalogos_download', 'productosController@catalogos_download')->name('catalogos_download.index');
 	Route::get('cotizador', 'cotizadorController@index')->name('cotizador.index');
 	Route::get('cotizaciones_lista', 'cotizadorController@lista')->name('cotizador.lista');
-	Route::get('cotizaciones_oc', 'cotizadorController@oc')->name('cotizador.oc');
+	Route::get('cotizaciones_oc', 'cotizadorController@ordenes_compra')->name('cotizador.oc');
 
 	Route::get('selectores', 'Sub_baldwinController@selectores')->name('selectores.index');
 	Route::get('dependencia', 'CatalogosController@dependencia')->name('dependencia.index');
@@ -63,10 +64,10 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::resource('tblOcFabs', 'tbl_oc_fabController');
 
-	Route::get('pedidos', 'tbl_oc_fabController@pedidos')->name('pedidos');
+	Route::get('pedidos', 'tbl_oc_fabController@pedidos')->name('pedidos'); 
 
 	Route::get('enviadas', 'cotizadorController@enviadas')->name('enviadas');
-
+	Route::get('finaliza_pedido', 'tbl_oc_fabController@finaliza_pedido')->name('pedido.finaliza');
 	
 });
 
@@ -124,8 +125,6 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('enviar_cotizacion', 'cotizadorController@enviar_cotizacion');
 	Route::get('enviar_cotizacion2', 'cotizadorController@enviar_cotizacion2');
 
-	Route::get('finaliza_pedido', 'tbl_oc_fabController@finaliza_pedido');
-
 	Route::get('ver_pedidos', 'tbl_oc_fabController@ver_pedidos');
 	Route::get('estatus_pedido2', 'tbl_oc_fabController@estatus_pedido2');
 	Route::get('ver_imagen', 'cotizadorController@ver_imagen');
@@ -135,6 +134,10 @@ Route::group(['middleware' => 'auth','prefix'=>'api/v1/'], function () {
 	Route::get('busqueda_productos', 'cotizadorController@busqueda_productos');
 	Route::get('elimina_libre', 'cotizadorController@elimina_libre');
 	Route::get('configura_inventario', 'cotizadorController@configura_inventario');
+	Route::get('guarda_inventario', 'cotizadorController@guarda_inventario');
+	Route::get('guarda_pedido', 'tbl_oc_fabController@guarda_pedido');
+	Route::get('ver_pedido', 'tbl_oc_fabController@ver_pedido');
+	
 	
 
 });

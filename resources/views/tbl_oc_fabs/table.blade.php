@@ -1,8 +1,7 @@
         <table class="table table-bordered file-export" id="tblOcFabs-table">
 
         <thead>
-            <tr style="background: #5C8293; color: white;">
-            <th>Fabricante</th>
+            <tr class="gris_tabla">
             <th>Fabricante</th>
             <th>Teléfono</th>
             <th>Contacto</th>
@@ -12,20 +11,19 @@
         </thead>
         <tbody>
         @foreach($tblOcFabs as $tblOcFab)
+        @if($tblOcFab->cant > 0)
             <tr>
-            <td>{{ $tblOcFab->fabricante }}</td>
-
-            <td>{{ $tblOcFab->fabricante }}</td>
-            <td>{{ $tblOcFab->telefono_dir }}</td>
-            <td>{{ $tblOcFab->contacto }}</td>
-            <td>{{ $tblOcFab->can_total }}</td>
-            <td>
+                <td>{{ $tblOcFab->fabricante }}</td>
+                <td>{{ $tblOcFab->telefono_dir }}</td>
+                <td>{{ $tblOcFab->contacto }}</td>
+                <td>{{ $tblOcFab->cant }}</td>
+                <td>
                     <div class="btn-group">
-                        <a class="btn btn-sm btn-outline-primary btn_azul" href="{{ route('tblOcFabs.show', [$tblOcFab->idf]) }}"><i class="fa fa-window-maximize"></i></a> &nbsp;
+                        <a class="btn btn-sm btn-danger" href="{{ route('tblOcFabs.show', [$tblOcFab->id_fabricante]) }}"><i class="fa fa-window-maximize"></i></a> &nbsp;
                     </div>
                 </td>
-                
-                </tr>
+            </tr>
+            @endif
         @endforeach
         </tbody>
     </table>

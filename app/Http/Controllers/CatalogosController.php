@@ -372,7 +372,7 @@ class catalogosController extends AppBaseController
                                        'puesto'=>'',
                                        'activo'=>1);
 
-                $participantes = (object)$participantes;    
+                $participantes = (object)$participantes;     
             }else if($request->tipo==2){
                 $participantes = cliente_participantes::where('id',$request->id)->get();
                 $participantes = $participantes[0];

@@ -1,1 +1,0 @@
-<?php /**PATH C:\wamp64\www\laravel\hardware\resources\views/cotizador/abatimiento_table.blade.php ENDPATH**/ ?>

@@ -21,7 +21,7 @@ use App\Models\productos;
 use App\Models\items_productos;
 use App\Models\informacion_productos;
 use App\Models\Fabricantes_costos;
-use App\Models\proyectos_clientes;
+use App\Models\proyectos_clientes; 
 use App\Models\cliente_participantes;
 use App\Http\Requests\CreatecatalogosRequest;
 use App\Http\Requests\UpdatecatalogosRequest;
@@ -191,7 +191,7 @@ class cotizadorController extends AppBaseController
 
 
 
-    public function oc(Request $request){
+    public function ordenes_compra(Request $request){
      
      $cotizaciones = db::select("CALL listado_cotizacion(1)");
       return view('cotizador.oc',compact('cotizaciones'));
@@ -282,7 +282,7 @@ class cotizadorController extends AppBaseController
     function detalle_producto(Request $request){
         
         $producto = $request->producto;
-  
+    
         $items = db::table('productos as p')
                     ->join('items as i','i.id','p.id_item')
                     ->where('p.id_item',$producto)
@@ -469,7 +469,7 @@ class cotizadorController extends AppBaseController
                                               'ctd'=>0,
                                               'lp'=>$costo,
                                               'phc'=>$costo * $factor->factor_hc,
-                                              'pvc'=>($costo * $factor->factor_hc )/$factor->lista,
+                                              'pvc'=>$costo * $factor->lista ,
                                               'accion'=>$accion]);
                   }
               }
@@ -490,9 +490,9 @@ class cotizadorController extends AppBaseController
               //dd($produc->costo_1 * (1- $factor->factor_hc));
               
               cotizador_detalle::where('id',$id)
-                                ->update(['pvc'=>($produc->costo_1 * $factor->factor_hc) / $factor->lista,
-                                          'lp'=>$produc->costo_1,
+                                ->update(['lp'=>$produc->costo_1,
                                           'phc' =>$produc->costo_1 * $factor->factor_hc,
+                                          'pvc' =>$produc->costo_1 * $factor->lista,
                                           'id_fab'=>$produc->codigo_sistema]);
             }
           }
@@ -509,7 +509,7 @@ class cotizadorController extends AppBaseController
           //dd($produc->costo_1 * (1- $factor->factor_hc));
           
           cotizador_detalle::where('id',$id)
-                            ->update(['pvc'=>($produc->costo_1 * $factor->factor_hc) * $factor->lista,
+                            ->update(['pvc'=>$produc->costo_1 *  $factor->lista,
                                       'lp'=>$produc->costo_1,
                                       'phc' =>$produc->costo_1 * $factor->factor_hc,
                                       'id_fab'=>$produc->codigo_sistema]);
@@ -823,7 +823,7 @@ class cotizadorController extends AppBaseController
                 $phc = $request->cantidad > 0 ? (($lp * $factor->factor_hc ) + $costo ) * $request->cantidad : $producto->costo_1 * $factor->factor_hc;
 
                 cotizador_detalle::where('id',$request->id_detalle)
-                                  ->update(['pvc'=>$phc / $factor->lista,
+                                  ->update(['pvc'=>$phc * $factor->lista,
                                             'lp'=>$lp * $request->cantidad,
                                             'phc' =>$phc,
                                             'id_fab'=>$producto->codigo_sistema,
@@ -1061,7 +1061,9 @@ class cotizadorController extends AppBaseController
           cotizador_detalle::where('id',$request->id_detalle)
                           ->update(['lp'=> $costo ,
                                     'phc'=> $factor_hc,
-                                    'pvc'=> $factor_hc/$factor->lista]);
+                                    'pvc'=> $costo * $factor->lista]);
+
+          #dd($costo .'|'. $factor->lista);
           //}
         /* Fin lista de precios */
         //$item = $request->item;
@@ -1108,6 +1110,7 @@ class cotizadorController extends AppBaseController
         $info_adic = $info_adic[0]; */
         db::update('call proceso_idfab('.$request->id_detalle.')');
         db::update('CALL proceso_genera_formula('.$request->id_detalle.')');
+        //dd('CALL proceso_genera_formula('.$request->id_detalle.')');
 
         $detalle = cotizador_detalle::where('id',$request->id_detalle)->get();
         $detalle = $detalle[0];
@@ -1306,7 +1309,7 @@ class cotizadorController extends AppBaseController
               ->update(['lp'=>$costo,
                         'color'=>$request->finish,
                         'phc'=>$costo * $factor->factor_hc,
-                        'pvc'=>($costo * $factor->factor_hc) / $factor->lista]);
+                        'pvc'=>$costo *  $factor->lista]);
       }
         $producto = productos::where('id',$elementos[0]->id_producto)->get();
         $producto = $producto[0];
@@ -1458,14 +1461,25 @@ class cotizadorController extends AppBaseController
                        'alerta'=>$alerta,
                        'options2'=>$detalle_head,
                        'options3'=>$cotizador_table,
-                       'id_detalle'=>$request->id_detalle);
+                       'id_detalle'=>$request->id_detalle); 
 
           return $arr;
-  }
+  } 
 
   function configura_inventario(Request $request){
+      $filtro = new cotizador_detalle;
 
-    $options = view('cotizador.inventario')->render();
+      $cotizacion = db::table('cotizacions as c')
+                    ->leftjoin('proyectos as p','p.id','c.proyecto')
+                    ->leftjoin('cliente_participantes as cp','cp.id','c.cliente')
+                    ->where('c.id',$request->id_cotizacion)
+                    ->selectraw('c.*, p.nombre, cp.contacto')
+                    ->first();
+      $filtro->id_cotizacion = $request->id_cotizacion;
+      $detalle = $filtro->detalle_cotizacion($filtro);
+      $dependencias = $filtro->listado_dependientes($filtro);
+
+    $options = view('cotizador.inventario',compact('cotizacion','detalle','dependencias'))->render();
 
     return json_encode($options);
   }
@@ -1473,6 +1487,18 @@ class cotizadorController extends AppBaseController
   function regresar_cotizacion(Request $request){
     cotizador::where('id',$request->id_cotizacion)->update(['estatus'=>0,'id_occ'=>null,'fecha'=>null]);
     return redirect()->route('cotizador.lista');     
+  }
+
+  public function guarda_inventario(Request $request){
+    $request->tipo == 1 ?
+    cotizador_detalle::where('id',$request->id)
+                      ->update(['inv1'=>str_replace(',','',$request->cant_1),
+                                'inv2'=>str_replace(',','',$request->cant_2),
+                                'ocf'=>str_replace(',','',$request->cant_ocf)]):
+    items_productos::where('id',$request->id)
+                      ->update(['inv1'=>str_replace(',','',$request->cant_1),
+                                'inv2'=>str_replace(',','',$request->cant_2),
+                                'ocf'=>str_replace(',','',$request->cant_ocf)]);
   }
 
 }

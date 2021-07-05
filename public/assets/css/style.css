@@ -40,8 +40,14 @@ textarea{resize: none;
     }
     .gris_tabla{  
         background-color: #D2D2D2;
-       color: white;
+        color: #5C8293;
     }
+    .padding-table td{
+     padding: 6px;
+     font-size: 11px;
+    }
+    .color{border: 2px solid white; color: gray; text-align: right;}
+
     .gris_barra{
       background-color: #D2D2D2;
       color: #D2D2D2;

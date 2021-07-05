@@ -107,9 +107,9 @@ class catalogos extends Model
                         ->orderby('item')
                         ->get();
         }
-
-
-        if($filtro->fabricante==77 && $filtro->categoria >0 && $filtro->subcategoria > 0){
+        
+        
+        /**if($filtro->fabricante==77 && $filtro->categoria >0 && $filtro->subcategoria > 0){
             $sufijo = db::select('call proceso_obtiene_sufijos('.$filtro->categoria.','.$filtro->subcategoria.')');
             if($sufijo[0]->campo1 == '0'){
                 $sufijo = array();
@@ -118,9 +118,9 @@ class catalogos extends Model
             $sufijo = array();
             $sufijo = (object)$sufijo;
         }
+        */
         
-        
-
+    
         if($filtro->fabricante==77){
             $grupo_suf = Sub_baldwin::where([['fabricante',$filtro->fabricante],['variable',2]])
                             ->selectraw('subcatalogo as campo1, subcatalogo as campo2')
@@ -130,10 +130,11 @@ class catalogos extends Model
             $grupo_suf = array('campo1'=>'',
                                'campo2'=>'');
             $grupo_suf = (object)$grupo_suf;
+            
         }
 
         $arr = array('catalogo'=>$catalogo,
-                     'sufijos'=>$sufijo,
+                     'sufijos'=>[],
                      'grupo_suf'=>$grupo_suf);
         
         return $arr;

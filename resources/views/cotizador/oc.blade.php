@@ -30,7 +30,7 @@
                             aria-haspopup="true" aria-expanded="false" style="background: #43536cff !important; border-color: #43536cff !important; "><b style="font-size: 14px;">{{ $c->id_occ}}</b></button>
                             <div class="dropdown-menu">
                               <a class="dropdown-item" href="#" onclick="ver_catalogo(16,{{ $c->id}})" data-toggle="modal" data-backdrop="false" data-target="#primary" ><i class="fa fa-file-text-o warning" aria-hidden="true"></i> Consultar</a>
-                              <a class="dropdown-item" href="#" onclick="configura_abatimiento({{ $c->id}})" data-toggle="modal" data-backdrop="false" data-target="#primary"><i class="fa fa-archive success" aria-hidden="true"></i> Asignación</a>
+                              <a class="dropdown-item" href="#" onclick="configura_inventario({{ $c->id}})" data-toggle="modal" data-backdrop="false" data-target="#primary"><i class="fa fa-archive success" aria-hidden="true"></i> Asignación</a>
                               <a class="dropdown-item" href="#" onclick="baja_cotiza_pdf({{ $c->id}},1)" ><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Producto</a>
                               <a class="dropdown-item" href="#" onclick="baja_cotiza_pdf({{ $c->id}},3)" ><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Producto + Modificación</a>
                               <a class="dropdown-item" href="#" onclick="baja_cotiza_pdf({{ $c->id}},2)"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Instalación</a>

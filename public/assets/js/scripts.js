@@ -14,7 +14,7 @@
         form.classList.add('was-validated');
       }, false);
     });
- 
+  
   }, false);
 
 })();
@@ -464,12 +464,14 @@ function obtiene_catalogo(tipo,campo){
                 for (var i = 0; i < len; i++) {
                     valores += "<option value='"+response.catalogo[i].campo1+"'>"+response.catalogo[i].campo2+"</option>";
                 }
-              var len2 = response.sufijos.length;
+                
+                var len2 = response.sufijos.length;
               
                 for (var i = 0; i < len2; i++) {
                   console.log(response.sufijos[i]);
                     sufijo += "<option value='"+response.sufijos[i].campo1+"'>"+response.sufijos[i].campo2+"</option>";
                 }
+
                 var len3 = response.grupo_suf.length;
                 for (var i = 0; i < len3; i++) {
                     gsufijo += "<option value='"+response.grupo_suf[i].campo1+"'>"+response.grupo_suf[i].campo2+"</option>";
@@ -1492,12 +1494,12 @@ function elimina_elemento(id, ocf){
 
 function configura_inventario(id_detalle){
   $.ajax({
-          data: {id_detalle:id_detalle},
+          data: {id_cotizacion:id_detalle},
           url: '/api/v1/configura_inventario',
           dataType: 'json',
           type:  'get',
           success:  function (response) { 
-            $("#modal_primary").removeClass("modal-xl");
+            $("#modal_primary").addClass("modal-xl");
             $('.modal-dialog').draggable({handle: ".modal-header"});
             $("#footer_primary").hide();
             $("#contenido").html(response);
@@ -1513,4 +1515,63 @@ function configura_inventario(id_detalle){
                               });
           }
       });
+}
+
+
+
+function guarda_inventario(id,tipo){
+  var parameters = {'id':id,
+                    'cant_1':$("#cant"+tipo+"_i1_"+id).val(),
+                    'cant_2':$("#cant"+tipo+"_i1_"+id).val(),
+                    'cant_ocf':$("#cant"+tipo+"_ocf_"+id).val(),
+                    'tipo':tipo}
+  $.ajax({
+          data: parameters,
+          url: '/api/v1/guarda_inventario',
+          dataType: 'json',
+          type:  'get',
+          success:  function (response) { 
+            console.log(response);
+          }
+      });
+}
+
+
+function guarda_pedido(tipo, id,lp){
+ var parameters = {'id':id,
+                    'cantidad':$("#cpedido"+id+'_'+tipo).val(),
+                    'lp':lp,
+                    'tipo':tipo,
+                    'id_fabricante':$("#id_fabricante").val()}
+  $.ajax({
+          data: parameters,
+          url: '/api/v1/guarda_pedido',
+          dataType: 'json',
+          type:  'get',
+          success:  function (response) { 
+            $("#pedidos_table").html(response);
+            $('.cantidad-mask').inputmask({ 
+                                  groupSeparator: ".",
+                                  alias: "numeric",
+                                  placeholder: "0",
+                                  autoGroup: !0,
+                                  digits: 0,
+                                  digitsOptional: !1,
+                                  clearMaskOnLostFocus: !1,
+                                  max:9999
+                              });
+          }
+      }); 
+}
+
+function ver_pedido(id_pedido){
+  $.ajax({
+          data: {'id_pedido':id_pedido},
+          url: '/api/v1/ver_pedido',
+          dataType: 'json',
+          type:  'get',
+          success:  function (response) { 
+            $("#contenido").html(response);
+          }
+      }); 
 }

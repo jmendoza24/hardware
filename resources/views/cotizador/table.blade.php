@@ -68,7 +68,7 @@
                     	<a class="dropdown-item" href="#" onclick="agrega_producto({{ $p->idproducto}})" ><i class="fa fa-plus primary"></i> Duplicar</a>
                     	<a class="dropdown-item" href="#" data-toggle="modal" onclick="ver_imagen({{$p->id_item}})" data-backdrop="false" data-target="#primary" ><i class="fa fa-camera success"></i> Foto</a>
                       	<div class="dropdown-divider"></div>
-                      	<a class="dropdown-item" href="#" data-toggle="modal" data-target="#primary"  onclick="configura_inventario({{$p->id}})" ><i class="fa fa-th secondary"></i> Inventario</a>
+                      	<!--<a class="dropdown-item" href="#" data-toggle="modal" data-target="#primary"  onclick="configura_inventario({{$p->id}})" ><i class="fa fa-th secondary"></i> Inventario</a>-->
                       	<a class="dropdown-item" href="#" onclick="elimina_producto({{$p->id}})" ><i class="fa fa-trash danger"></i> Eliminar</a>
                     </div>
                 </div>
@@ -182,9 +182,10 @@
 				@endif
 			</td>
 			<td class="text-right">${{ number_format($p->lp + $p->sum_lp,2)}}</td>
-			<td class="text-right">${{ number_format($p->phc + $p->sum_phc,2)}}</td>
+			@php($phc = $p->phc + $p->sum_phc)
+			<td class="text-right">${{ number_format($phc,2)}}</td>
 			@php($suma_pv = $p->pvc + $p->sum_pvc)
-			<td class="text-right">${{ number_format($suma_pv,2)}}</td>
+			<td class="text-right {{ $suma_pv < $phc ? 'red':''}}">${{ number_format($suma_pv,2)}}</td>
 			{{-- <td>{{ number_format($p->lp + $p->sum_lp,2)}}</td>
 			<td>{{ number_format($p->phc + $p->sum_phc,2)}}</td>
 			<td>{{ number_format($p->pvc + $p->sum_pvc,2)}}</td> --}}

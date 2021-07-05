@@ -11,8 +11,8 @@ class cotizador extends Model {
     
 
     //protected $dates = ['deleted_at'];
-
-    function genera_cotizador($filtros){
+  
+    function genera_cotizador($filtros){ 
 
     	$cotiza = new cotizador_detalle;
     	$cotiza->id_cotizacion =  $filtros->id_cotizacion;
